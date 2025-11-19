@@ -1,29 +1,21 @@
 @extends('layouts.admin.base')
 
 @section('content')
-    <!-- Container -->
-    <div class="kt-container-fixed" id="contentContainer">
-    </div>
-    <!-- End of Container -->
-    <!-- Container -->
-    <div class="kt-container-fixed">
-        <div class="flex flex-wrap items-center justify-between gap-5 pb-7.5 lg:items-end">
-            <div class="flex flex-col justify-center gap-2">
-                <h1 class="text-xl font-medium leading-none text-mono">
-                    Form Edit Tag
-                </h1>
+<div class="kt-card mx-7.5">
+    <div class="kt-card-header">
+        <div class="kt-card-heading">
+                <h2 class="kt-card-title">
+                    Edit Tag
+                </h2>
             </div>
-            <div class="flex items-center gap-2.5">
-                <a class="kt-btn kt-btn-outline" href="{{ route('tags.index') }}">
-                    Kembali
+            <div class="kt-card-toolbar">
+                <a class="kt-btn kt-btn-primary" href="{{ route('tags.index') }}">
+                    <i class="ki-filled ki-arrow-left"></i>
                 </a>
             </div>
-        </div>
     </div>
-    <!-- End of Container -->
-    <!-- Container -->
-    <div class="kt-container-fixed">
-        <form action="{{ route('tags.update', $data['tag']->id) }}" method="POST" class="kt-card p-5 space-y-5">
+    <div class="kt-card-content">
+        <form action="{{ route('tags.update', $data['tag']->id) }}" method="POST" class="space-y-5">
             @method('PATCH')
 
             @csrf
@@ -35,8 +27,7 @@
                     placeholder="Masukkan nama" />
             </div>
 
-            <button type="button" class="kt-btn kt-btn-primary mt-5" data-kt-modal-toggle="#modal-edit-tag">Edit
-                Tag</button>
+            <button type="button" class="kt-btn kt-btn-primary mt-5" data-kt-modal-toggle="#modal-edit-tag">Edit</button>
 
             <div class="kt-modal z-40" data-kt-modal="true" id="modal-edit-tag">
                 <div
@@ -74,5 +65,5 @@
             </div>
         </form>
     </div>
-    <!-- End of Container -->
+</div>
 @endsection

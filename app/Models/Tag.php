@@ -9,15 +9,7 @@ class Tag extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['name', 'slug'];
-
-    /**
-     * Get the route key for the model.
-     */
-    public function getRouteKeyName()
-    {
-        return 'slug';
-    }
+    protected $fillable = ['name', 'slug', 'description'];
 
     public function articles()
     {

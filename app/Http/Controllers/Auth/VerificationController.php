@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Helpers\RecaptchaHelper;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreVerificationRequest;
 use App\Models\Notification;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
-use Illuminate\Http\Request;
-use Illuminate\Routing\Exceptions\InvalidSignatureException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Throwable;
@@ -26,16 +24,12 @@ class VerificationController extends Controller
     /**
      * Send the verification email.
      */
-    public function store(Request $request)
+    public function store(StoreVerificationRequest $request)
     {
         try {
-            $recaptchaResult = RecaptchaHelper::validateRecaptcha($request);
-
-            if (!$recaptchaResult['success']) {
-                return back()
-                    ->with('error', $recaptchaResult['message']);
+            if (!$request->user()) {
+                return redirect()->route('login');
             }
-
             if ($request->user()->hasVerifiedEmail()) {
                 return redirect()->route('dashboard');
             }
@@ -63,7 +57,7 @@ class VerificationController extends Controller
             Notification::create([
                 'user_id' => $request->user()->id,
                 'title' => 'Pengguna Memverifikasi Email',
-                'message' => 'Pengguna ' . ($request->user()->name ?? 'System') . ' berhasil memverifikasi emailnya.',
+                'message' => 'Pengguna ' . ($request->user()->name ?? 'Anonim') . ' berhasil memverifikasi emailnya.',
             ]);
 
             DB::commit();
@@ -74,7 +68,7 @@ class VerificationController extends Controller
 
             Log::error('Error during email verification: ' . $th->getMessage());
 
-            return redirect()->route('verification.notice')->with('error', 'Terjadi kesalahan saat memverifikasi email.');
+            return redirect()->route('login')->with('error', 'Terjadi kesalahan saat memverifikasi email.');
         }
     }
 }

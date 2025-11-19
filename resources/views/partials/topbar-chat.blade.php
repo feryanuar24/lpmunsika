@@ -1,5 +1,4 @@
 <div>
-
     <!-- Chat -->
     <button class="kt-btn kt-btn-ghost kt-btn-icon hover:bg-primary/10 hover:[&_i]:text-primary size-9 rounded-full"
         data-kt-drawer-toggle="#chat_drawer">
@@ -24,7 +23,7 @@
                     <div class="flex flex-wrap items-center gap-2">
                         <div
                             class="bg-accent/60 flex size-11 shrink-0 items-center justify-center rounded-full border border-border">
-                            <img alt="" class="size-7" src="assets/media/brand-logos/gitlab.svg" />
+                            <img alt="" class="size-7" src="{{ asset('assets/media/app/apple-touch-icon.png') }}" />
                         </div>
                         <div class="flex flex-col">
                             <a class="hover:text-primary text-sm font-semibold text-mono" href="#">
@@ -39,7 +38,7 @@
             </div>
         </div>
         <div class="kt-scrollable-y-auto grow" data-kt-scrollable="true" data-kt-scrollable-dependencies="#header"
-            data-kt-scrollable-max-height="auto" data-kt-scrollable-offset="230px">
+            data-kt-scrollable-max-height="auto" data-kt-scrollable-offset="600px">
             <div class="flex flex-col gap-5 py-5">
                 @foreach ($chats as $chat)
                     <div class="flex items-end {{ $chat->user_id == Auth::id() ? 'justify-end' : '' }} gap-3.5 px-5">

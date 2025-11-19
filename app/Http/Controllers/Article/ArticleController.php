@@ -14,75 +14,17 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\ValidationException;
+use App\Http\Requests\ArticleRequest;
+use App\Http\Requests\UploadImageRequest;
 
 class ArticleController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
-        $query = Article::with(['user', 'category', 'tags']);
-
-        // Search functionality
-        if ($request->filled('search')) {
-            $search = $request->search;
-            $query->where(function ($q) use ($search) {
-                $q->where('title', 'like', "%{$search}%")
-                    ->orWhere('content', 'like', "%{$search}%")
-                    ->orWhereHas('user', function ($userQuery) use ($search) {
-                        $userQuery->where('name', 'like', "%{$search}%");
-                    })
-                    ->orWhereHas('category', function ($categoryQuery) use ($search) {
-                        $categoryQuery->where('name', 'like', "%{$search}%");
-                    })
-                    ->orWhereHas('tags', function ($tagQuery) use ($search) {
-                        $tagQuery->where('name', 'like', "%{$search}%");
-                    });
-            });
-        }
-
-        // Sorting functionality
-        $sortField = $request->get('sort', 'created_at');
-        $sortDirection = $request->get('direction', 'desc');
-
-        // Validate sort fields
-        $allowedSortFields = ['title', 'created_at', 'is_active', 'is_pinned', 'views'];
-        if (!in_array($sortField, $allowedSortFields)) {
-            $sortField = 'created_at';
-        }
-
-        // Handle relation sorting
-        if ($sortField === 'user') {
-            $query->join('users', 'articles.user_id', '=', 'users.id')
-                ->orderBy('users.name', $sortDirection)
-                ->select('articles.*');
-        } elseif ($sortField === 'category') {
-            $query->join('categories', 'articles.category_id', '=', 'categories.id')
-                ->orderBy('categories.name', $sortDirection)
-                ->select('articles.*');
-        } else {
-            $query->orderBy($sortField, $sortDirection);
-        }
-
-        // Pagination
-        $perPage = $request->get('per_page', 10);
-        $articles = $query->paginate($perPage);
-
-        // Append query parameters to pagination links
-        $articles->appends($request->query());
-
-        $data = [
-            'articles' => $articles,
-            'search' => $request->search,
-            'sort' => $sortField,
-            'direction' => $sortDirection,
-            'per_page' => $perPage
-        ];
-
-        return view('pages.articles.index', compact('data'));
+        return view('pages.articles.index');
     }
 
     /**
@@ -103,56 +45,18 @@ class ArticleController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ArticleRequest $request)
     {
         try {
-            $messages = [
-                'category_id.required' => 'Kategori wajib dipilih.',
-                'category_id.exists' => 'Kategori yang dipilih tidak valid.',
-                'tags.array' => 'Tag harus berupa array.',
-                'tags.*.exists' => 'Tag yang dipilih tidak valid.',
-                'title.required' => 'Judul artikel wajib diisi.',
-                'title.string' => 'Judul artikel harus berupa teks.',
-                'title.max' => 'Judul artikel tidak boleh lebih dari :max karakter.',
-                'content.required' => 'Konten artikel wajib diisi.',
-                'content.string' => 'Konten artikel harus berupa teks.',
-                'embed.string' => 'Embed harus berupa teks.',
-                'thumbnail.image' => 'Thumbnail harus berupa gambar.',
-                'thumbnail.max' => 'Ukuran thumbnail tidak boleh lebih dari :max KB.',
-                'is_active.required' => 'Status aktif wajib dipilih.',
-                'is_active.boolean' => 'Status aktif harus berupa boolean.',
-                'is_pinned.required' => 'Status pin wajib dipilih.',
-                'is_pinned.boolean' => 'Status pin harus berupa boolean.',
-            ];
-
-            $validator = Validator::make($request->all(), [
-                'category_id' => ['required', 'exists:categories,id'],
-                'tags' => ['nullable', 'array'],
-                'tags.*' => ['exists:tags,name'],
-                'title' => ['required', 'string', 'max:255'],
-                'content' => ['required', 'string'],
-                'embed' => ['nullable', 'string'],
-                'thumbnail' => ['nullable', 'image', 'max:5120'],
-                'is_active' => ['required', 'boolean'],
-                'is_pinned' => ['required', 'boolean'],
-            ], $messages);
-
-            if ($validator->fails()) {
-                return redirect()
-                    ->back()
-                    ->withInput()
-                    ->with('error', implode('<br>', $validator->errors()->all()));
-            }
-
             DB::beginTransaction();
 
             $data = $request->except(['thumbnail', 'tags', 'embed']);
 
             $data['user_id'] = Auth::id();
-            $data['slug'] = Str::slug($request->title);
+            $data['slug'] = Str::slug($request->input('title'));
 
-            $body = $request->content;
-            $embedHtml = $request->filled('embed') ? $request->embed : '';
+            $body = $request->input('content');
+            $embedHtml = $request->filled('embed') ? $request->input('embed') : '';
             if ($embedHtml) {
                 $combined = '<div class="article-wrapper">'
                     . '<div class="article-body">' . $body . '</div>'
@@ -174,14 +78,14 @@ class ArticleController extends Controller
             $article = Article::create($data);
 
             if ($request->filled('tags')) {
-                $tagIds = Tag::whereIn('name', $request->tags)->pluck('id')->toArray();
+                $tagIds = Tag::whereIn('name', $request->input('tags'))->pluck('id')->toArray();
                 $article->tags()->sync($tagIds);
             }
 
             Notification::create([
                 'user_id' => Auth::id(),
                 'title' => 'Artikel Ditambahkan',
-                'message' => 'Artikel ' . $article->title . ' berhasil ditambahkan oleh ' . (Auth::user()->name ?? 'System') . '.',
+                'message' => 'Artikel ' . $article->title . ' berhasil ditambahkan oleh ' . (Auth::user()->name ?? 'Anonim') . '.',
             ]);
 
             DB::commit();
@@ -218,8 +122,6 @@ class ArticleController extends Controller
      */
     public function edit(Article $article)
     {
-        $tags = Tag::all();
-
         $content = $article->content;
         $embed = '';
 
@@ -243,7 +145,7 @@ class ArticleController extends Controller
         $data = [
             'article' => $articleForEdit,
             'categories' => Category::all(),
-            'tags' => $tags,
+            'tags' => Tag::all(),
         ];
 
         return view('pages.articles.edit', compact('data'));
@@ -252,55 +154,17 @@ class ArticleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Article $article)
+    public function update(ArticleRequest $request, Article $article)
     {
         try {
-            $messages = [
-                'category_id.required' => 'Kategori wajib dipilih.',
-                'category_id.exists' => 'Kategori yang dipilih tidak valid.',
-                'tags.array' => 'Tag harus berupa array.',
-                'tags.*.exists' => 'Tag yang dipilih tidak valid.',
-                'title.required' => 'Judul artikel wajib diisi.',
-                'title.string' => 'Judul artikel harus berupa teks.',
-                'title.max' => 'Judul artikel tidak boleh lebih dari :max karakter.',
-                'content.required' => 'Konten artikel wajib diisi.',
-                'content.string' => 'Konten artikel harus berupa teks.',
-                'embed.string' => 'Embed harus berupa teks.',
-                'thumbnail.image' => 'Thumbnail harus berupa gambar.',
-                'thumbnail.max' => 'Ukuran thumbnail tidak boleh lebih dari :max KB.',
-                'is_active.required' => 'Status aktif wajib dipilih.',
-                'is_active.boolean' => 'Status aktif harus berupa boolean.',
-                'is_pinned.required' => 'Status pin wajib dipilih.',
-                'is_pinned.boolean' => 'Status pin harus berupa boolean.',
-            ];
-
-            $validator = Validator::make($request->all(), [
-                'category_id' => ['required', 'exists:categories,id'],
-                'tags' => ['nullable', 'array'],
-                'tags.*' => ['exists:tags,name'],
-                'title' => ['required', 'string', 'max:255'],
-                'content' => ['required', 'string'],
-                'embed' => ['nullable', 'string'],
-                'thumbnail' => ['nullable', 'image', 'max:5120'],
-                'is_active' => ['required', 'boolean'],
-                'is_pinned' => ['required', 'boolean'],
-            ], $messages);
-
-            if ($validator->fails()) {
-                return redirect()
-                    ->back()
-                    ->withInput()
-                    ->with('error', implode('<br>', $validator->errors()->all()));
-            }
-
             DB::beginTransaction();
 
             $data = $request->except(['thumbnail', 'tags', 'remove_thumbnail', 'embed']);
 
             $data['slug'] = Str::slug($request->title);
 
-            $body = $request->content;
-            $embedHtml = $request->filled('embed') ? $request->embed : '';
+            $body = $request->input('content');
+            $embedHtml = $request->filled('embed') ? $request->input('embed') : '';
             if ($embedHtml) {
                 $combined = '<div class="article-wrapper">'
                     . '<div class="article-body">' . $body . '</div>'
@@ -314,15 +178,11 @@ class ArticleController extends Controller
 
             $data['content'] = $combined;
 
-            if ($request->remove_thumbnail == '1') {
+            if ($request->remove_thumbnail == 1) {
                 if ($article->thumbnail) {
-                    Storage::delete($article->thumbnail);
                     $data['thumbnail'] = null;
                 }
             } elseif ($request->hasFile('thumbnail')) {
-                if ($article->thumbnail) {
-                    Storage::delete($article->thumbnail);
-                }
                 $data['thumbnail'] = Storage::put('thumbnails', $request->file('thumbnail'));
             }
 
@@ -336,7 +196,7 @@ class ArticleController extends Controller
             Notification::create([
                 'user_id' => Auth::id(),
                 'title' => 'Artikel Diperbaharui',
-                'message' => 'Artikel ' . $article->title . ' berhasil diperbaharui oleh ' . (Auth::user()->name ?? 'System') . '.',
+                'message' => 'Artikel ' . $article->title . ' berhasil diperbaharui oleh ' . (Auth::user()->name ?? 'Anonim') . '.',
             ]);
 
             DB::commit();
@@ -391,27 +251,9 @@ class ArticleController extends Controller
     /**
      * Handle CKEditor image upload
      */
-    public function uploadImage(Request $request)
+    public function uploadImage(UploadImageRequest $request)
     {
         try {
-            $messages = [
-                'upload.required' => 'File gambar wajib diupload.',
-                'upload.image' => 'File yang diupload harus berupa gambar.',
-                'upload.max' => 'Ukuran gambar tidak boleh lebih dari :max KB.',
-            ];
-
-            $validator = Validator::make($request->all(), [
-                'upload' => 'required|image|max:5120',
-            ], $messages);
-
-            if ($validator->fails()) {
-                return response()->json([
-                    'error' => [
-                        'message' => $validator->errors()->first()
-                    ]
-                ], 400);
-            }
-
             $disk = config('filesystems.default');
             $path = Storage::put('contents', $request->file('upload'));
 
@@ -428,9 +270,110 @@ class ArticleController extends Controller
             Log::error('Error uploading image to CKEditor: ' . $th->getMessage());
 
             return response()->json([
-                'error' => [
-                    'message' => 'Terjadi kesalahan saat mengupload gambar.'
-                ]
+                'error' => 'Terjadi kesalahan saat mengupload gambar.'
+            ], 500);
+        }
+    }
+
+    /**
+     * Get paginated articles data for datatable.
+     */
+    public function datatable(Request $request)
+    {
+        try {
+            $query = Article::with('user', 'category', 'tags');
+
+            // Handle search
+            if ($request->has('search') && !empty($request->search)) {
+                $search = $request->search;
+                $query->where(function ($q) use ($search) {
+                    $q->where('title', 'like', "%{$search}%")
+                        ->orWhereHas('user', function ($userQuery) use ($search) {
+                            $userQuery->where('name', 'like', "%{$search}%");
+                        })
+                        ->orWhereHas('category', function ($categoryQuery) use ($search) {
+                            $categoryQuery->where('name', 'like', "%{$search}%");
+                        })
+                        ->orWhereHas('tags', function ($tagQuery) use ($search) {
+                            $tagQuery->where('name', 'like', "%{$search}%");
+                        });
+                });
+            }
+
+            // Handle sorting
+            $sortField = $request->input('sortField', 'created_at');
+            $sortOrder = $request->input('sortOrder', 'desc');
+
+            // Handle null or empty values
+            if (empty($sortField) || $sortField === 'null') {
+                $sortField = 'created_at';
+            }
+
+            if (empty($sortOrder) || !in_array(strtolower($sortOrder), ['asc', 'desc'])) {
+                $sortOrder = 'desc';
+            }
+
+            // Handle sorting based on field type
+            if ($sortField === 'user') {
+                $query->join('users', 'articles.user_id', '=', 'users.id')
+                    ->orderBy('users.name', strtolower($sortOrder))
+                    ->select('articles.*');
+            } elseif ($sortField === 'category') {
+                $query->join('categories', 'articles.category_id', '=', 'categories.id')
+                    ->orderBy('categories.name', strtolower($sortOrder))
+                    ->select('articles.*');
+            } elseif ($sortField === 'tags') {
+                $query->leftJoin('article_tag', 'articles.id', '=', 'article_tag.article_id')
+                    ->leftJoin('tags', 'article_tag.tag_id', '=', 'tags.id')
+                    ->groupBy('articles.id')
+                    ->orderByRaw("GROUP_CONCAT(tags.name ORDER BY tags.name SEPARATOR ', ') " . strtolower($sortOrder))
+                    ->select('articles.*');
+            } else {
+                // Direct column sorting for articles table
+                $allowedColumns = ['title', 'is_active', 'is_pinned', 'created_at'];
+                $sortColumn = in_array($sortField, $allowedColumns) ? $sortField : 'created_at';
+                $query->orderBy($sortColumn, strtolower($sortOrder));
+            }
+
+            // Get pagination parameters
+            $page = $request->input('page', 1);
+            $size = $request->input('size', 5);
+
+            // Execute query with pagination
+            $articles = $query->paginate($size, ['*'], 'page', $page);
+
+            // Format data for KTUI datatable
+            $data = $articles->map(function ($article) {
+                return [
+                    'id' => $article->id,
+                    'title' => $article->title,
+                    'category' => $article->category->name,
+                    'tags' => $article->tags->pluck('name')->toArray(),
+                    'is_active' => $article->is_active,
+                    'is_pinned' => $article->is_pinned,
+                    'created_at' => $article->created_at->format('d/m/Y H:i'),
+                    'actions' => [
+                        'show' => route('articles.show', $article->id),
+                        'edit' => route('articles.edit', $article->id),
+                        'delete' => route('articles.destroy', $article->id),
+                    ],
+                ];
+            });
+
+            $response = [
+                'data' => $data,
+                'page' => $articles->currentPage(),
+                'totalPages' => $articles->lastPage(),
+                'pageSize' => $articles->perPage(),
+                'totalCount' => $articles->total(),
+            ];
+
+            return response()->json($response);
+        } catch (Throwable $th) {
+            Log::error('Article datatable error: ' . $th->getMessage());
+
+            return response()->json([
+                'error' => 'Terjadi kesalahan saat mengambil data artikel.',
             ], 500);
         }
     }

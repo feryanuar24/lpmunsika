@@ -8,6 +8,7 @@ use App\Models\Embed;
 use App\Models\Slider;
 use App\Models\Tag;
 use Illuminate\Http\Request;
+use App\Http\Requests\CommentRequest;
 use Illuminate\Support\Facades\Auth;
 
 class LandingController extends Controller
@@ -88,7 +89,7 @@ class LandingController extends Controller
             ->where('is_active', true)
             ->firstOrFail();
 
-        $article->increment('views');
+        Article::where('id', $article->id)->increment('views');
 
         $data = [
             'article' => $article,
@@ -105,33 +106,29 @@ class LandingController extends Controller
 
     public function like(Request $request)
     {
-        $article = Article::where('slug', $request->slug)
+        $article = Article::where('slug', $request->input('slug'))
             ->where('is_active', true)
             ->firstOrFail();
 
         $article->increment('likes');
 
-        return redirect()->route('detail', $request->slug)->with('success', 'Terima kasih telah menyukai artikel ini!');
+        return redirect()->route('detail', $request->input('slug'))->with('success', 'Terima kasih telah menyukai artikel ini!');
     }
 
-    public function comment(Request $request)
+    public function comment(CommentRequest $request)
     {
-        $article = Article::where('slug', $request->slug)
+        $article = Article::where('slug', $request->input('slug'))
             ->where('is_active', true)
             ->firstOrFail();
-
-        $request->validate([
-            'content' => ['required', 'string', 'max:2000'],
-        ]);
 
         $article->comments()->create([
             'article_id' => $article->id,
             'user_id' => Auth::id(),
-            'content' => $request->content,
+            'content' => $request->input('content'),
             'is_active' => true,
         ]);
 
-        return redirect()->route('detail', $request->slug)->with('success', 'Komentar Anda telah ditambahkan.');
+        return redirect()->route('detail', $request->input('slug'))->with('success', 'Komentar Anda telah ditambahkan.');
     }
 
     public function category(Category $category)
@@ -146,6 +143,19 @@ class LandingController extends Controller
         ];
 
         return view('pages.landing.category', compact('data'));
+    }
+
+    public function tag(Tag $tag)
+    {
+        $data = [
+            'tag' => $tag,
+            'articles' => $tag->articles()
+                ->where('is_active', true)
+                ->latest()
+                ->paginate(12),
+        ];
+
+        return view('pages.landing.tag', compact('data'));
     }
 
     public function search(Request $request)
@@ -164,18 +174,5 @@ class LandingController extends Controller
         ];
 
         return view('pages.landing.search', compact('data'));
-    }
-
-    public function tags(Tag $tag)
-    {
-        $data = [
-            'tag' => $tag,
-            'articles' => $tag->articles()
-                ->where('is_active', true)
-                ->latest()
-                ->paginate(12),
-        ];
-
-        return view('pages.landing.tag', compact('data'));
     }
 }

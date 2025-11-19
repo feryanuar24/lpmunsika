@@ -11,13 +11,15 @@
 
     <!-- Page -->
     <!-- Main -->
-    <div class="flex grow flex-col lg:flex-row">
-        @include('layouts.auth.sidebar')
+    <div class="grid lg:grid-cols-5 grid-cols-1 min-h-screen">
+        <div class="lg:col-span-2">
+            @include('layouts.auth.sidebar')
+        </div>
 
         <!-- Wrapper -->
-        <div class="w-full items-center justify-center flex kt-container-fixed py-10 lg:py-0">
+        <div class="lg:col-span-3 flex items-center justify-center p-7 lg:p-10">
             <!-- Content -->
-            <main id="content" role="content">
+            <main id="content" role="content" class="w-full max-w-md">
                 @yield('content')
             </main>
             <!-- End of Content -->

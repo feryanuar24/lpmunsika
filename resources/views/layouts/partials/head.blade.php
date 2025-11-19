@@ -14,7 +14,8 @@
 <meta
     content="{{ Str::limit(strip_tags($data['article']->content ?? 'LPM Unsika merupakan unit kegiatan mahasiswa yang berperan sebagai wadah untuk menyalurkan bakat dan hobi dalam bidang jurnalistik.'), 160) }}"
     name="twitter:description" />
-<meta content="{{ asset('assets/media/app/og-image.png') }}" name="twitter:image" />
+<meta content="{{ isset($data['article']) && $data['article']->thumbnail ? route('files', $data['article']->thumbnail) : asset('assets/media/app/og-image.jpg') }}"
+    name="twitter:image" />
 <meta content="{{ url(request()->path()) }}" property="og:url" />
 <meta content="id" property="og:locale" />
 <meta content="website" property="og:type" />
@@ -23,7 +24,8 @@
 <meta
     content="{{ Str::limit(strip_tags($data['article']->content ?? 'LPM Unsika merupakan unit kegiatan mahasiswa yang berperan sebagai wadah untuk menyalurkan bakat dan hobi dalam bidang jurnalistik.'), 160) }}"
     property="og:description" />
-<meta content="{{ asset('assets/media/app/og-image.png') }}" property="og:image" />
+<meta content="{{ isset($data['article']) && $data['article']->thumbnail ? route('files', $data['article']->thumbnail) : asset('assets/media/app/og-image.jpg') }}"
+    property="og:image" />
 <link href="{{ asset('assets/media/app/apple-touch-icon.png') }}" rel="apple-touch-icon" sizes="180x180" />
 <link href="{{ asset('assets/media/app/favicon-32x32.png') }}" rel="icon" sizes="32x32" type="image/png" />
 <link href="{{ asset('assets/media/app/favicon-16x16.png') }}" rel="icon" sizes="16x16" type="image/png" />

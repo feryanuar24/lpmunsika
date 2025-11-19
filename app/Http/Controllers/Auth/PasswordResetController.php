@@ -2,17 +2,15 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Helpers\RecaptchaHelper;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StorePasswordResetRequest;
+use App\Http\Requests\UpdatePasswordResetRequest;
 use App\Models\Notification;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Exceptions\InvalidSignatureException;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
 use Throwable;
 use Illuminate\Support\Facades\DB;
 
@@ -29,37 +27,11 @@ class PasswordResetController extends Controller
     /**
      * Send reset link to email.
      */
-    public function store(Request $request)
+    public function store(StorePasswordResetRequest $request)
     {
         try {
-            $recaptchaResult = RecaptchaHelper::validateRecaptcha($request);
-
-            if (!$recaptchaResult['success']) {
-                return back()
-                    ->with('error', $recaptchaResult['message'])
-                    ->onlyInput('email');
-            }
-
-            $messages = [
-                'email.required' => 'Email wajib diisi.',
-                'email.string' => 'Email harus berupa teks.',
-                'email.email' => 'Format email tidak valid.',
-                'email.max' => 'Panjang email tidak boleh lebih dari :max karakter.',
-                'email.exists' => 'Email tidak terdaftar.',
-            ];
-
-            $validator = Validator::make($request->all(), [
-                'email' => ['required', 'string', 'email', 'max:255', 'exists:users']
-            ], $messages);
-
-            if ($validator->fails()) {
-                return back()
-                    ->with('error', implode('<br>', $validator->errors()->all()))
-                    ->onlyInput('email');
-            }
-
             $status = Password::sendResetLink(
-                $validator->validated()
+                $request->only('email')
             );
 
             if ($status !== Password::RESET_LINK_SENT) {
@@ -92,55 +64,21 @@ class PasswordResetController extends Controller
     /**
      * Handle reset password request.
      */
-    public function update(Request $request)
+    public function update(UpdatePasswordResetRequest $request)
     {
         try {
-            DB::beginTransaction();
-            $recaptchaResult = RecaptchaHelper::validateRecaptcha($request);
-
-            if (!$recaptchaResult['success']) {
-                return back()
-                    ->with('error', $recaptchaResult['message'])
-                    ->onlyInput('email');
-            }
-
-            $messages = [
-                'token.required' => 'Token reset wajib disertakan.',
-                'token.string' => 'Token reset tidak valid.',
-                'email.required' => 'Email wajib diisi.',
-                'email.string' => 'Email harus berupa teks.',
-                'email.email' => 'Format email tidak valid.',
-                'email.max' => 'Panjang email tidak boleh lebih dari :max karakter.',
-                'email.exists' => 'Email tidak terdaftar.',
-                'password.required' => 'Password baru wajib diisi.',
-                'password.min' => 'Password baru minimal :min karakter.',
-                'password.confirmed' => 'Konfirmasi password tidak cocok.',
-            ];
-
-            $validator = Validator::make($request->all(), [
-                'token'    => ['required', 'string'],
-                'email'    => ['required', 'string', 'email', 'max:255', 'exists:users'],
-                'password' => ['required', 'min:8', 'confirmed'],
-            ], $messages);
-
-            if ($validator->fails()) {
-                return back()
-                    ->with('error', implode('<br>', $validator->errors()->all()))
-                    ->onlyInput('email');
-            }
-
             $updatedUserId = null;
             $updatedUserName = null;
+
+            DB::beginTransaction();
+
             $status = Password::reset(
-                $validator->validated(),
-                function ($user, $password) use ($request, &$updatedUserId, &$updatedUserName) {
+                $request->only('email', 'password', 'password_confirmation', 'token'),
+                function ($user, $password) use (&$updatedUserId, &$updatedUserName) {
                     $user->forceFill([
                         'password' => Hash::make($password),
                         'remember_token' => Str::random(60),
                     ])->save();
-
-                    Auth::login($user);
-                    $request->session()->regenerate();
                     $updatedUserId = $user->id;
                     $updatedUserName = $user->name;
                 }
@@ -155,12 +93,12 @@ class PasswordResetController extends Controller
             Notification::create([
                 'user_id' => $updatedUserId,
                 'title' => 'Pengguna Memperbaharui Kata Sandi',
-                'message' => 'Pengguna ' . ($updatedUserName ?? 'System') . ' berhasil memperbaharui kata sandinya.',
+                'message' => 'Pengguna ' . ($updatedUserName ?? 'Anonim') . ' berhasil memperbaharui kata sandinya.',
             ]);
 
             DB::commit();
 
-            return redirect()->intended('/dashboard')->with('success', 'Kata sandi berhasil direset. Anda telah otomatis masuk.');
+            return redirect()->route('login')->with('success', 'Kata sandi berhasil direset. Silakan login dengan kata sandi baru Anda.');
         } catch (Throwable $th) {
             DB::rollBack();
 
@@ -168,7 +106,7 @@ class PasswordResetController extends Controller
 
             return back()
                 ->with('error', 'Terjadi kesalahan saat memproses permintaan reset kata sandi.')
-                ->onlyInput('email');
+                ->onlyInput(['email', 'token']);
         }
     }
 }

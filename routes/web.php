@@ -37,10 +37,10 @@ use App\Http\Controllers\User\UserController;
 
 Route::get('/', [LandingController::class, 'index'])->name('landing');
 Route::get('/category/{category:slug}', [LandingController::class, 'category'])->name('category');
-Route::get('/tag/{tag}', [LandingController::class, 'tags'])->name('tag');
+Route::get('/tag/{tag:slug}', [LandingController::class, 'tag'])->name('tag');
 Route::get('/search', [LandingController::class, 'search'])->name('search');
 
-Route::get('/detail/{slug}', [LandingController::class, 'show'])->name('detail');
+Route::get('/detail/{article:slug}', [LandingController::class, 'show'])->name('detail');
 Route::post('/like', [LandingController::class, 'like'])->name('like');
 Route::post('/comment', [LandingController::class, 'comment'])->name('comment');
 
@@ -90,6 +90,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::resource('/users', UserController::class)->middleware('permission:users-management');
 
+    Route::get('/articles/datatable', [ArticleController::class, 'datatable'])->middleware('permission:articles-management')->name('articles.datatable');
     Route::resource('/articles', ArticleController::class)->middleware('permission:articles-management');
     Route::resource('/categories', CategoryController::class)->middleware('permission:categories-management');
     Route::resource('/tags', TagController::class)->middleware('permission:tags-management');

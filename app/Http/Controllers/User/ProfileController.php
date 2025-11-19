@@ -5,11 +5,11 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Models\Notification;
 use App\Models\User;
-use Illuminate\Http\Request;
+use App\Http\Requests\ProfileRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Validator;
+use Throwable;
 
 class ProfileController extends Controller
 {
@@ -44,44 +44,10 @@ class ProfileController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request)
+    public function update(ProfileRequest $request)
     {
         try {
-            $messages = [
-                'name.required' => 'Nama wajib diisi.',
-                'name.string' => 'Nama harus berupa teks.',
-                'name.max' => 'Nama maksimal :max karakter.',
-                'email.required' => 'Email wajib diisi.',
-                'email.string' => 'Email harus berupa teks.',
-                'email.email' => 'Format email tidak valid.',
-                'email.max' => 'Email maksimal :max karakter.',
-                'email.unique' => 'Email sudah digunakan.',
-                'password.min' => 'Password minimal :min karakter.',
-                'password.confirmed' => 'Konfirmasi password tidak cocok.',
-                'password.regex' => 'Password harus mengandung setidaknya satu huruf besar, satu huruf kecil, satu angka, dan satu karakter khusus.',
-            ];
-
-            $validator = Validator::make($request->all(), [
-                'name' => ['required', 'string', 'max:255'],
-                'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . Auth::id()],
-                'password' => [
-                    'nullable',
-                    'min:8',
-                    'confirmed',
-                    'regex:/[a-z]/',
-                    'regex:/[A-Z]/',
-                    'regex:/[0-9]/',
-                    'regex:/[@$!%*#?&]/',
-                ],
-            ], $messages);
-
-            if ($validator->fails()) {
-                return back()
-                    ->with('error', implode('<br>', $validator->errors()->all()))
-                    ->withInput();
-            }
-
-            $validated = $validator->validated();
+            $validated = $request->validated();
 
             $user = User::findOrFail(Auth::id());
 
@@ -98,18 +64,19 @@ class ProfileController extends Controller
             Notification::create([
                 'user_id' => $user->id,
                 'title' => 'Pengguna Memperbarui Akun',
-                'message' => 'Pengguna ' . ($user->name ?? 'System') . ' berhasil memperbaharui akun.',
+                'message' => 'Pengguna ' . ($user->name ?? 'Anonim') . ' berhasil memperbaharui akun.',
             ]);
 
             DB::commit();
 
             return redirect()->route('profile')->with('success', 'Profil berhasil diperbarui.');
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             DB::rollBack();
 
             Log::error('Error updating profile: ' . $th->getMessage());
 
             return back()
+                ->onlyInput(['name', 'email'])
                 ->with('error', 'Terjadi kesalahan saat memperbarui profil.');
         }
     }
@@ -129,7 +96,7 @@ class ProfileController extends Controller
             Notification::create([
                 'user_id' => $user->id,
                 'title' => 'Pengguna Menghapus Akun',
-                'message' => 'Pengguna ' . ($user->name ?? 'System') . ' berhasil menghapus akun.',
+                'message' => 'Pengguna ' . ($user->name ?? 'Anonim') . ' berhasil menghapus akun.',
             ]);
 
             DB::commit();
@@ -137,7 +104,7 @@ class ProfileController extends Controller
             Auth::logout();
 
             return redirect()->route('landing')->with('success', 'Akun Anda telah dihapus.');
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             DB::rollBack();
 
             Log::error('Error deleting profile: ' . $th->getMessage());

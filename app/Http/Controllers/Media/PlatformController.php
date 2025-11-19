@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Media;
 
 use App\Http\Controllers\Controller;
 use App\Models\Platform;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use App\Http\Requests\PlatformRequest;
 
 class PlatformController extends Controller
 {
@@ -32,33 +32,9 @@ class PlatformController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(PlatformRequest $request)
     {
-        $messages = [
-            'name.required' => 'Nama platform wajib diisi.',
-            'name.string' => 'Nama platform harus berupa teks.',
-            'name.max' => 'Nama platform maksimal :max karakter.',
-            'name.unique' => 'Nama platform sudah digunakan.',
-            'url.required' => 'URL wajib diisi.',
-            'url.url' => 'Format URL tidak valid.',
-            'url.max' => 'URL maksimal :max karakter.',
-            'url.unique' => 'URL sudah digunakan.',
-            'description.string' => 'Deskripsi harus berupa teks.',
-        ];
-
-        $validator = Validator::make($request->all(), [
-            'name' => ['required', 'string', 'max:255', 'unique:platforms,name'],
-            'url' => ['required', 'url', 'max:255', 'unique:platforms,url'],
-            'description' => ['nullable', 'string'],
-        ], $messages);
-
-        if ($validator->fails()) {
-            return back()
-                ->with('error', implode('<br>', $validator->errors()->all()))
-                ->withInput();
-        }
-
-        Platform::create($validator->validated());
+        Platform::create($request->validated());
 
         return redirect()
             ->route('platforms.index')
@@ -92,33 +68,9 @@ class PlatformController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Platform $platform)
+    public function update(PlatformRequest $request, Platform $platform)
     {
-        $messages = [
-            'name.required' => 'Nama platform wajib diisi.',
-            'name.string' => 'Nama platform harus berupa teks.',
-            'name.max' => 'Nama platform maksimal :max karakter.',
-            'name.unique' => 'Nama platform sudah digunakan.',
-            'url.required' => 'URL wajib diisi.',
-            'url.url' => 'Format URL tidak valid.',
-            'url.max' => 'URL maksimal :max karakter.',
-            'url.unique' => 'URL sudah digunakan.',
-            'description.string' => 'Deskripsi harus berupa teks.',
-        ];
-
-        $validator = Validator::make($request->all(), [
-            'name' => ['required', 'string', 'max:255', 'unique:platforms,name,' . $platform->id],
-            'url' => ['required', 'url', 'max:255', 'unique:platforms,url,' . $platform->id],
-            'description' => ['nullable', 'string'],
-        ], $messages);
-
-        if ($validator->fails()) {
-            return back()
-                ->with('error', implode('<br>', $validator->errors()->all()))
-                ->withInput();
-        }
-
-        $platform->update($validator->validated());
+        $platform->update($request->validated());
 
         return redirect()
             ->route('platforms.index')

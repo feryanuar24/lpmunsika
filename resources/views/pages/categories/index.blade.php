@@ -1,45 +1,36 @@
 @extends('layouts.admin.base')
 
 @section('content')
-    <!-- Container -->
-    <div class="kt-container-fixed" id="contentContainer">
-    </div>
-    <!-- End of Container -->
-    <!-- Container -->
-    <div class="kt-container-fixed">
-        <div class="flex flex-wrap items-center justify-between gap-5 pb-7.5 lg:items-end">
-            <div class="flex flex-col justify-center gap-2">
-                <h1 class="text-xl font-medium leading-none text-mono">
-                    Kategori Artikel
-                </h1>
-            </div>
-            <div class="flex items-center gap-2.5">
-                <a class="kt-btn kt-btn-primary" href="{{ route('categories.create') }}">
-                    Tambah
-                </a>
-            </div>
+    <div class="kt-card mx-7.5">
+        <div class="kt-card-header">
+                <div class="kt-card-heading">
+                    <h2 class="kt-card-title">
+                        Daftar Kategori
+                    </h2>
+                </div>
+                <div class="kt-card-toolbar">
+                    <a class="kt-btn kt-btn-primary" href="{{ route('categories.create') }}">
+                        <i class="ki-filled ki-plus"></i>
+                    </a>
+                </div>
         </div>
-    </div>
-    <!-- End of Container -->
-    <!-- Container -->
-    <div class="kt-container-fixed">
-        <div class="grid w-full space-y-5">
-            <div class="kt-card">
+        <div class="kt-card-content">
+            <div class="grid w-full space-y-5">
                 <div class="kt-card-table" data-kt-datatable="true" data-kt-datatable-page-size="5"
                     data-kt-datatable-state-save="true">
                     <div class="kt-table-wrapper kt-scrollable">
                         <table class="kt-table" data-kt-datatable-table="true">
                             <thead>
                                 <tr>
-                                    <th scope="col" class="w-20" data-kt-datatable-column="name">
+                                    <th scope="col" class="w-24" data-kt-datatable-column="name">
                                         <span class="kt-table-col"><span class="kt-table-col-label">Nama</span><span
                                                 class="kt-table-col-sort"></span></span>
                                     </th>
-                                    <th scope="col" class="w-20" data-kt-datatable-column="email">
+                                    <th scope="col" class="w-24" data-kt-datatable-column="slug">
                                         <span class="kt-table-col"><span class="kt-table-col-label">Slug</span><span
                                                 class="kt-table-col-sort"></span></span>
                                     </th>
-                                    <th scope="col" class="w-10" data-kt-datatable-column="actions">Aksi</th>
+                                    <th scope="col" class="w-24" data-kt-datatable-column="actions">Aksi</th>
                                 </tr>
                             </thead>
 
@@ -62,17 +53,20 @@
                                                     method="POST">
                                                     @method('DELETE')
                                                     @csrf
-                                                    <button type="button" data-kt-modal-toggle="#modal-delete-article-{{ $category->id }}"
+                                                    <button type="button"
+                                                        data-kt-modal-toggle="#modal-delete-article-{{ $category->id }}"
                                                         class="kt-btn kt-btn-icon kt-btn-outline size-6">
                                                         <i class="ki-filled ki-trash"></i>
                                                     </button>
-                                                    <div class="kt-modal z-40" data-kt-modal="true" id="modal-delete-article-{{ $category->id }}">
+                                                    <div class="kt-modal z-40" data-kt-modal="true"
+                                                        id="modal-delete-article-{{ $category->id }}">
                                                         <div
                                                             class="kt-modal-content max-w-md w-[90%] fixed z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-6">
                                                             <div class="kt-modal-header">
                                                                 <h3 class="kt-modal-title">Konfirmasi Hapus</h3>
                                                                 <button type="button" class="kt-modal-close"
-                                                                    aria-label="Close modal" data-kt-modal-dismiss="#modal-delete-article-{{ $category->id }}">
+                                                                    aria-label="Close modal"
+                                                                    data-kt-modal-dismiss="#modal-delete-article-{{ $category->id }}">
                                                                     <svg xmlns="http://www.w3.org/2000/svg" width="24"
                                                                         height="24" viewBox="0 0 24 24" fill="none"
                                                                         stroke="currentColor" stroke-width="2"
@@ -99,7 +93,8 @@
                                                                 <div></div>
                                                                 <div class="flex gap-4">
                                                                     <button class="kt-btn kt-btn-secondary"
-                                                                        data-kt-modal-dismiss="#modal-delete-article-{{ $category->id }}" type="button">Tidak,
+                                                                        data-kt-modal-dismiss="#modal-delete-article-{{ $category->id }}"
+                                                                        type="button">Tidak,
                                                                         Kembali</button>
                                                                     <button class="kt-btn kt-btn-primary" type="submit">Ya,
                                                                         Hapus</button>
@@ -131,5 +126,4 @@
             </div>
         </div>
     </div>
-    <!-- End of Container -->
 @endsection

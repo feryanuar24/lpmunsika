@@ -7,8 +7,7 @@ use App\Models\Slider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\ValidationException;
+use App\Http\Requests\SliderRequest;
 
 class SliderController extends Controller
 {
@@ -35,37 +34,14 @@ class SliderController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(SliderRequest $request)
     {
-        $messages = [
-            'name.required' => 'Nama wajib diisi.',
-            'name.string' => 'Nama harus berupa teks.',
-            'name.max' => 'Nama maksimal :max karakter.',
-            'name.unique' => 'Nama sudah digunakan.',
-            'banner.required' => 'Banner wajib diunggah.',
-            'banner.image' => 'File banner harus berupa gambar.',
-            'banner.max' => 'Banner maksimal :max kilobita.',
-            'description.string' => 'Deskripsi harus berupa teks.',
-        ];
-
-        $validator = Validator::make($request->all(), [
-            'name' => ['required', 'string', 'max:255', 'unique:sliders,name'],
-            'banner' => ['required', 'image', 'max:5120'],
-            'description' => ['nullable', 'string'],
-        ], $messages);
-
-        if ($validator->fails()) {
-            return back()
-                ->with('error', implode('<br>', $validator->errors()->all()))
-                ->withInput();
-        }
-
-        $data = $validator->validated();
+        $data = $request->validated();
         unset($data['banner']);
 
         if ($request->hasFile('banner')) {
-            $slider = Storage::put('sliders', $request->file('banner'));
-            $data['banner'] = $slider;
+            $path = Storage::put('sliders', $request->file('banner'));
+            $data['banner'] = $path;
         }
 
         Slider::create($data);
@@ -102,37 +78,12 @@ class SliderController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Slider $slider)
+    public function update(SliderRequest $request, Slider $slider)
     {
-        $messages = [
-            'name.required' => 'Nama wajib diisi.',
-            'name.string' => 'Nama harus berupa teks.',
-            'name.max' => 'Nama maksimal :max karakter.',
-            'name.unique' => 'Nama sudah digunakan.',
-            'banner.image' => 'File banner harus berupa gambar.',
-            'banner.max' => 'Banner maksimal :max kilobita.',
-            'description.string' => 'Deskripsi harus berupa teks.',
-        ];
-
-        $validator = Validator::make($request->all(), [
-            'name' => ['required', 'string', 'max:255', 'unique:sliders,name,' . $slider->id],
-            'banner' => ['nullable', 'image', 'max:5120'],
-            'description' => ['nullable', 'string'],
-        ], $messages);
-
-        if ($validator->fails()) {
-            return back()
-                ->with('error', implode('<br>', $validator->errors()->all()))
-                ->withInput();
-        }
-
-        $data = $validator->validated();
+        $data = $request->validated();
         unset($data['banner']);
 
         if ($request->hasFile('banner')) {
-            if ($slider->banner) {
-                Storage::delete($slider->banner);
-            }
             $data['banner'] = Storage::put('sliders', $request->file('banner'));
         }
 
@@ -149,8 +100,6 @@ class SliderController extends Controller
     public function destroy(Slider $slider)
     {
         $slider->delete();
-
-        Storage::delete($slider->banner);
 
         return redirect()
             ->route('sliders.index')

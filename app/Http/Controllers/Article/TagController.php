@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\TagRequest;
 
 class TagController extends Controller
 {
@@ -33,34 +33,12 @@ class TagController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(TagRequest $request)
     {
-        $messages = [
-            'name.required' => 'Nama tag wajib diisi.',
-            'name.string' => 'Nama tag harus berupa teks.',
-            'name.max' => 'Nama tag tidak boleh lebih dari :max karakter.',
-            'name.unique' => 'Nama tag sudah digunakan.',
-            'description.string' => 'Deskripsi harus berupa teks.',
-            'description.max' => 'Deskripsi tidak boleh lebih dari :max karakter.',
-        ];
-
-        $validator = Validator::make($request->all(), [
-            'name' => ['required', 'string', 'max:255', 'unique:tags,name'],
-            'description' => ['nullable', 'string', 'max:255']
-        ], $messages);
-
-        if ($validator->fails()) {
-            return redirect()
-                ->back()
-                ->withInput()
-                ->with('error', implode('<br>', $validator->errors()->all()));
-        }
-
-        $request->merge([
-            'slug' => Str::slug($request->name),
+        Tag::create([
+            ...$request->validated(),
+            'slug' => Str::slug($request->input('name')),
         ]);
-
-        Tag::create($request->all());
 
         return redirect()
             ->route('tags.index')
@@ -94,34 +72,12 @@ class TagController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Tag $tag)
+    public function update(TagRequest $request, Tag $tag)
     {
-        $messages = [
-            'name.required' => 'Nama tag wajib diisi.',
-            'name.string' => 'Nama tag harus berupa teks.',
-            'name.max' => 'Nama tag tidak boleh lebih dari :max karakter.',
-            'name.unique' => 'Nama tag sudah digunakan.',
-            'description.string' => 'Deskripsi harus berupa teks.',
-            'description.max' => 'Deskripsi tidak boleh lebih dari :max karakter.',
-        ];
-
-        $validator = Validator::make($request->all(), [
-            'name' => ['required', 'string', 'max:255', 'unique:tags,name,' . $tag->id],
-            'description' => ['nullable', 'string', 'max:255'],
-        ], $messages);
-
-        if ($validator->fails()) {
-            return redirect()
-                ->back()
-                ->withInput()
-                ->with('error', implode('<br>', $validator->errors()->all()));
-        }
-
-        $request->merge([
-            'slug' => Str::slug($request->name),
+        $tag->update([
+            ...$request->validated(),
+            'slug' => Str::slug($request->input('name')),
         ]);
-
-        $tag->update($request->all());
 
         return redirect()
             ->route('tags.index')

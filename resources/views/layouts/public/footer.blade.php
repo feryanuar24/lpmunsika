@@ -10,9 +10,9 @@
                     menyalurkan bakat dan hobi dalam bidang
                     jurnalistik.
                 </p>
-                <div class="flex space-x-2">
+                <div class="flex flex-nowrap overflow-x-auto -mx-2">
                     @foreach ($platforms as $platform)
-                    <a href="{{ $platform->url }}" class="kt-btn kt-btn-outline">
+                    <a href="{{ $platform->url }}" class="kt-btn kt-btn-outline px-2">
                         <i class="ki-filled {{ $platform->icon }} text-lg"></i>
                     </a>
                     @endforeach
@@ -33,7 +33,7 @@
                 </div>
 
                 <!-- Contact Info -->
-                <div>
+                <div class="w-56">
                     <h4 class="font-semibold mb-4">Kontak</h4>
                     <div class="space-y-2">
                         <div class="flex items-center">

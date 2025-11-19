@@ -6,7 +6,7 @@
         <div class="mb-8">
             <h1 class="text-4xl font-semibold text-mon mb-2 border-b-4 inline-block pb-2">
                 <i class="ki-filled ki-category text-mono mr-3"></i>
-                Category: {{ $data['category']->name }}
+                Kategori: {{ $data['category']->name }}
             </h1>
             @if($data['category']->description)
                 <p class="text-mono mt-4">

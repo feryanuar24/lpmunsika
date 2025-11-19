@@ -32,6 +32,20 @@
     </script>
 @endif
 
+@if ($errors->any())
+    @foreach ($errors->all() as $error)
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                KTToast.show({
+                    variant: 'destructive',
+                    message: '{{ $error }}',
+                    beep: true,
+                });
+            });
+        </script>
+    @endforeach
+@endif
+
 @stack('scripts')
 
 <!-- End of Scripts -->

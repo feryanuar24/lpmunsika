@@ -1,302 +1,324 @@
 @extends('layouts.admin.base')
 
 @section('content')
-    <!-- Container -->
-    <div class="kt-container-fixed" id="contentContainer">
-    </div>
-    <!-- End of Container -->
-    <!-- Container -->
-    <div class="kt-container-fixed">
-        <div class="flex flex-wrap items-center justify-between gap-5 pb-7.5 lg:items-end">
-            <div class="flex flex-col justify-center gap-2">
-                <h1 class="text-xl font-medium leading-none text-mono">
-                    Data Artikel
-                </h1>
+    <div class="kt-card mx-7.5">
+        <div class="kt-card-header py-5">
+            <div class="kt-card-heading">
+                <h3 class="kt-card-title">Data Artikel</h3>
             </div>
-            <div class="flex items-center gap-2.5">
-                <!-- Search Form -->
-                <form method="GET" action="{{ route('articles.index') }}" class="flex items-center gap-2">
-                    <input type="hidden" name="sort" value="{{ $data['sort'] }}">
-                    <input type="hidden" name="direction" value="{{ $data['direction'] }}">
-                    <input type="hidden" name="per_page" value="{{ $data['per_page'] }}">
-                    <input type="text" name="search" value="{{ $data['search'] }}" placeholder="Cari artikel..."
-                        class="kt-input w-64">
-                    <button type="submit" class="kt-btn kt-btn-outline">
-                        <i class="ki-filled ki-magnifier"></i>
-                        Cari
-                    </button>
-                    @if ($data['search'])
-                        <a href="{{ route('articles.index') }}" class="kt-btn kt-btn-secondary">
-                            <i class="ki-filled ki-cross"></i>
-                            Reset
-                        </a>
-                    @endif
-                </form>
-                <a class="kt-btn kt-btn-primary" href="{{ route('articles.create') }}">
-                    Tambah
+            <div class="kt-card-toolbar">
+                <a href="{{ route('articles.create') }}" class="kt-btn kt-btn-primary">
+                    <i class="ki-filled ki-plus"></i>
                 </a>
+            </div>
+            <input type="text" placeholder="Cari..." class="kt-input sm:w-48" data-kt-datatable-search="true" />
+        </div>
+        <div class="kt-card-content">
+            <div id="kt_datatable_remote_source" class="kt-card-table" data-kt-datatable-page-size="5"
+                data-kt-datatable-state-save="true">
+                <div class="kt-table-wrapper kt-scrollable">
+                    <table class="kt-table" data-kt-datatable-table="true">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="w-30" data-kt-datatable-column="title">
+                                    <span class="kt-table-col"><span class="kt-table-col-label">Judul</span><span
+                                            class="kt-table-col-sort"></span></span>
+                                </th>
+                                <th scope="col" class="w-24" data-kt-datatable-column="category">
+                                    <span class="kt-table-col"><span class="kt-table-col-label">Kategori</span><span
+                                            class="kt-table-col-sort"></span></span>
+                                </th>
+                                <th scope="col" class="w-24" data-kt-datatable-column="tags">
+                                    <span class="kt-table-col"><span class="kt-table-col-label">Tag</span><span
+                                            class="kt-table-col-sort"></span></span>
+                                </th>
+                                <th scope="col" class="w-24" data-kt-datatable-column="is_active">
+                                    <span class="kt-table-col"><span class="kt-table-col-label">Aktif</span><span
+                                            class="kt-table-col-sort"></span></span>
+                                </th>
+                                <th scope="col" class="w-24" data-kt-datatable-column="is_pinned">
+                                    <span class="kt-table-col"><span class="kt-table-col-label">Sorotan</span><span
+                                            class="kt-table-col-sort"></span></span>
+                                </th>
+                                <th scope="col" class="w-24" data-kt-datatable-column="created_at">
+                                    <span class="kt-table-col"><span class="kt-table-col-label">Tanggal
+                                            Publikasi</span><span class="kt-table-col-sort"></span></span>
+                                </th>
+                                <th scope="col" class="w-30" data-kt-datatable-column="actions">
+                                    <span class="kt-table-col"><span class="kt-table-col-label">Aksi</span><span
+                                            class="kt-table-col-sort"></span></span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <!--begin:pagination-->
+                <div class="kt-datatable-toolbar">
+                    <div class="kt-datatable-length">
+                        Show<select class="kt-select kt-select-sm w-16" name="perpage"
+                            data-kt-datatable-size="true"></select>per page
+                    </div>
+                    <div class="kt-datatable-info">
+                        <span data-kt-datatable-info="true"></span>
+                        <div class="kt-datatable-pagination" data-kt-datatable-pagination="true"></div>
+                    </div>
+                </div>
+                <!--end:pagination-->
             </div>
         </div>
     </div>
-    <!-- End of Container -->
-    <!-- Container -->
-    <div class="kt-container-fixed">
-        <div class="grid w-full space-y-5">
-            <div class="kt-card">
-                <!-- Per Page Selection -->
-                <div class="p-4 border-b">
-                    <form method="GET" action="{{ route('articles.index') }}" class="flex items-center gap-2">
-                        <input type="hidden" name="search" value="{{ $data['search'] }}">
-                        <input type="hidden" name="sort" value="{{ $data['sort'] }}">
-                        <input type="hidden" name="direction" value="{{ $data['direction'] }}">
-                        <label class="text-sm">Tampilkan:</label>
-                        <select name="per_page" onchange="this.form.submit()" class="kt-select kt-select-sm w-20">
-                            <option value="10" {{ $data['per_page'] == 10 ? 'selected' : '' }}>10</option>
-                            <option value="25" {{ $data['per_page'] == 25 ? 'selected' : '' }}>25</option>
-                            <option value="50" {{ $data['per_page'] == 50 ? 'selected' : '' }}>50</option>
-                            <option value="100" {{ $data['per_page'] == 100 ? 'selected' : '' }}>100</option>
-                        </select>
-                        <span class="text-sm">data per halaman</span>
-                    </form>
-                </div>
+@endsection
 
-                <div class="kt-table-wrapper kt-scrollable">
-                    <table class="kt-table">
-                        <thead>
-                            <tr>
-                                <th scope="col" class="w-20">
-                                    <a href="{{ route('articles.index', array_merge(request()->query(), ['sort' => 'title', 'direction' => $data['sort'] == 'title' && $data['direction'] == 'asc' ? 'desc' : 'asc'])) }}"
-                                        class="kt-table-col">
-                                        <span class="kt-table-col-label">Judul</span>
-                                        @if ($data['sort'] == 'title')
-                                            <span
-                                                class="kt-table-col-sort {{ $data['direction'] == 'asc' ? 'asc' : 'desc' }}"></span>
-                                        @else
-                                            <span class="kt-table-col-sort"></span>
-                                        @endif
-                                    </a>
-                                </th>
-                                <th scope="col" class="w-20">
-                                    <a href="{{ route('articles.index', array_merge(request()->query(), ['sort' => 'user', 'direction' => $data['sort'] == 'user' && $data['direction'] == 'asc' ? 'desc' : 'asc'])) }}"
-                                        class="kt-table-col">
-                                        <span class="kt-table-col-label">Penulis</span>
-                                        @if ($data['sort'] == 'user')
-                                            <span
-                                                class="kt-table-col-sort {{ $data['direction'] == 'asc' ? 'asc' : 'desc' }}"></span>
-                                        @else
-                                            <span class="kt-table-col-sort"></span>
-                                        @endif
-                                    </a>
-                                </th>
-                                <th scope="col" class="w-20">
-                                    <a href="{{ route('articles.index', array_merge(request()->query(), ['sort' => 'category', 'direction' => $data['sort'] == 'category' && $data['direction'] == 'asc' ? 'desc' : 'asc'])) }}"
-                                        class="kt-table-col">
-                                        <span class="kt-table-col-label">Kategori</span>
-                                        @if ($data['sort'] == 'category')
-                                            <span
-                                                class="kt-table-col-sort {{ $data['direction'] == 'asc' ? 'asc' : 'desc' }}"></span>
-                                        @else
-                                            <span class="kt-table-col-sort"></span>
-                                        @endif
-                                    </a>
-                                </th>
-                                <th scope="col" class="w-20">
-                                    <span class="kt-table-col">
-                                        <span class="kt-table-col-label">Tag</span>
-                                    </span>
-                                </th>
-                                <th scope="col" class="w-20">
-                                    <a href="{{ route('articles.index', array_merge(request()->query(), ['sort' => 'is_active', 'direction' => $data['sort'] == 'is_active' && $data['direction'] == 'asc' ? 'desc' : 'asc'])) }}"
-                                        class="kt-table-col">
-                                        <span class="kt-table-col-label">Aktif</span>
-                                        @if ($data['sort'] == 'is_active')
-                                            <span
-                                                class="kt-table-col-sort {{ $data['direction'] == 'asc' ? 'asc' : 'desc' }}"></span>
-                                        @else
-                                            <span class="kt-table-col-sort"></span>
-                                        @endif
-                                    </a>
-                                </th>
-                                <th scope="col" class="w-20">
-                                    <a href="{{ route('articles.index', array_merge(request()->query(), ['sort' => 'is_pinned', 'direction' => $data['sort'] == 'is_pinned' && $data['direction'] == 'asc' ? 'desc' : 'asc'])) }}"
-                                        class="kt-table-col">
-                                        <span class="kt-table-col-label">Disematkan</span>
-                                        @if ($data['sort'] == 'is_pinned')
-                                            <span
-                                                class="kt-table-col-sort {{ $data['direction'] == 'asc' ? 'asc' : 'desc' }}"></span>
-                                        @else
-                                            <span class="kt-table-col-sort"></span>
-                                        @endif
-                                    </a>
-                                </th>
-                                <th scope="col" class="w-20">
-                                    <a href="{{ route('articles.index', array_merge(request()->query(), ['sort' => 'views', 'direction' => $data['sort'] == 'views' && $data['direction'] == 'asc' ? 'desc' : 'asc'])) }}"
-                                        class="kt-table-col">
-                                        <span class="kt-table-col-label">Dilihat</span>
-                                        @if ($data['sort'] == 'views')
-                                            <span
-                                                class="kt-table-col-sort {{ $data['direction'] == 'asc' ? 'asc' : 'desc' }}"></span>
-                                        @else
-                                            <span class="kt-table-col-sort"></span>
-                                        @endif
-                                    </a>
-                                </th>
-                                <th scope="col" class="w-10">Aksi</th>
-                            </tr>
-                        </thead>
+@push('scripts')
+    <script>
+        'use strict';
 
-                        <tbody>
-                            @forelse ($data['articles'] as $article)
-                                <tr>
-                                    <td>{{ $article->title }}</td>
-                                    <td>{{ $article->user->name }}</td>
-                                    <td>
-                                        <span class="kt-badge kt-badge-primary">{{ $article->category->name }}</span>
-                                    </td>
-                                    <td>
-                                        @foreach ($article->tags as $tag)
-                                            <span class="kt-badge kt-badge-secondary">{{ $tag->name ?? $tag }}</span>
-                                        @endforeach
-                                    </td>
-                                    <td>
-                                        <span
-                                            class="kt-badge {{ $article->is_active ? 'kt-badge-success' : 'kt-badge-destructive' }}">
-                                            {{ $article->is_active ? 'Ya' : 'Tidak' }}
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <span
-                                            class="kt-badge {{ $article->is_pinned ? 'kt-badge-success' : 'kt-badge-destructive' }}">
-                                            {{ $article->is_pinned ? 'Ya' : 'Tidak' }}
-                                        </span>
-                                    </td>
-                                    <td>{{ number_format($article->views) }}</td>
-                                    <td>
-                                        <div class="flex justify-start gap-2">
-                                            <a href="{{ route('articles.show', $article->id) }}"
-                                                class="kt-btn kt-btn-icon kt-btn-outline size-6">
-                                                <i class="ki-filled ki-eye"></i>
-                                            </a>
-                                            <a href="{{ route('articles.edit', $article->id) }}"
-                                                class="kt-btn kt-btn-icon kt-btn-outline size-6">
-                                                <i class="ki-filled ki-pencil"></i>
-                                            </a>
-                                            <form action="{{ route('articles.destroy', $article->id) }}" method="POST"
-                                                style="display: inline;">
-                                                @method('DELETE')
-                                                @csrf
-                                                <button type="button" data-kt-modal-toggle="#modal-delete-article-{{ $article->id }}"
-                                                    class="kt-btn kt-btn-icon kt-btn-outline size-6">
-                                                    <i class="ki-filled ki-trash"></i>
-                                                </button>
-                                                <div class="kt-modal z-40" data-kt-modal="true"
-                                                    id="modal-delete-article-{{ $article->id }}">
-                                                    <div
-                                                        class="kt-modal-content max-w-md w-[90%] fixed z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-6">
-                                                        <div class="kt-modal-header">
-                                                            <h3 class="kt-modal-title">Konfirmasi Hapus</h3>
-                                                            <button type="button" class="kt-modal-close"
-                                                                aria-label="Close modal"
-                                                                data-kt-modal-dismiss="#modal-delete-article-{{ $article->id }}">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                    height="24" viewBox="0 0 24 24" fill="none"
-                                                                    stroke="currentColor" stroke-width="2"
-                                                                    stroke-linecap="round" stroke-linejoin="round"
-                                                                    class="lucide lucide-x" aria-hidden="true">
-                                                                    <path d="M18 6 6 18"></path>
-                                                                    <path d="m6 6 12 12"></path>
-                                                                </svg>
-                                                            </button>
-                                                        </div>
-                                                        <div class="kt-modal-body">
-                                                            <div class="flex items-center gap-4">
-                                                                <i class="ki-filled ki-lock text-4xl text-blue-600"></i>
-                                                                <div>
-                                                                    <p class="font-medium">Anda menghapus artikel:
-                                                                        <strong>{{ $article->title }}</strong></p>
-                                                                    <p class="text-sm text-muted">Pastikan data sudah
-                                                                        dicadangkan sebelum melanjutkan.</p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="kt-modal-footer">
-                                                            <div></div>
-                                                            <div class="flex gap-4">
-                                                                <button class="kt-btn kt-btn-secondary"
-                                                                    data-kt-modal-dismiss="#modal-delete-article-{{ $article->id }}" type="button">Tidak,
-                                                                    Kembali</button>
-                                                                <button class="kt-btn kt-btn-primary" type="submit">Ya,
-                                                                    Hapus</button>
+        /**
+         * Remote Data Source Example
+         *
+         * This example demonstrates how to initialize a KTDataTable with a remote API data source.
+         */
+        var KTDatatableRemoteDataDemo = (function() {
+            // Track initialization state
+            var isInitialized = false;
+            var instance = null;
+
+            // Main initialization function
+            var init = function() {
+                // Prevent multiple initializations
+                if (isInitialized && instance) {
+                    return instance;
+                }
+
+                // Get the datatable element
+                var datatableEl = document.getElementById('kt_datatable_remote_source');
+                if (!datatableEl) {
+                    return null;
+                }
+
+                // Clean up any previous instances
+                if (datatableEl.hasAttribute('data-kt-datatable-initialized')) {
+                    if (
+                        typeof KTDataTable !== 'undefined' &&
+                        typeof KTDataTable.getInstance === 'function'
+                    ) {
+                        var oldInstance = KTDataTable.getInstance(datatableEl);
+                        if (oldInstance && typeof oldInstance.dispose === 'function') {
+                            oldInstance.dispose();
+                        }
+                    }
+
+                    datatableEl.removeAttribute('data-kt-datatable-initialized');
+                    if (datatableEl.instance) {
+                        delete datatableEl.instance;
+                    }
+                }
+
+                // Initialize datatable with remote data source
+                var datatable = new KTDataTable(datatableEl, {
+                    apiEndpoint: '{{ route('articles.datatable') }}',
+                    requestMethod: 'GET',
+                    requestHeaders: {
+                        'Content-Type': 'application/json',
+                        Accept: 'application/json',
+                    },
+
+                    // Format the API response, ensuring pagination data is properly mapped
+                    mapResponse: function(response) {
+                        if (response && response.data) {
+                            return {
+                                data: response.data,
+                                totalCount: response.totalCount,
+                                // Include pagination data from the API response
+                                page: response.page || 1,
+                                pageSize: response.pageSize || 5,
+                                totalPages: response.totalPages ||
+                                    Math.ceil(response.totalCount / (response.pageSize || 5)),
+                            };
+                        } else if (Array.isArray(response)) {
+                            return {
+                                data: response,
+                                totalCount: response.length,
+                                page: 1,
+                                pageSize: 5,
+                                totalPages: Math.ceil(response.length / 5),
+                            };
+                        } else {
+                            return {
+                                data: [],
+                                totalCount: 0,
+                                page: 1,
+                                pageSize: 5,
+                                totalPages: 1,
+                            };
+                        }
+                    },
+
+                    // Custom templates for column rendering
+                    columns: {
+                        title: {
+                            title: 'Judul',
+                        },
+                        category: {
+                            render: function(value) {
+                                if (value) {
+                                    return `<span class="kt-badge kt-badge-primary">${value}</span>`;
+                                } else {
+                                    return '<span class="kt-badge kt-badge-outline kt-badge-primary">Tidak ada kategori</span>';
+                                }
+                            },
+                        },
+                        tags: {
+                            render: function(value) {
+                                if (Array.isArray(value) && value.length > 0) {
+                                    return value
+                                        .map(
+                                            (tag) =>
+                                            `<span class="kt-badge kt-badge-secondary mr-1 mb-1">${tag}</span>`
+                                        )
+                                        .join('');
+                                } else {
+                                    return '<span class="kt-badge kt-badge-outline kt-badge-secondary">Tidak ada tag</span>';
+                                }
+                            },
+                        },
+                        is_active: {
+                            render: function(value) {
+                                if (value) {
+                                    return '<span class="kt-badge kt-badge-success">Ya</span>';
+                                } else {
+                                    return '<span class="kt-badge kt-badge-destructive">Tidak</span>';
+                                }
+                            },
+                        },
+                        is_pinned: {
+                            render: function(value) {
+                                if (value) {
+                                    return '<span class="kt-badge kt-badge-success">Ya</span>';
+                                } else {
+                                    return '<span class="kt-badge kt-badge-destructive">Tidak</span>';
+                                }
+                            },
+                        },
+                        created_at: {
+                            title: 'Tanggal Publikasi',
+                        },
+                        actions: {
+                            render: function(value, row) {
+                                return `
+                                    <div class="flex items-center">
+                                        <a href="${row.actions.show}" class="kt-btn kt-btn-icon kt-btn-outline kt-btn-sm mr-2" title="Lihat">
+                                            <i class="ki-filled ki-eye"></i>
+                                        </a>
+                                        <a href="${row.actions.edit}" class="kt-btn kt-btn-icon kt-btn-outline kt-btn-sm mr-2" title="Edit">
+                                            <i class="ki-filled ki-pencil"></i>
+                                        </a>
+                                        <form action="${row.actions.delete}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="button" class="kt-btn kt-btn-icon kt-btn-outline kt-btn-sm" title="Hapus" data-kt-modal-toggle="#modal-delete-article-${row.id}">
+                                                <i class="ki-filled ki-trash"></i>
+                                            </button>
+                                            <div class="kt-modal z-40" data-kt-modal="true" id="modal-delete-article-${row.id}">
+                                                <div
+                                                    class="kt-modal-content max-w-md w-[90%] fixed z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-6">
+                                                    <div class="kt-modal-header">
+                                                        <h3 class="kt-modal-title">Konfirmasi Hapus</h3>
+                                                        <button type="button" class="kt-modal-close"
+                                                            aria-label="Close modal"
+                                                            data-kt-modal-dismiss="#modal-delete-article-${row.id}">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                height="24" viewBox="0 0 24 24" fill="none"
+                                                                stroke="currentColor" stroke-width="2"
+                                                                stroke-linecap="round" stroke-linejoin="round"
+                                                                class="lucide lucide-x" aria-hidden="true">
+                                                                <path d="M18 6 6 18"></path>
+                                                                <path d="m6 6 12 12"></path>
+                                                            </svg>
+                                                        </button>
+                                                    </div>
+                                                    <div class="kt-modal-body">
+                                                        <div class="flex items-center gap-4">
+                                                            <i class="ki-filled ki-lock text-4xl text-blue-600"></i>
+                                                            <div>
+                                                                <p class="font-medium">Anda menghapus artikel:
+                                                                    <strong>${row.title}</strong></p>
+                                                                <p class="text-sm text-muted">Pastikan data sudah
+                                                                    dicadangkan sebelum melanjutkan.</p>
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <div class="kt-modal-footer">
+                                                        <div></div>
+                                                        <div class="flex gap-4">
+                                                            <button class="kt-btn kt-btn-secondary"
+                                                                data-kt-modal-dismiss="#modal-delete-article-${row.id}" type="button">Tidak,
+                                                                Kembali</button>
+                                                            <button class="kt-btn kt-btn-primary" type="submit">Ya,
+                                                                Hapus</button>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </form>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="8" class="text-center py-8">
-                                        <div class="flex flex-col items-center gap-3">
-                                            <i class="ki-filled ki-file-doc text-4xl text-gray-400"></i>
-                                            <div>
-                                                <p class="font-medium text-gray-600">Tidak ada artikel ditemukan</p>
-                                                @if ($data['search'])
-                                                    <p class="text-sm text-gray-500">
-                                                        Pencarian untuk "{{ $data['search'] }}" tidak menghasilkan data
-                                                    </p>
-                                                @endif
                                             </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
+                                        </form>
+                                    </div>
+                                `;
+                            },
+                        },
+                    },
 
-                <!-- Custom Pagination -->
-                @if ($data['articles']->hasPages())
-                    <div class="p-4 border-t">
-                        <div class="flex items-center justify-between">
-                            <div class="text-sm text-gray-600">
-                                Menampilkan {{ $data['articles']->firstItem() }} sampai
-                                {{ $data['articles']->lastItem() }}
-                                dari {{ $data['articles']->total() }} data
-                            </div>
-                            <div class="flex items-center gap-2">
-                                {{-- Previous Page Link --}}
-                                @if ($data['articles']->onFirstPage())
-                                    <span class="kt-btn kt-btn-sm kt-btn-disabled">« Sebelumnya</span>
-                                @else
-                                    <a href="{{ $data['articles']->previousPageUrl() }}"
-                                        class="kt-btn kt-btn-sm kt-btn-outline">« Sebelumnya</a>
-                                @endif
+                    // Core configuration
+                    pageSize: 5,
+                    stateSave: true,
 
-                                {{-- Pagination Elements --}}
-                                @foreach ($data['articles']->getUrlRange(1, $data['articles']->lastPage()) as $page => $url)
-                                    @if ($page == $data['articles']->currentPage())
-                                        <span class="kt-btn kt-btn-sm kt-btn-primary">{{ $page }}</span>
-                                    @else
-                                        <a href="{{ $url }}"
-                                            class="kt-btn kt-btn-sm kt-btn-outline">{{ $page }}</a>
-                                    @endif
-                                @endforeach
+                    // Add callbacks for pagination events
+                    callbacks: {
+                        afterDraw: function(datatable) {
+                            // Add any custom behavior after drawing the table
+                        },
+                    },
+                });
 
-                                {{-- Next Page Link --}}
-                                @if ($data['articles']->hasMorePages())
-                                    <a href="{{ $data['articles']->nextPageUrl() }}"
-                                        class="kt-btn kt-btn-sm kt-btn-outline">Berikutnya »</a>
-                                @else
-                                    <span class="kt-btn kt-btn-sm kt-btn-disabled">Berikutnya »</span>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-                @endif
-            </div>
-        </div>
-    </div>
-    <!-- End of Container -->
-@endsection
+                // Mark as initialized and store instance
+                isInitialized = true;
+                instance = datatable;
+
+                return datatable;
+            };
+
+            // Public API
+            return {
+                init: function() {
+                    return init();
+                },
+            };
+        })();
+
+        /**
+         * Initialize the datatable when the page loads
+         */
+        // Function to safely initialize only once
+        function safeInitialize() {
+            var element = document.getElementById('kt_datatable_remote_source');
+            if (!element) {
+                return;
+            }
+
+            var instance = KTDatatableRemoteDataDemo.init();
+            if (instance) {
+                window.datatableInstance = instance;
+            }
+        }
+
+        // Only attach the event listener once
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', safeInitialize, {
+                once: true
+            });
+        } else {
+            // DOM is already loaded, initialize immediately
+            setTimeout(safeInitialize, 1);
+        }
+    </script>
+@endpush
