@@ -9,38 +9,38 @@
 
         <nav class="hidden lg:block">
             <ul class="kt-menu gap-5">
-                <li><a href="{{ route('category', 'berita') }}" class="kt-link kt-link-mono text-mono text-sm">Berita</a></li>
+                <li><a href="{{ route('category', 'berita') }}" class="kt-link kt-link-mono text-sm">Berita</a></li>
                 <li class="inline-flex" data-kt-dropdown="true" data-kt-dropdown-trigger="click">
-                    <button class="kt-link kt-link-mono text-mono text-sm" data-kt-dropdown-toggle="true">Produk</button>
+                    <button class="kt-link kt-link-mono text-sm" data-kt-dropdown-toggle="true">Produk</button>
                     <div class="kt-dropdown w-full max-w-56 p-3 text-sm" data-kt-dropdown-menu="true">
                         <div class="grid grid-cols-1 gap-2">
                             <a href="{{ route('category', 'buletin') }}"
-                                class="kt-link kt-link-mono text-mono text-sm">Buletin</a>
+                                class="kt-link kt-link-mono text-sm">Buletin</a>
                             <a href="{{ route('category', 'majalah') }}"
-                                class="kt-link kt-link-mono text-mono text-sm">Majalah</a>
+                                class="kt-link kt-link-mono text-sm">Majalah</a>
                         </div>
                     </div>
                 </li>
                 <li class="inline-flex" data-kt-dropdown="true" data-kt-dropdown-trigger="click">
-                    <button class="kt-link kt-link-mono text-mono text-sm" data-kt-dropdown-toggle="true">Karya
+                    <button class="kt-link kt-link-mono text-sm" data-kt-dropdown-toggle="true">Karya
                         Mahasiswa</button>
                     <div class="kt-dropdown w-full max-w-56 p-3 text-sm" data-kt-dropdown-menu="true">
                         <div class="grid grid-cols-1 gap-2">
                             <a href="{{ route('category', 'resensi-buku') }}"
-                                class="kt-link kt-link-mono text-mono text-sm">Resensi Buku</a>
+                                class="kt-link kt-link-mono text-sm">Resensi Buku</a>
                             <a href="{{ route('category', 'review-film') }}"
-                                class="kt-link kt-link-mono text-mono text-sm">Review Film</a>
-                            <a href="{{ route('category', 'opini') }}" class="kt-link kt-link-mono text-mono text-sm">Opini</a>
-                            <a href="{{ route('category', 'esai') }}" class="kt-link kt-link-mono text-mono text-sm">Esai</a>
+                                class="kt-link kt-link-mono text-sm">Review Film</a>
+                            <a href="{{ route('category', 'opini') }}" class="kt-link kt-link-mono text-sm">Opini</a>
+                            <a href="{{ route('category', 'esai') }}" class="kt-link kt-link-mono text-sm">Esai</a>
                             <a href="{{ route('category', 'artikel') }}"
-                                class="kt-link kt-link-mono text-mono text-sm">Artikel</a>
-                            <a href="{{ route('category', 'puisi') }}" class="kt-link kt-link-mono text-mono text-sm">Puisi</a>
+                                class="kt-link kt-link-mono text-sm">Artikel</a>
+                            <a href="{{ route('category', 'puisi') }}" class="kt-link kt-link-mono text-sm">Puisi</a>
                             <a href="{{ route('category', 'cerpen') }}"
-                                class="kt-link kt-link-mono text-mono text-sm">Cerpen</a>
+                                class="kt-link kt-link-mono text-sm">Cerpen</a>
                         </div>
                     </div>
                 </li>
-                <li><a href="{{ route('category', 'gaya-mahasiswa') }}" class="kt-link kt-link-mono text-mono text-sm">Gaya
+                <li><a href="{{ route('category', 'gaya-mahasiswa') }}" class="kt-link kt-link-mono text-sm">Gaya
                         Mahasiswa</a></li>
             </ul>
         </nav>
@@ -75,79 +75,79 @@
             </button>
             <div class="kt-dropdown p-3 text-sm space-y-3" data-kt-dropdown-menu="true">
                 <div class="kt-dropdown-item">
-                    <a href="{{ route('category', 'berita') }}" class="kt-link kt-link-mono text-mono text-sm">Berita</a>
+                    <a href="{{ route('category', 'berita') }}" class="kt-link kt-link-mono text-sm">Berita</a>
                 </div>
                 <div class="kt-dropdown-item" data-kt-dropdown="true" data-kt-dropdown-trigger="click">
-                    <button class="kt-link kt-link-mono text-mono text-sm w-full text-left"
+                    <button class="kt-link kt-link-mono text-sm w-full text-left"
                         data-kt-dropdown-toggle="true">Produk</button>
                     <div class="kt-dropdown w-full max-w-56 p-3 text-sm" data-kt-dropdown-menu="true">
                         <div class="grid grid-cols-1 gap-2">
                             <a href="{{ route('category', 'buletin') }}"
-                                class="kt-link kt-link-mono text-mono text-sm">Buletin</a>
+                                class="kt-link kt-link-mono text-sm">Buletin</a>
                             <a href="{{ route('category', 'majalah') }}"
-                                class="kt-link kt-link-mono text-mono text-sm">Majalah</a>
+                                class="kt-link kt-link-mono text-sm">Majalah</a>
                         </div>
                     </div>
                 </div>
                 <div class="kt-dropdown-item" data-kt-dropdown="true" data-kt-dropdown-trigger="click">
-                    <button class="kt-link kt-link-mono text-mono text-sm w-full text-left"
+                    <button class="kt-link kt-link-mono text-sm w-full text-left"
                         data-kt-dropdown-toggle="true">Karya Mahasiswa</button>
                     <div class="kt-dropdown w-full max-w-56 p-3 text-sm" data-kt-dropdown-menu="true">
                         <div class="grid grid-cols-1 gap-2">
                             <a href="{{ route('category', 'resensi-buku') }}"
-                                class="kt-link kt-link-mono text-mono text-sm">Resensi Buku</a>
+                                class="kt-link kt-link-mono text-sm">Resensi Buku</a>
                             <a href="{{ route('category', 'review-film') }}"
-                                class="kt-link kt-link-mono text-mono text-sm">Review Film</a>
+                                class="kt-link kt-link-mono text-sm">Review Film</a>
                             <a href="{{ route('category', 'opini') }}"
-                                class="kt-link kt-link-mono text-mono text-sm">Opini</a>
-                            <a href="{{ route('category', 'esai') }}" class="kt-link kt-link-mono text-mono text-sm">Esai</a>
+                                class="kt-link kt-link-mono text-sm">Opini</a>
+                            <a href="{{ route('category', 'esai') }}" class="kt-link kt-link-mono text-sm">Esai</a>
                             <a href="{{ route('category', 'artikel') }}"
-                                class="kt-link kt-link-mono text-mono text-sm">Artikel</a>
+                                class="kt-link kt-link-mono text-sm">Artikel</a>
                             <a href="{{ route('category', 'puisi') }}"
-                                class="kt-link kt-link-mono text-mono text-sm">Puisi</a>
+                                class="kt-link kt-link-mono text-sm">Puisi</a>
                             <a href="{{ route('category', 'cerpen') }}"
-                                class="kt-link kt-link-mono text-mono text-sm">Cerpen</a>
+                                class="kt-link kt-link-mono text-sm">Cerpen</a>
                         </div>
                     </div>
                 </div>
                                 <div class="kt-dropdown-item">
-                    <a href="{{ route('category', 'berita') }}" class="kt-link kt-link-mono text-mono text-sm">Berita</a>
+                    <a href="{{ route('category', 'berita') }}" class="kt-link kt-link-mono text-sm">Berita</a>
                 </div>
                 <div class="kt-dropdown-item" data-kt-dropdown="true" data-kt-dropdown-trigger="click">
-                    <button class="kt-link kt-link-mono text-mono text-sm w-full text-left"
+                    <button class="kt-link kt-link-mono text-sm w-full text-left"
                         data-kt-dropdown-toggle="true">Produk</button>
                     <div class="kt-dropdown w-full max-w-56 p-3 text-sm" data-kt-dropdown-menu="true">
                         <div class="grid grid-cols-1 gap-2">
                             <a href="{{ route('category', 'buletin') }}"
-                                class="kt-link kt-link-mono text-mono text-sm">Buletin</a>
+                                class="kt-link kt-link-mono text-sm">Buletin</a>
                             <a href="{{ route('category', 'majalah') }}"
-                                class="kt-link kt-link-mono text-mono text-sm">Majalah</a>
+                                class="kt-link kt-link-mono text-sm">Majalah</a>
                         </div>
                     </div>
                 </div>
                 <div class="kt-dropdown-item" data-kt-dropdown="true" data-kt-dropdown-trigger="click">
-                    <button class="kt-link kt-link-mono text-mono text-sm w-full text-left"
+                    <button class="kt-link kt-link-mono text-sm w-full text-left"
                         data-kt-dropdown-toggle="true">Karya Mahasiswa</button>
                     <div class="kt-dropdown w-full max-w-56 p-3 text-sm" data-kt-dropdown-menu="true">
                         <div class="grid grid-cols-1 gap-2">
                             <a href="{{ route('category', 'resensi-buku') }}"
-                                class="kt-link kt-link-mono text-mono text-sm">Resensi Buku</a>
+                                class="kt-link kt-link-mono text-sm">Resensi Buku</a>
                             <a href="{{ route('category', 'review-film') }}"
-                                class="kt-link kt-link-mono text-mono text-sm">Review Film</a>
+                                class="kt-link kt-link-mono text-sm">Review Film</a>
                             <a href="{{ route('category', 'opini') }}"
-                                class="kt-link kt-link-mono text-mono text-sm">Opini</a>
-                            <a href="{{ route('category', 'esai') }}" class="kt-link kt-link-mono text-mono text-sm">Esai</a>
+                                class="kt-link kt-link-mono text-sm">Opini</a>
+                            <a href="{{ route('category', 'esai') }}" class="kt-link kt-link-mono text-sm">Esai</a>
                             <a href="{{ route('category', 'artikel') }}"
-                                class="kt-link kt-link-mono text-mono text-sm">Artikel</a>
+                                class="kt-link kt-link-mono text-sm">Artikel</a>
                             <a href="{{ route('category', 'puisi') }}"
-                                class="kt-link kt-link-mono text-mono text-sm">Puisi</a>
+                                class="kt-link kt-link-mono text-sm">Puisi</a>
                             <a href="{{ route('category', 'cerpen') }}"
-                                class="kt-link kt-link-mono text-mono text-sm">Cerpen</a>
+                                class="kt-link kt-link-mono text-sm">Cerpen</a>
                         </div>
                     </div>
                 </div>
                 <div class="kt-dropdown-item">
-                    <a href="{{ route('category', 'gaya-mahasiswa') }}" class="kt-link kt-link-mono text-mono text-sm">Gaya
+                    <a href="{{ route('category', 'gaya-mahasiswa') }}" class="kt-link kt-link-mono text-sm">Gaya
                         Mahasiswa</a>
                 </div>
                 @guest

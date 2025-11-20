@@ -11,12 +11,12 @@
             @include('partials.landing.berita')
         </div>
         <div id="produk" class="space-y-5">
-            <h2 class="text-3xl font-semibold mb-8 text-mono border-b-2 pb-2 w-full lg:w-80">Produk</h2>
+            <h2 class="text-3xl font-semibold mb-8 text-foreground border-b-2 border-border border-dashed pb-2 w-full lg:w-80">Produk</h2>
             @include('partials.landing.buletin')
             @include('partials.landing.majalah')
         </div>
         <div id="karyaMahasiswa" class="space-y-5">
-            <h2 class="text-3xl font-semibold mb-8 text-mono border-b-2 pb-2 w-full lg:w-80">Karya Mahasiswa</h2>
+            <h2 class="text-3xl font-semibold mb-8 text-foreground border-b-2 border-border border-dashed pb-2 w-full lg:w-80">Karya Mahasiswa</h2>
             @include('partials.landing.resensi-buku')
             @include('partials.landing.review-film')
             @include('partials.landing.opini')

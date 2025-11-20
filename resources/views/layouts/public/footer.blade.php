@@ -3,8 +3,8 @@
         <div class="grid grid-cols-2 gap-8">
             <!-- About Section -->
             <div class="col-span-2 lg:col-span-1">
-                <h3 class="text-xl font-semibold mb-4">{{ config('app.name') }}</h3>
-                <p class="mb-4">
+                <h3 class="text-lg font-semibold text-foreground mb-4">{{ config('app.name') }}</h3>
+                <p class="mb-4 text-sm text-muted-foreground">
                     Lembaga Pers Mahasiswa Unsika merupakan unit kegiatan mahasiswa
                     yang berperan sebagai wadah untuk
                     menyalurkan bakat dan hobi dalam bidang
@@ -22,7 +22,7 @@
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-y-5 lg:gap-y-0">
                 <!-- Quick Links -->
                 <div>
-                    <h4 class="font-semibold mb-4">Tautan Cepat</h4>
+                    <h4 class="font-semibold mb-4 text-foreground">Tautan Cepat</h4>
                     <ul class="space-y-1">
                         @foreach ($footers as $footer)
                             <li>
@@ -34,7 +34,7 @@
 
                 <!-- Contact Info -->
                 <div class="w-56">
-                    <h4 class="font-semibold mb-4">Kontak</h4>
+                    <h4 class="font-semibold mb-4 text-foreground">Kontak</h4>
                     <div class="space-y-2">
                         <div class="flex items-center">
                             <i class="ki-filled ki-geolocation text-lg mr-1"></i>
@@ -59,11 +59,11 @@
         </div>
 
         <!-- Divider -->
-        <div class="border-t border-gray-300 my-7.5"></div>
+        <div class="border-t border-border border border-dashed my-7.5"></div>
 
         <!-- Bottom Footer -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-y-5 lg:gap-y-0">
-            <div class="text-sm">
+            <div class="text-sm text-muted-foreground">
                 &copy; {{ date('Y') }} {{ config('app.name') }}. Semua hak cipta dilindungi undang-undang.
             </div>
         </div>

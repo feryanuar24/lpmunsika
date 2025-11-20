@@ -14,15 +14,15 @@
                 </div>
 
                 <div class="p-5 space-y-3">
-                    <h3 class="text-xl font-semibold text-mono">
+                    <h3 class="text-lg font-semibold text-foreground">
                         {{ $article->title }}
                     </h3>
 
-                    <div class="text-sm font-medium text-mono">
+                    <div class="kt-badge kt-badge-outline kt-badge-primary rounded-full">
                         {{ $article->category->name }}
                     </div>
 
-                    <div class="flex gap-2">
+                    <div class="flex space-x-2">
                         @foreach ($article->tags as $tag)
                             <span class="kt-badge kt-badge-outline kt-badge-secondary rounded-full">
                                 {{ $tag->name ?? $tag }}
@@ -30,8 +30,8 @@
                         @endforeach
                     </div>
 
-                    <p class="text-sm text-mono">
-                        {{ Str::limit(strip_tags($article->content), 120, '...') }}
+                    <p class="text-sm text-muted-foreground ">
+                        {{ Str::limit(str_replace(['&nbsp;', '&#160;'], ' ', strip_tags($article->content)), 120, '...') }}
                     </p>
                 </div>
             </a>
