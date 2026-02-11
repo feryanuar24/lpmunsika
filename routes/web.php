@@ -22,6 +22,7 @@ use App\Http\Controllers\Media\PlatformController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\Media\FooterController;
 use App\Http\Controllers\Media\SliderController;
+use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\User\UserController;
 
 /*
@@ -36,8 +37,11 @@ use App\Http\Controllers\User\UserController;
 */
 
 Route::get('/', [LandingController::class, 'index'])->name('landing');
+Route::get('/sitemap.xml', SitemapController::class)->name('sitemap');
+
 Route::get('/category/{category:slug}', [LandingController::class, 'category'])->name('category');
 Route::get('/tag/{tag:slug}', [LandingController::class, 'tag'])->name('tag');
+
 Route::get('/search', [LandingController::class, 'search'])->name('search');
 
 Route::get('/detail/{article:slug}', [LandingController::class, 'show'])->name('detail');

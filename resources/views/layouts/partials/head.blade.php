@@ -1,4 +1,4 @@
-<title>{{ ($data['article']->title ?? config('app.name')) . ' - lpmunsika.com' }}</title>
+<title>{{ ($data['article']->title ?? config('app.name')) . ' - resonan.lpmunsika.com' }}</title>
 
 <meta charset="utf-8" />
 <meta content="follow, index" name="robots" />
@@ -26,6 +26,7 @@
     property="og:description" />
 <meta content="{{ isset($data['article']) && $data['article']->thumbnail ? route('files', $data['article']->thumbnail) : asset('assets/media/app/og-image.jpg') }}"
     property="og:image" />
+<meta name="google-site-verification" content="5J2B-VM6ID8EqfWLLkVcXbxdfBOy922JX2L8Q1B0nx8" />
 <link href="{{ asset('assets/media/app/apple-touch-icon.png') }}" rel="apple-touch-icon" sizes="180x180" />
 <link href="{{ asset('assets/media/app/favicon-32x32.png') }}" rel="icon" sizes="32x32" type="image/png" />
 <link href="{{ asset('assets/media/app/favicon-16x16.png') }}" rel="icon" sizes="16x16" type="image/png" />

@@ -5,6 +5,10 @@
 
     RewriteEngine On
 
+    # Redirect to resonan.lpmunsika.com
+    RewriteCond %{HTTP_HOST} ^(www\.)?lpmunsika\.com$ [NC]
+    RewriteRule ^(.*)$ https://resonan.lpmunsika.com/$1 [L,R=301]
+
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
