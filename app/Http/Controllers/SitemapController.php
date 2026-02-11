@@ -18,7 +18,7 @@ class SitemapController extends Controller
 
         foreach ($articles as $article) {
             $sitemap->add(
-                Url::create("/articles/{$article->slug}")
+                Url::create("/detail/{$article->slug}")
                     ->setLastModificationDate($article->updated_at)
             );
         }
