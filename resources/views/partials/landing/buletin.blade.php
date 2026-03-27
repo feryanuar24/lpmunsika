@@ -5,9 +5,9 @@
                 class="kt-card overflow-hidden">
 
                 <div>
-                    @if ($article->thumbnail_url)
-                        <img src="{{ $article->thumbnail_url }}" alt="Thumbnail Artikel {{ $article->title }}"
-                            class="w-full {{ $index === 0 ? 'h-full' : 'h-48' }} object-cover" loading="lazy"
+                    @if ($article->thumbnail)
+                        <img src="{{ route('files', $article->thumbnail) }}" alt="Thumbnail artikel {{ $article->title }}"
+                            class="w-full h-48 object-cover" loading="lazy"
                             decoding="async" />
                     @endif
                 </div>

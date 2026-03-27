@@ -9,7 +9,11 @@ class Tag extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['name', 'slug', 'description'];
+    protected $fillable = [
+        'name',
+        'slug',
+        'description'
+    ];
 
     public function articles()
     {

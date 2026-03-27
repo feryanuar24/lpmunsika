@@ -13,11 +13,13 @@ return new class extends Migration
     {
         Schema::create('sliders', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
-            $table->string('banner')->unique();
+            $table->string('name');
+            $table->string('banner');
             $table->text('description')->nullable();
             $table->timestamps();
             $table->softDeletes();
+
+            $table->unique(['name', 'deleted_at']);
         });
     }
 

@@ -2,28 +2,23 @@
 
 use App\Http\Controllers\Admin\ChatController;
 use App\Http\Controllers\Admin\MenuController;
-use App\Http\Controllers\Article\CategoryController;
-use App\Http\Controllers\Article\TagController;
-use App\Http\Controllers\Article\ArticleController;
-use App\Http\Controllers\Article\CommentController;
-use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\TagController;
+use App\Http\Controllers\Admin\ArticleController;
+use App\Http\Controllers\Admin\DashboardController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\LandingController;
-use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Auth\PasswordResetController;
-use App\Http\Controllers\User\ProfileController;
-use App\Http\Controllers\Auth\VerificationController;
-use App\Http\Controllers\Media\EmbedController;
-use App\Http\Controllers\PermissionRole\PermissionController;
-use App\Http\Controllers\PermissionRole\PermissionRoleController;
-use App\Http\Controllers\PermissionRole\RoleController;
-use App\Http\Controllers\Media\PlatformController;
+use App\Http\Controllers\Public\PublicController;
+use App\Http\Controllers\Admin\ProfileController;
+use App\Http\Controllers\Admin\EmbedController;
+use App\Http\Controllers\Admin\PermissionController;
+use App\Http\Controllers\Admin\PermissionRoleController;
+use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\PlatformController;
 use App\Http\Controllers\FileController;
-use App\Http\Controllers\Media\FooterController;
-use App\Http\Controllers\Media\SliderController;
-use App\Http\Controllers\SitemapController;
-use App\Http\Controllers\User\UserController;
+use App\Http\Controllers\Admin\FooterController;
+use App\Http\Controllers\Admin\SliderController;
+use App\Http\Controllers\Public\SitemapController;
+use App\Http\Controllers\Admin\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,80 +31,69 @@ use App\Http\Controllers\User\UserController;
 |
 */
 
-Route::get('/', [LandingController::class, 'index'])->name('landing');
+Route::get('/', [PublicController::class, 'landing'])->name('landing');
+Route::get('/search', [PublicController::class, 'search'])->name('search');
+Route::get('/category/{category:slug}', [PublicController::class, 'category'])->name('category');
+Route::get('/tag/{tag:slug}', [PublicController::class, 'tag'])->name('tag');
+Route::get('/detail/{article:slug}', [PublicController::class, 'detail'])->name('detail');
+Route::post('/like', [PublicController::class, 'like'])->name('like');
+Route::post('/comment', [PublicController::class, 'comment'])->name('comment');
+
+Route::get('/files/{path}', FileController::class)->where('path', '.*')->name('files');
+
 Route::get('/sitemap.xml', SitemapController::class)->name('sitemap');
 
-Route::get('/category/{category:slug}', [LandingController::class, 'category'])->name('category');
-Route::get('/tag/{tag:slug}', [LandingController::class, 'tag'])->name('tag');
-
-Route::get('/search', [LandingController::class, 'search'])->name('search');
-
-Route::get('/detail/{article:slug}', [LandingController::class, 'show'])->name('detail');
-Route::post('/like', [LandingController::class, 'like'])->name('like');
-Route::post('/comment', [LandingController::class, 'comment'])->name('comment');
-
-Route::get('/login', [LoginController::class, 'create'])->name('login');
-Route::post('/login', [LoginController::class, 'store'])
-    ->middleware(['throttle:6,1']);
-
-Route::get('/register', [RegisterController::class, 'create'])->name('register');
-Route::post('/register', [RegisterController::class, 'store'])
-    ->middleware(['throttle:6,1']);
-
-Route::get('/forgot-password', [PasswordResetController::class, 'create'])
-    ->name('password.request');
-Route::post('/forgot-password', [PasswordResetController::class, 'store'])
-    ->middleware(['throttle:6,1'])
-    ->name('password.email');
-
-Route::get('/reset-password/{token}', [PasswordResetController::class, 'edit'])
-    ->middleware(['signed', 'throttle:6,1'])
-    ->name('password.reset');
-Route::post('/reset-password', [PasswordResetController::class, 'update'])
-    ->name('password.update');
-
-Route::get('/files/{path}', [FileController::class, 'show'])->where('path', '.*')->name('files');
-
-Route::middleware('auth')->group(function () {
-    Route::get('/email/verify', [VerificationController::class, 'create'])
-        ->name('verification.notice');
-    Route::post('/email/verification-notification', [VerificationController::class, 'store'])
-        ->middleware(['throttle:6,1'])
-        ->name('verification.send');
-    Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'update'])
-        ->middleware(['signed', 'throttle:6,1'])
-        ->name('verification.verify');
-});
-
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/menus/datatable', [MenuController::class, 'datatable'])->middleware('permission:dashboard-management')->name('menus.datatable');
+    Route::resource('/menus', MenuController::class)->middleware('permission:dashboard-management');
 
-    Route::get('/menus', [MenuController::class, 'index'])->middleware('permission:dashboard-access')->name('menus');
-    Route::resource('/chats', ChatController::class)->middleware('permission:dashboard-access');
+    Route::resource('/chats', ChatController::class)->middleware('permission:dashboard-management');
+
+    Route::get('/dashboard', DashboardController::class)->name('dashboard');
 
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update']);
     Route::delete('/profile', [ProfileController::class, 'destroy']);
 
+    Route::get('/users/datatable', [UserController::class, 'datatable'])->middleware('permission:users-management')->name('users.datatable');
+    Route::post('/users/save-fcm-token', [UserController::class, 'saveFcmToken'])->name('users.save-fcm-token');
+    Route::post('/users/read-notification', [UserController::class, 'readNotification'])->name('users.read-notification');
+    Route::post('/users/read-all-notifications', [UserController::class, 'readAllNotifications'])->name('users.read-all-notifications');
     Route::resource('/users', UserController::class)->middleware('permission:users-management');
 
     Route::get('/articles/datatable', [ArticleController::class, 'datatable'])->middleware('permission:articles-management')->name('articles.datatable');
+    Route::post('/articles/upload-image', [ArticleController::class, 'uploadImage'])->middleware('permission:articles-management')->name('articles.upload-image');
+    Route::delete('/articles/comments/{comment}', [ArticleController::class, 'deleteComment'])->middleware('permission:articles-management')->name('articles.delete-comment');
     Route::resource('/articles', ArticleController::class)->middleware('permission:articles-management');
-    Route::resource('/categories', CategoryController::class)->middleware('permission:categories-management');
-    Route::resource('/tags', TagController::class)->middleware('permission:tags-management');
-    Route::resource('/comments', CommentController::class)->middleware('permission:articles-management');
-    Route::post('/ckeditor/upload', [ArticleController::class, 'uploadImage'])->name('ckeditor.upload')->middleware('permission:articles-management');
 
+    Route::get('/categories/datatable', [CategoryController::class, 'datatable'])->middleware('permission:categories-management')->name('categories.datatable');
+    Route::resource('/categories', CategoryController::class)->middleware('permission:categories-management');
+
+    Route::get('/tags/datatable', [TagController::class, 'datatable'])->middleware('permission:tags-management')->name('tags.datatable');
+    Route::resource('/tags', TagController::class)->middleware('permission:tags-management');
+
+    Route::get('/platforms/datatable', [PlatformController::class, 'datatable'])->middleware('permission:platforms-management')->name('platforms.datatable');
     Route::resource('/platforms', PlatformController::class)->middleware('permission:platforms-management');
+
+    Route::get('/embeds/datatable', [EmbedController::class, 'datatable'])->middleware('permission:embeds-management')->name('embeds.datatable');
     Route::resource('/embeds', EmbedController::class)->middleware('permission:embeds-management');
+
+    Route::get('/sliders/datatable', [SliderController::class, 'datatable'])->middleware('permission:sliders-management')->name('sliders.datatable');
     Route::resource('/sliders', SliderController::class)->middleware('permission:sliders-management');
+
+    Route::get('/footers/datatable', [FooterController::class, 'datatable'])->middleware('permission:footers-management')->name('footers.datatable');
     Route::resource('/footers', FooterController::class)->middleware('permission:footers-management');
 
+    Route::get('/permissions/datatable', [PermissionController::class, 'datatable'])->middleware('permission:permission-role-management')->name('permissions.datatable');
     Route::resource('/permissions', PermissionController::class)->middleware('permission:permission-role-management');
-    Route::resource('/roles', RoleController::class)->middleware('permission:permission-role-management');
-    Route::resource('/permission-role', PermissionRoleController::class)->middleware('permission:permission-role-management')->except('destroy');
-    Route::delete('/permission-role', [PermissionRoleController::class, 'destroy'])->middleware('permission:permission-role-management')->name('permission-role.destroy');
 
-    Route::delete('/logout', [LoginController::class, 'destroy'])->name('logout');
+    Route::get('/roles/datatable', [RoleController::class, 'datatable'])->middleware('permission:permission-role-management')->name('roles.datatable');
+    Route::resource('/roles', RoleController::class)->middleware('permission:permission-role-management');
+
+    Route::get('/permission-role/datatable', [PermissionRoleController::class, 'datatable'])->middleware('permission:permission-role-management')->name('permission-role.datatable');
+    Route::resource('/permission-role', PermissionRoleController::class)->middleware('permission:permission-role-management')->except('destroy');
+    Route::delete('/{permission}/{role}/permission-role', [PermissionRoleController::class, 'destroy'])->middleware('permission:permission-role-management')->name('permission-role.destroy');
 });
+
+require __DIR__ . '/auth.php';

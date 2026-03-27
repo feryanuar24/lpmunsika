@@ -20,7 +20,7 @@
                 <span class="text-muted-foreground">{{ $data['permission']->name }}</span>
             </div>
             <div class="border-b border-border border-dashed py-2">
-                <span class="text-foreground font-medium">Tampilan: </span>
+                <span class="text-foreground font-medium">Nama Tampilan: </span>
                 <span class="text-muted-foreground">{{ $data['permission']->display_name }}</span>
             </div>
             <div class="border-b border-border border-dashed py-2">

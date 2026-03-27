@@ -4,9 +4,9 @@
     <div class="kt-card mx-7.5">
         <div class="kt-card-header">
             <div class="kt-card-heading">
-                <h2 class="kt-card-title">
+                <kt class="kt-card-title">
                     Daftar Footer
-                </h2>
+                </kt>
             </div>
             <div class="kt-card-toolbar">
                 <a class="kt-btn kt-btn-primary" href="{{ route('footers.create') }}">
@@ -14,116 +14,277 @@
                 </a>
             </div>
         </div>
-        <div class="kt-card-content">
-            <div class="kt-card-table" data-kt-datatable="true" data-kt-datatable-page-size="5"
-                data-kt-datatable-state-save="true">
-                <div class="kt-table-wrapper kt-scrollable">
-                    <table class="kt-table" data-kt-datatable-table="true">
-                        <thead>
-                            <tr>
-                                <th scope="col" class="w-20" data-kt-datatable-column="name">
-                                    <span class="kt-table-col"><span class="kt-table-col-label">Nama</span><span
-                                            class="kt-table-col-sort"></span></span>
-                                </th>
-                                <th scope="col" class="w-20" data-kt-datatable-column="url">
-                                    <span class="kt-table-col"><span class="kt-table-col-label">URL</span><span
-                                            class="kt-table-col-sort"></span></span>
-                                </th>
-                                <th scope="col" class="w-10" data-kt-datatable-column="actions">Aksi</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            @foreach ($data['footers'] as $footer)
-                                <tr>
-                                    <td>{{ $footer->name }}</td>
-                                    <td>
-                                        <a href="{{ $footer->url }}" target="_blank"
-                                            class="kt-link">{{ $footer->url }}</a>
-                                    </td>
-                                    <td>
-                                        <div class="flex justify-start gap-2">
-                                            <a href="{{ route('footers.show', $footer->id) }}"
-                                                class="kt-btn kt-btn-icon kt-btn-outline size-6">
-                                                <i class="ki-filled ki-eye"></i>
-                                            </a>
-                                            <a href="{{ route('footers.edit', $footer->id) }}"
-                                                class="kt-btn kt-btn-icon kt-btn-outline size-6">
-                                                <i class="ki-filled ki-pencil"></i>
-                                            </a>
-                                            <form action="{{ route('footers.destroy', $footer->id) }}" method="POST">
-                                                @method('DELETE')
-                                                @csrf
-                                                <button type="button"
-                                                    data-kt-modal-toggle="#modal-delete-footer-{{ $footer->id }}"
-                                                    class="kt-btn kt-btn-icon kt-btn-outline size-6">
-                                                    <i class="ki-filled ki-trash"></i>
-                                                </button>
-                                                <div class="kt-modal z-40" data-kt-modal="true"
-                                                    id="modal-delete-footer-{{ $footer->id }}">
-                                                    <div
-                                                        class="kt-modal-content max-w-md w-[90%] fixed z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-6">
-                                                        <div class="kt-modal-header">
-                                                            <h3 class="kt-modal-title">Konfirmasi Hapus</h3>
-                                                            <button type="button" class="kt-modal-close"
-                                                                aria-label="Close modal"
-                                                                data-kt-modal-dismiss="#modal-delete-footer-{{ $footer->id }}">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                    height="24" viewBox="0 0 24 24" fill="none"
-                                                                    stroke="currentColor" stroke-width="2"
-                                                                    stroke-linecap="round" stroke-linejoin="round"
-                                                                    class="lucide lucide-x" aria-hidden="true">
-                                                                    <path d="M18 6 6 18"></path>
-                                                                    <path d="m6 6 12 12"></path>
-                                                                </svg>
-                                                            </button>
-                                                        </div>
-                                                        <div class="kt-modal-body">
-                                                            <div class="flex items-center gap-4">
-                                                                <i class="ki-filled ki-lock text-4xl text-blue-600"></i>
-                                                                <div>
-                                                                    <p class="font-medium">Anda menghapus footer ini.
-                                                                    </p>
-                                                                    <p class="text-sm text-muted">Pastikan data sudah
-                                                                        dicadangkan sebelum
-                                                                        melanjutkan.</p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="kt-modal-footer">
-                                                            <div></div>
-                                                            <div class="flex gap-4">
-                                                                <button class="kt-btn kt-btn-secondary"
-                                                                    data-kt-modal-dismiss="#modal-delete-footer-{{ $footer->id }}"
-                                                                    type="button">Tidak,
-                                                                    Kembali</button>
-                                                                <button class="kt-btn kt-btn-primary" type="submit">Ya,
-                                                                    Hapus</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-                <!--begin:pagination-->
-                <div class="kt-datatable-toolbar">
-                    <div class="kt-datatable-length">
-                        Tampil<select class="kt-select kt-select-sm w-16" name="perpage"
-                            data-kt-datatable-size="true"></select>per halaman
+        <div class="kt-card-content p-5">
+            <div class="grid w-full space-y-5">
+                <div class="kt-card">
+                    <div class="kt-card-header min-h-16">
+                        <form action="{{ route('footers.index') }}" method="get">
+                            <input type="text" value="{{ request('search') }}" name="search" placeholder="Cari..." class="kt-input sm:w-48" />
+                            <button type="submit" hidden></button>
+                        </form>
                     </div>
-                    <div class="kt-datatable-info">
-                        <span data-kt-datatable-info="true"></span>
-                        <div class="kt-datatable-pagination" data-kt-datatable-pagination="true"></div>
+                    <div id="kt_datatable_remote_source" class="kt-card-table" data-kt-datatable-page-size="5"
+                        data-kt-datatable-state-save="true">
+                        <div class="kt-table-wrapper kt-scrollable">
+                            <table class="kt-table" data-kt-datatable-table="true">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" class="w-30" data-kt-datatable-column="name">
+                                            <span class="kt-table-col"><span class="kt-table-col-label">Nama</span><span
+                                                    class="kt-table-col-sort"></span></span>
+                                        </th>
+                                        <th scope="col" class="w-24" data-kt-datatable-column="url">
+                                            <span class="kt-table-col"><span class="kt-table-col-label">URL</span><span
+                                                    class="kt-table-col-sort"></span></span>
+                                        </th>
+                                        <th scope="col" class="w-20" data-kt-datatable-column="actions">
+                                            <span class="kt-table-col"><span class="kt-table-col-label">Aksi</span><span class="kt-table-col-sort"></span></span>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                        <!--begin:pagination-->
+                        <div class="kt-datatable-toolbar">
+                            <div class="kt-datatable-length">
+                                Show<select class="kt-select kt-select-sm w-16" name="perpage"
+                                    data-kt-datatable-size="true"></select>per page
+                            </div>
+                            <div class="kt-datatable-info">
+                                <span data-kt-datatable-info="true"></span>
+                                <div class="kt-datatable-pagination" data-kt-datatable-pagination="true"></div>
+                            </div>
+                        </div>
+                        <!--end:pagination-->
                     </div>
                 </div>
-                <!--end:pagination-->
             </div>
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    <script>
+        'use strict';
+
+        var KTDatatableRemoteDataFooters = (function() {
+            // Track initialization state
+            var isInitialized = false;
+            var instance = null;
+
+            // Main initialization function
+            var init = function() {
+                // Wait for KTDataTable to be available
+                if (typeof window.KTDataTable === 'undefined') {
+                    console.warn('KTDataTable is not loaded yet. Retrying...');
+                    setTimeout(init, 100);
+                    return null;
+                }
+
+                // Use window.KTDataTable for consistency
+                var KTDataTable = window.KTDataTable;
+
+                // Prevent multiple initializations
+                if (isInitialized && instance) {
+                    return instance;
+                }
+
+                // Get the datatable element
+                var datatableEl = document.getElementById('kt_datatable_remote_source');
+                if (!datatableEl) {
+                    return null;
+                }
+
+                // Clean up any previous instances
+                if (datatableEl.hasAttribute('data-kt-datatable-initialized')) {
+                    if (
+                        typeof KTDataTable !== 'undefined' &&
+                        typeof KTDataTable.getInstance === 'function'
+                    ) {
+                        var oldInstance = KTDataTable.getInstance(datatableEl);
+                        if (oldInstance && typeof oldInstance.dispose === 'function') {
+                            oldInstance.dispose();
+                        }
+                    }
+
+                    datatableEl.removeAttribute('data-kt-datatable-initialized');
+                    if (datatableEl.instance) {
+                        delete datatableEl.instance;
+                    }
+                }
+
+                const urlParams = new URLSearchParams(window.location.search);
+                const search = urlParams.get('search');
+
+                // Initialize datatable with remote data source
+                var datatable = new KTDataTable(datatableEl, {
+                    apiEndpoint: '{{ route('footers.datatable') }}',
+                    requestMethod: 'GET',
+                    requestHeaders: {
+                        'Content-Type': 'application/json',
+                        Accept: 'application/json',
+                    },
+                    mapRequest: function(params) {
+                        if (search) {
+                            params.set('search', search);
+                        }
+
+                        return params;
+                    },
+                    // Format the API response, ensuring pagination data is properly mapped
+                    mapResponse: function(response) {
+                        if (response && response.data) {
+                            return {
+                                data: response.data,
+                                totalCount: response.totalCount,
+                                // Include pagination data from the API response
+                                page: response.page || 1,
+                                pageSize: response.pageSize || 5,
+                                totalPages: response.totalPages ||
+                                    Math.ceil(response.totalCount / (response.pageSize || 5)),
+                            };
+                        } else if (Array.isArray(response)) {
+                            return {
+                                data: response,
+                                totalCount: response.length,
+                                page: 1,
+                                pageSize: 5,
+                                totalPages: Math.ceil(response.length / 5),
+                            };
+                        } else {
+                            return {
+                                data: [],
+                                totalCount: 0,
+                                page: 1,
+                                pageSize: 5,
+                                totalPages: 1,
+                            };
+                        }
+                    },
+
+                    // Custom templates for column rendering
+                    columns: {
+                        name: {
+                            title: 'Nama',
+                        },
+                        url: {
+                            render: function(value) {
+                                return `<a href="${value}" target="_blank" class="kt-link kt-link-primary">${value}</a>`;
+                            },
+                        },
+                        actions: {
+                            title: 'Aksi',
+                            sortable: false,
+                            render: function(value) {
+                                return `
+                                    <div class="flex items-center gap-2">
+                                        <a href="${value.show}" class="kt-btn kt-btn-sm kt-btn-primary kt-btn-icon">
+                                            <i class="ki-filled ki-eye"></i>
+                                        </a>
+                                        <a href="${value.edit}" class="kt-btn kt-btn-sm kt-btn-secondary kt-btn-icon">
+                                            <i class="ki-filled ki-pencil"></i>
+                                        </a>
+                                        <form action="${value.delete}" method="POST" class="delete-footer-form">
+                                            @method('DELETE')
+                                            @csrf
+                                            <button type="submit" class="kt-btn kt-btn-sm kt-btn-destructive kt-btn-icon">
+                                                <i class="ki-filled ki-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                `;
+                            },
+                        },
+                    },
+
+                    // Core configuration
+                    pageSize: 5,
+                    stateSave: true,
+
+                    // Add callbacks for pagination events
+                    callbacks: {
+                        afterDraw: function() {
+                            // Add any custom behavior after drawing the table
+                        },
+                    },
+                });
+
+                // Mark as initialized and store instance
+                isInitialized = true;
+                instance = datatable;
+
+                return instance;
+            };
+
+            // Public API
+            return {
+                init: function() {
+                    return init();
+                },
+            };
+        })();
+
+        /**
+         * Initialize the datatable when the page loads
+         */
+        // Function to safely initialize only once
+        function safeInitialize() {
+            var element = document.getElementById('kt_datatable_remote_source');
+            if (!element) {
+                return;
+            }
+
+            var instance = KTDatatableRemoteDataFooters.init();
+            if (instance) {
+                window.datatableInstance = instance;
+            }
+        }
+
+        // Only attach the event listener once
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', safeInitialize, {
+                once: true
+            });
+        } else {
+            // DOM is already loaded, initialize immediately
+            setTimeout(safeInitialize, 1);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.body.addEventListener('submit', function(e) {
+                if (e.target && e.target.matches('.delete-footer-form')) {
+                    e.preventDefault();
+
+                    Swal.fire({
+                        title: 'Konfirmasi',
+                        text: 'Apakah Anda yakin ingin menghapus footer ini?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Ya, hapus',
+                        cancelButtonText: 'Tidak, batalkan',
+                        confirmButtonColor: '#ef4444', // Red-500
+                        cancelButtonColor: '#6b7280', // Gray-500
+                        reverseButtons: true,
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            Swal.fire({
+                                title: 'Memproses...',
+                                text: 'Footer sedang dihapus.',
+                                allowEscapeKey: false,
+                                allowOutsideClick: false,
+                                didOpen: () => {
+                                    Swal.showLoading();
+                                }
+                            });
+
+                            setTimeout(() => {
+                                e.target.submit();
+                            }, 300);
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+@endpush

@@ -9,5 +9,9 @@ class Footer extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['name', 'url', 'description'];
+    protected $fillable = [
+        'name',
+        'url',
+        'description'
+    ];
 }

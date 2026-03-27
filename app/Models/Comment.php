@@ -16,6 +16,13 @@ class Comment extends Model
         'is_active',
     ];
 
+    protected function casts(): array
+    {
+        return [
+            'is_active' => 'boolean',
+        ];
+    }
+
     public function article()
     {
         return $this->belongsTo(Article::class);

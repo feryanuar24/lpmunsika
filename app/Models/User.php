@@ -2,10 +2,6 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-
-use App\Notifications\CustomResetPassword;
-use App\Notifications\CustomVerifyEmail;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Laratrust\Contracts\LaratrustUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -28,7 +24,7 @@ class User extends Authenticatable implements MustVerifyEmail, LaratrustUser
         'name',
         'email',
         'password',
-        'avatar',
+        'email_verified_at',
     ];
 
     /**
@@ -63,18 +59,18 @@ class User extends Authenticatable implements MustVerifyEmail, LaratrustUser
     }
 
     /**
-     * Send the email verification notification.
+     * Get the comments for the user.
      */
-    public function sendEmailVerificationNotification()
+    public function comments()
     {
-        $this->notify(new CustomVerifyEmail());
+        return $this->hasMany(Comment::class);
     }
 
     /**
-     * Send the password reset notification.
+     * Get the chats for the user.
      */
-    public function sendPasswordResetNotification($token)
+    public function chats()
     {
-        $this->notify(new CustomResetPassword($token));
+        return $this->hasMany(Chat::class);
     }
 }

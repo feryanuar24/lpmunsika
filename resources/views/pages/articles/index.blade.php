@@ -11,60 +11,78 @@
                     <i class="ki-filled ki-plus"></i>
                 </a>
             </div>
-            <input type="text" placeholder="Cari..." class="kt-input sm:w-48" data-kt-datatable-search="true" />
         </div>
-        <div class="kt-card-content">
-            <div id="kt_datatable_remote_source" class="kt-card-table" data-kt-datatable-page-size="5"
-                data-kt-datatable-state-save="true">
-                <div class="kt-table-wrapper kt-scrollable">
-                    <table class="kt-table" data-kt-datatable-table="true">
-                        <thead>
-                            <tr>
-                                <th scope="col" class="w-30" data-kt-datatable-column="title">
-                                    <span class="kt-table-col"><span class="kt-table-col-label">Judul</span><span
-                                            class="kt-table-col-sort"></span></span>
-                                </th>
-                                <th scope="col" class="w-24" data-kt-datatable-column="category">
-                                    <span class="kt-table-col"><span class="kt-table-col-label">Kategori</span><span
-                                            class="kt-table-col-sort"></span></span>
-                                </th>
-                                <th scope="col" class="w-24" data-kt-datatable-column="tags">
-                                    <span class="kt-table-col"><span class="kt-table-col-label">Tag</span><span
-                                            class="kt-table-col-sort"></span></span>
-                                </th>
-                                <th scope="col" class="w-24" data-kt-datatable-column="is_active">
-                                    <span class="kt-table-col"><span class="kt-table-col-label">Aktif</span><span
-                                            class="kt-table-col-sort"></span></span>
-                                </th>
-                                <th scope="col" class="w-24" data-kt-datatable-column="is_pinned">
-                                    <span class="kt-table-col"><span class="kt-table-col-label">Sorotan</span><span
-                                            class="kt-table-col-sort"></span></span>
-                                </th>
-                                <th scope="col" class="w-24" data-kt-datatable-column="created_at">
-                                    <span class="kt-table-col"><span class="kt-table-col-label">Tanggal
-                                            Publikasi</span><span class="kt-table-col-sort"></span></span>
-                                </th>
-                                <th scope="col" class="w-30" data-kt-datatable-column="actions">
-                                    <span class="kt-table-col"><span class="kt-table-col-label">Aksi</span><span
-                                            class="kt-table-col-sort"></span></span>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
-                <!--begin:pagination-->
-                <div class="kt-datatable-toolbar">
-                    <div class="kt-datatable-length">
-                        Show<select class="kt-select kt-select-sm w-16" name="perpage"
-                            data-kt-datatable-size="true"></select>per page
+        <div class="kt-card-content p-5">
+            <div class="grid w-full space-y-5">
+                <div class="kt-card">
+                    <div class="kt-card-header min-h-16">
+                        <form action="{{ route('articles.index') }}" method="get">
+                            <input type="text" value="{{ request('search') }}" name="search" placeholder="Cari..."
+                                class="kt-input sm:w-48" />
+                            <button type="submit" hidden></button>
+                        </form>
                     </div>
-                    <div class="kt-datatable-info">
-                        <span data-kt-datatable-info="true"></span>
-                        <div class="kt-datatable-pagination" data-kt-datatable-pagination="true"></div>
+                    <div id="kt_datatable_remote_source" class="kt-card-table" data-kt-datatable-page-size="5"
+                        data-kt-datatable-state-save="true">
+                        <div class="kt-table-wrapper kt-scrollable">
+                            <table class="kt-table" data-kt-datatable-table="true">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" class="w-30" data-kt-datatable-column="title">
+                                            <span class="kt-table-col"><span class="kt-table-col-label">Judul</span><span
+                                                    class="kt-table-col-sort"></span></span>
+                                        </th>
+                                        <th scope="col" class="w-20" data-kt-datatable-column="user_name">
+                                            <span class="kt-table-col"><span class="kt-table-col-label">Pengguna</span><span
+                                                    class="kt-table-col-sort"></span></span>
+                                        </th>
+                                        <th scope="col" class="w-24" data-kt-datatable-column="category_name">
+                                            <span class="kt-table-col"><span class="kt-table-col-label">Kategori</span><span
+                                                    class="kt-table-col-sort"></span></span>
+                                        </th>
+                                        <th scope="col" class="w-24" data-kt-datatable-column="tag_names">
+                                            <span class="kt-table-col"><span class="kt-table-col-label">Tag</span><span
+                                                    class="kt-table-col-sort"></span></span>
+                                        </th>
+                                        <th scope="col" class="w-24" data-kt-datatable-column="is_active">
+                                            <span class="kt-table-col"><span class="kt-table-col-label">Status
+                                                    Aktif</span><span class="kt-table-col-sort"></span></span>
+                                        </th>
+                                        <th scope="col" class="w-24" data-kt-datatable-column="is_pinned">
+                                            <span class="kt-table-col"><span class="kt-table-col-label">Status
+                                                    Pin</span><span class="kt-table-col-sort"></span></span>
+                                        </th>
+                                        <th scope="col" class="w-24" data-kt-datatable-column="created_at">
+                                            <span class="kt-table-col"><span class="kt-table-col-label">Tanggal
+                                                    Dibuat</span><span class="kt-table-col-sort"></span></span>
+                                        </th>
+                                        <th scope="col" class="w-24" data-kt-datatable-column="updated_at">
+                                            <span class="kt-table-col"><span class="kt-table-col-label">Tanggal
+                                                    Diperbaharui</span><span class="kt-table-col-sort"></span></span>
+                                        </th>
+                                        <th scope="col" class="w-20" data-kt-datatable-column="updated_at">
+                                            <span class="kt-table-col"><span class="kt-table-col-label">Aksi</span><span
+                                                    class="kt-table-col-sort"></span></span>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                        <!--begin:pagination-->
+                        <div class="kt-datatable-toolbar">
+                            <div class="kt-datatable-length">
+                                Show<select class="kt-select kt-select-sm w-16" name="perpage"
+                                    data-kt-datatable-size="true"></select>per page
+                            </div>
+                            <div class="kt-datatable-info">
+                                <span data-kt-datatable-info="true"></span>
+                                <div class="kt-datatable-pagination" data-kt-datatable-pagination="true"></div>
+                            </div>
+                        </div>
+                        <!--end:pagination-->
                     </div>
                 </div>
-                <!--end:pagination-->
             </div>
         </div>
     </div>
@@ -115,6 +133,9 @@
                     }
                 }
 
+                const urlParams = new URLSearchParams(window.location.search);
+                const search = urlParams.get('search');
+
                 // Initialize datatable with remote data source
                 var datatable = new KTDataTable(datatableEl, {
                     apiEndpoint: '{{ route('articles.datatable') }}',
@@ -123,7 +144,13 @@
                         'Content-Type': 'application/json',
                         Accept: 'application/json',
                     },
+                    mapRequest: function(params) {
+                        if (search) {
+                            params.set('search', search);
+                        }
 
+                        return params;
+                    },
                     // Format the API response, ensuring pagination data is properly mapped
                     mapResponse: function(response) {
                         if (response && response.data) {
@@ -160,7 +187,10 @@
                         title: {
                             title: 'Judul',
                         },
-                        category: {
+                        user_name: {
+                            title: 'Pengguna',
+                        },
+                        category_name: {
                             render: function(value) {
                                 if (value) {
                                     return `<span class="kt-badge kt-badge-primary">${value}</span>`;
@@ -169,13 +199,13 @@
                                 }
                             },
                         },
-                        tags: {
+                        tag_names: {
                             render: function(value) {
-                                if (Array.isArray(value) && value.length > 0) {
+                                if (value.length > 0) {
                                     return value
                                         .map(
                                             (tag) =>
-                                            `<span class="kt-badge kt-badge-secondary mr-1 mb-1">${tag}</span>`
+                                            `<span class="kt-badge kt-badge-secondary">${tag}</span>`
                                         )
                                         .join('');
                                 } else {
@@ -185,82 +215,44 @@
                         },
                         is_active: {
                             render: function(value) {
-                                if (value) {
-                                    return '<span class="kt-badge kt-badge-success">Ya</span>';
+                                if (value === 'Aktif') {
+                                    return `<span class="kt-badge kt-badge-success">${value}</span>`;
                                 } else {
-                                    return '<span class="kt-badge kt-badge-destructive">Tidak</span>';
+                                    return `<span class="kt-badge kt-badge-destructive">${value}</span>`;
                                 }
                             },
                         },
                         is_pinned: {
                             render: function(value) {
-                                if (value) {
-                                    return '<span class="kt-badge kt-badge-success">Ya</span>';
+                                if (value === 'Disematkan') {
+                                    return `<span class="kt-badge kt-badge-success">${value}</span>`;
                                 } else {
-                                    return '<span class="kt-badge kt-badge-destructive">Tidak</span>';
+                                    return `<span class="kt-badge kt-badge-destructive">${value}</span>`;
                                 }
                             },
                         },
                         created_at: {
-                            title: 'Tanggal Publikasi',
+                            title: 'Tanggal Dibuat',
+                        },
+                        updated_at: {
+                            title: 'Tanggal Diperbaharui',
                         },
                         actions: {
                             render: function(value, row) {
                                 return `
-                                    <div class="flex items-center">
-                                        <a href="${row.actions.show}" class="kt-btn kt-btn-icon kt-btn-outline kt-btn-sm mr-2" title="Lihat">
+                                    <div class="flex items-center gap-2">
+                                        <a href="${row.actions.show}" class="kt-btn kt-btn-icon kt-btn-primary kt-btn-sm" title="Lihat">
                                             <i class="ki-filled ki-eye"></i>
                                         </a>
-                                        <a href="${row.actions.edit}" class="kt-btn kt-btn-icon kt-btn-outline kt-btn-sm mr-2" title="Edit">
+                                        <a href="${row.actions.edit}" class="kt-btn kt-btn-icon kt-btn-secondary kt-btn-sm" title="Edit">
                                             <i class="ki-filled ki-pencil"></i>
                                         </a>
-                                        <form action="${row.actions.delete}" method="POST">
+                                        <form class="delete-article-form" action="${row.actions.delete}" method="POST">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="button" class="kt-btn kt-btn-icon kt-btn-outline kt-btn-sm" title="Hapus" data-kt-modal-toggle="#modal-delete-article-${row.id}">
+                                            <button type="submit" class="kt-btn kt-btn-icon kt-btn-destructive kt-btn-sm" title="Hapus">
                                                 <i class="ki-filled ki-trash"></i>
                                             </button>
-                                            <div class="kt-modal z-40" data-kt-modal="true" id="modal-delete-article-${row.id}">
-                                                <div
-                                                    class="kt-modal-content max-w-md w-[90%] fixed z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-6">
-                                                    <div class="kt-modal-header">
-                                                        <h3 class="kt-modal-title">Konfirmasi Hapus</h3>
-                                                        <button type="button" class="kt-modal-close"
-                                                            aria-label="Close modal"
-                                                            data-kt-modal-dismiss="#modal-delete-article-${row.id}">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                height="24" viewBox="0 0 24 24" fill="none"
-                                                                stroke="currentColor" stroke-width="2"
-                                                                stroke-linecap="round" stroke-linejoin="round"
-                                                                class="lucide lucide-x" aria-hidden="true">
-                                                                <path d="M18 6 6 18"></path>
-                                                                <path d="m6 6 12 12"></path>
-                                                            </svg>
-                                                        </button>
-                                                    </div>
-                                                    <div class="kt-modal-body">
-                                                        <div class="flex items-center gap-4">
-                                                            <i class="ki-filled ki-lock text-4xl text-blue-600"></i>
-                                                            <div>
-                                                                <p class="font-medium">Anda menghapus artikel:
-                                                                    <strong>${row.title}</strong></p>
-                                                                <p class="text-sm text-muted">Pastikan data sudah
-                                                                    dicadangkan sebelum melanjutkan.</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="kt-modal-footer">
-                                                        <div></div>
-                                                        <div class="flex gap-4">
-                                                            <button class="kt-btn kt-btn-secondary"
-                                                                data-kt-modal-dismiss="#modal-delete-article-${row.id}" type="button">Tidak,
-                                                                Kembali</button>
-                                                            <button class="kt-btn kt-btn-primary" type="submit">Ya,
-                                                                Hapus</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
                                         </form>
                                     </div>
                                 `;
@@ -320,5 +312,41 @@
             // DOM is already loaded, initialize immediately
             setTimeout(safeInitialize, 1);
         }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.body.addEventListener('submit', function(e) {
+                if (e.target && e.target.matches('.delete-article-form')) {
+                    e.preventDefault();
+
+                    Swal.fire({
+                        title: 'Konfirmasi',
+                        text: 'Apakah Anda yakin ingin menghapus artikel ini?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Ya, hapus',
+                        cancelButtonText: 'Tidak, batalkan',
+                        confirmButtonColor: '#ef4444', // Red-500
+                        cancelButtonColor: '#6b7280', // Gray-500
+                        reverseButtons: true,
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            Swal.fire({
+                                title: 'Memproses...',
+                                text: 'Artikel sedang dihapus.',
+                                allowEscapeKey: false,
+                                allowOutsideClick: false,
+                                didOpen: () => {
+                                    Swal.showLoading();
+                                }
+                            });
+
+                            setTimeout(() => {
+                                e.target.submit();
+                            }, 300);
+                        }
+                    });
+                }
+            });
+        });
     </script>
 @endpush

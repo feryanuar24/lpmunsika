@@ -14,12 +14,15 @@ return new class extends Migration
         Schema::create('menus', function (Blueprint $table) {
             $table->id();
             $table->foreignId('parent_id')->nullable()->constrained('menus')->nullOnDelete();
-            $table->string('name')->unique();
+            $table->string('name');
             $table->string('url')->nullable();
             $table->string('icon')->nullable();
+            $table->string('permission')->nullable();
             $table->text('description')->nullable();
             $table->timestamps();
             $table->softDeletes();
+
+            $table->unique(['name', 'deleted_at']);
         });
     }
 

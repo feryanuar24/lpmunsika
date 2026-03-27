@@ -4,12 +4,12 @@
     <div class="kt-sidebar-header relative hidden shrink-0 items-center justify-between px-3 lg:flex lg:px-6"
         id="sidebar_header">
         <a class="dark:hidden" href="{{ route('dashboard') }}">
-            <img class="default-logo h-10 max-w-none" src="{{ asset('assets/media/app/default-logo.svg') }}" />
-            <img class="small-logo h-10 max-w-none" src="{{ asset('assets/media/app/mini-logo.svg') }}" />
+            <img class="default-logo h-8 max-w-none" src="{{ asset('assets/media/app/default-logo.png') }}" />
+            <img class="small-logo h-8 max-w-none" src="{{ asset('assets/media/app/mini-logo.svg') }}" />
         </a>
         <a class="hidden dark:block" href="{{ route('dashboard') }}">
-            <img class="default-logo h-10 max-w-none" src="{{ asset('assets/media/app/default-logo-dark.svg') }}" />
-            <img class="small-logo h-10 max-w-none" src="{{ asset('assets/media/app/mini-logo.svg') }}" />
+            <img class="default-logo h-8 max-w-none" src="{{ asset('assets/media/app/default-logo-dark.png') }}" />
+            <img class="small-logo h-8 max-w-none" src="{{ asset('assets/media/app/mini-logo.svg') }}" />
         </a>
         <button
             class="kt-btn kt-btn-outline kt-btn-icon absolute start-full top-2/4 size-[30px] -translate-x-2/4 -translate-y-2/4 rtl:translate-x-2/4"
@@ -26,247 +26,53 @@
             <!-- Sidebar Menu -->
             <div class="kt-menu flex grow flex-col gap-1" data-kt-menu="true" data-kt-menu-accordion-expand-all="false"
                 id="sidebar_menu">
-                <div class="kt-menu-item {{ request()->routeIs('dashboard') ? 'active' : '' }}"
-                    data-kt-menu-item-toggle="accordion" data-kt-menu-item-trigger="click">
-                    <a href="{{ route('dashboard') }}"
-                        class="kt-menu-link flex grow cursor-pointer items-center gap-[10px] border border-transparent py-[6px] pe-[10px] ps-[10px]"
-                        tabindex="0">
-                        <span class="kt-menu-icon w-[20px] items-start text-muted-foreground">
-                            <i class="ki-filled ki-graph text-lg">
-                            </i>
-                        </span>
-                        <span
-                            class="kt-menu-title kt-menu-item-active:text-primary kt-menu-link-hover:!text-primary text-sm font-medium text-foreground">
-                            Dashboards
-                        </span>
-                    </a>
-                </div>
-
-                <div class="kt-menu-item pt-2.25 pb-px">
-                    <span
-                        class="kt-menu-heading pe-[10px] ps-[10px] text-xs font-medium uppercase text-muted-foreground">
-                        Manajemen Pengguna
-                    </span>
-                </div>
-                <div class="kt-menu-item {{ request()->routeIs('profile', 'profile.edit') ? 'active' : '' }}"
-                    data-kt-menu-item-toggle="accordion" data-kt-menu-item-trigger="click">
-                    <a href="{{ route('profile') }}"
-                        class="kt-menu-link flex grow cursor-pointer items-center gap-[10px] border border-transparent py-[6px] pe-[10px] ps-[10px]"
-                        tabindex="0">
-                        <span class="kt-menu-icon w-[20px] items-start text-muted-foreground">
-                            <i class="ki-filled ki-user text-lg">
-                            </i>
-                        </span>
-                        <span
-                            class="kt-menu-title kt-menu-item-active:text-primary kt-menu-link-hover:!text-primary text-sm font-medium text-foreground">
-                            Profil
-                        </span>
-                    </a>
-                </div>
-                @permission('users-management')
-                <div class="kt-menu-item {{ request()->routeIs('users.*') ? 'active' : '' }}"
-                    data-kt-menu-item-toggle="accordion" data-kt-menu-item-trigger="click">
-                    <a href="{{ route('users.index') }}"
-                        class="kt-menu-link flex grow cursor-pointer items-center gap-[10px] border border-transparent py-[6px] pe-[10px] ps-[10px]"
-                        tabindex="0">
-                        <span class="kt-menu-icon w-[20px] items-start text-muted-foreground">
-                            <i class="ki-filled ki-users text-lg">
-                            </i>
-                        </span>
-                        <span
-                            class="kt-menu-title kt-menu-item-active:text-primary kt-menu-link-hover:!text-primary text-sm font-medium text-foreground">
-                            Pengguna
-                        </span>
-                    </a>
-                </div>
-                @endpermission
-
-                <div class="kt-menu-item pt-2.25 pb-px">
-                    <span
-                        class="kt-menu-heading pe-[10px] ps-[10px] text-xs font-medium uppercase text-muted-foreground">
-                        Manajemen Konten
-                    </span>
-                </div>
-                @permission('articles-management')
-                <div class="kt-menu-item {{ request()->routeIs('articles.*') ? 'active' : '' }}"
-                    data-kt-menu-item-toggle="accordion" data-kt-menu-item-trigger="click">
-                    <a href="{{ route('articles.index') }}"
-                        class="kt-menu-link flex grow cursor-pointer items-center gap-[10px] border border-transparent py-[6px] pe-[10px] ps-[10px]"
-                        tabindex="0">
-                        <span class="kt-menu-icon w-[20px] items-start text-muted-foreground">
-                            <i class="ki-filled ki-document text-lg">
-                            </i>
-                        </span>
-                        <span
-                            class="kt-menu-title kt-menu-item-active:text-primary kt-menu-link-hover:!text-primary text-sm font-medium text-foreground">
-                            Artikel
-                        </span>
-                    </a>
-                </div>
-                @endpermission
-                @permission('categories-management')
-                <div class="kt-menu-item {{ request()->routeIs('categories.*') ? 'active' : '' }}"
-                    data-kt-menu-item-toggle="accordion" data-kt-menu-item-trigger="click">
-                    <a href="{{ route('categories.index') }}"
-                        class="kt-menu-link flex grow cursor-pointer items-center gap-[10px] border border-transparent py-[6px] pe-[10px] ps-[10px]"
-                        tabindex="0">
-                        <span class="kt-menu-icon w-[20px] items-start text-muted-foreground">
-                            <i class="ki-filled ki-category text-lg">
-                            </i>
-                        </span>
-                        <span
-                            class="kt-menu-title kt-menu-item-active:text-primary kt-menu-link-hover:!text-primary text-sm font-medium text-foreground">
-                            Kategori
-                        </span>
-                    </a>
-                </div>
-                @endpermission
-                @permission('tags-management')
-                <div class="kt-menu-item {{ request()->routeIs('tags.*') ? 'active' : '' }}"
-                    data-kt-menu-item-toggle="accordion" data-kt-menu-item-trigger="click">
-                    <a href="{{ route('tags.index') }}"
-                        class="kt-menu-link flex grow cursor-pointer items-center gap-[10px] border border-transparent py-[6px] pe-[10px] ps-[10px]"
-                        tabindex="0">
-                        <span class="kt-menu-icon w-[20px] items-start text-muted-foreground">
-                            <i class="ki-filled ki-tag text-lg">
-                            </i>
-                        </span>
-                        <span
-                            class="kt-menu-title kt-menu-item-active:text-primary kt-menu-link-hover:!text-primary text-sm font-medium text-foreground">
-                            Tag
-                        </span>
-                    </a>
-                </div>
-                @endpermission
-
-                <div class="kt-menu-item pt-2.25 pb-px">
-                    <span
-                        class="kt-menu-heading pe-[10px] ps-[10px] text-xs font-medium uppercase text-muted-foreground">
-                        Manajemen Widget
-                    </span>
-                </div>
-                @permission('platforms-management')
-                <div class="kt-menu-item {{ request()->routeIs('platforms.*') ? 'active' : '' }}"
-                    data-kt-menu-item-toggle="accordion" data-kt-menu-item-trigger="click">
-                    <a href="{{ route('platforms.index') }}"
-                        class="kt-menu-link flex grow cursor-pointer items-center gap-[10px] border border-transparent py-[6px] pe-[10px] ps-[10px]"
-                        tabindex="0">
-                        <span class="kt-menu-icon w-[20px] items-start text-muted-foreground">
-                            <i class="ki-filled ki-social-media text-lg">
-                            </i>
-                        </span>
-                        <span
-                            class="kt-menu-title kt-menu-item-active:text-primary kt-menu-link-hover:!text-primary text-sm font-medium text-foreground">
-                            Platform
-                        </span>
-                    </a>
-                </div>
-                @endpermission
-                @permission('embeds-management')
-                <div class="kt-menu-item {{ request()->routeIs('embeds.*') ? 'active' : '' }}"
-                    data-kt-menu-item-toggle="accordion" data-kt-menu-item-trigger="click">
-                    <a href="{{ route('embeds.index') }}"
-                        class="kt-menu-link flex grow cursor-pointer items-center gap-[10px] border border-transparent py-[6px] pe-[10px] ps-[10px]"
-                        tabindex="0">
-                        <span class="kt-menu-icon w-[20px] items-start text-muted-foreground">
-                            <i class="ki-filled ki-fasten text-lg">
-                            </i>
-                        </span>
-                        <span
-                            class="kt-menu-title kt-menu-item-active:text-primary kt-menu-link-hover:!text-primary text-sm font-medium text-foreground">
-                            Embed
-                        </span>
-                    </a>
-                </div>
-                @endpermission
-                @permission('sliders-management')
-                <div class="kt-menu-item {{ request()->routeIs('sliders.*') ? 'active' : '' }}"
-                    data-kt-menu-item-toggle="accordion" data-kt-menu-item-trigger="click">
-                    <a href="{{ route('sliders.index') }}"
-                        class="kt-menu-link flex grow cursor-pointer items-center gap-[10px] border border-transparent py-[6px] pe-[10px] ps-[10px]"
-                        tabindex="0">
-                        <span class="kt-menu-icon w-[20px] items-start text-muted-foreground">
-                            <i class="ki-filled ki-slider text-lg">
-                            </i>
-                        </span>
-                        <span
-                            class="kt-menu-title kt-menu-item-active:text-primary kt-menu-link-hover:!text-primary text-sm font-medium text-foreground">
-                            Sliders
-                        </span>
-                    </a>
-                </div>
-                @endpermission
-                @permission('footers-management')
-                <div class="kt-menu-item {{ request()->routeIs('footers.*') ? 'active' : '' }}"
-                    data-kt-menu-item-toggle="accordion" data-kt-menu-item-trigger="click">
-                    <a href="{{ route('footers.index') }}"
-                        class="kt-menu-link flex grow cursor-pointer items-center gap-[10px] border border-transparent py-[6px] pe-[10px] ps-[10px]"
-                        tabindex="0">
-                        <span class="kt-menu-icon w-[20px] items-start text-muted-foreground">
-                            <i class="ki-filled ki-tablet-text-down text-lg">
-                            </i>
-                        </span>
-                        <span
-                            class="kt-menu-title kt-menu-item-active:text-primary kt-menu-link-hover:!text-primary text-sm font-medium text-foreground">
-                            Footer
-                        </span>
-                    </a>
-                </div>
-                @endpermission
-
-                <div class="kt-menu-item pt-2.25 pb-px">
-                    <span
-                        class="kt-menu-heading pe-[10px] ps-[10px] text-xs font-medium uppercase text-muted-foreground">
-                        Pengaturan
-                    </span>
-                </div>
-                @permission('permission-role-management')
-                <div class="kt-menu-item {{ request()->routeIs('permissions.*') ? 'active' : '' }}"
-                    data-kt-menu-item-toggle="accordion" data-kt-menu-item-trigger="click">
-                    <a href="{{ route('permissions.index') }}"
-                        class="kt-menu-link flex grow cursor-pointer items-center gap-[10px] border border-transparent py-[6px] pe-[10px] ps-[10px]"
-                        tabindex="0">
-                        <span class="kt-menu-icon w-[20px] items-start text-muted-foreground">
-                            <i class="ki-filled ki-lock text-lg">
-                            </i>
-                        </span>
-                        <span
-                            class="kt-menu-title kt-menu-item-active:text-primary kt-menu-link-hover:!text-primary text-sm font-medium text-foreground">
-                            Permission
-                        </span>
-                    </a>
-                </div>
-                <div class="kt-menu-item {{ request()->routeIs('roles.*') ? 'active' : '' }}"
-                    data-kt-menu-item-toggle="accordion" data-kt-menu-item-trigger="click">
-                    <a href="{{ route('roles.index') }}"
-                        class="kt-menu-link flex grow cursor-pointer items-center gap-[10px] border border-transparent py-[6px] pe-[10px] ps-[10px]"
-                        tabindex="0">
-                        <span class="kt-menu-icon w-[20px] items-start text-muted-foreground">
-                            <i class="ki-filled ki-key text-lg">
-                            </i>
-                        </span>
-                        <span
-                            class="kt-menu-title kt-menu-item-active:text-primary kt-menu-link-hover:!text-primary text-sm font-medium text-foreground">
-                            Role
-                        </span>
-                    </a>
-                </div>
-                <div class="kt-menu-item {{ request()->routeIs('permission-role.*') ? 'active' : '' }}"
-                    data-kt-menu-item-toggle="accordion" data-kt-menu-item-trigger="click">
-                    <a href="{{ route('permission-role.index') }}"
-                        class="kt-menu-link flex grow cursor-pointer items-center gap-[10px] border border-transparent py-[6px] pe-[10px] ps-[10px]"
-                        tabindex="0">
-                        <span class="kt-menu-icon w-[20px] items-start text-muted-foreground">
-                            <i class="ki-filled ki-shield text-lg">
-                            </i>
-                        </span>
-                        <span
-                            class="kt-menu-title kt-menu-item-active:text-primary kt-menu-link-hover:!text-primary text-sm font-medium text-foreground">
-                            Permission Role
-                        </span>
-                    </a>
-                </div>
-                @endpermission
+                @foreach ($menus as $menu)
+                    @if (is_null($menu['url']))
+                        {{-- Section heading --}}
+                        <div class="kt-menu-item pt-2.25 pb-px">
+                            <span
+                                class="kt-menu-heading pe-[10px] ps-[10px] text-xs font-medium uppercase text-muted-foreground">
+                                {{ $menu['name'] }}
+                            </span>
+                        </div>
+                        @foreach ($menu['children'] as $child)
+                            @if (empty($child['permission']) || (auth()->check() && auth()->user()->hasPermission($child['permission'])))
+                                <div class="kt-menu-item {{ request()->is(ltrim($child['url'], '/') . '*') ? 'active' : '' }}"
+                                    data-kt-menu-item-toggle="accordion" data-kt-menu-item-trigger="click">
+                                    <a href="{{ $child['url'] }}"
+                                        class="kt-menu-link flex grow cursor-pointer items-center gap-[10px] border border-transparent py-[6px] pe-[10px] ps-[10px]"
+                                        tabindex="0">
+                                        <span class="kt-menu-icon w-[20px] items-start text-muted-foreground">
+                                            <i class="ki-filled {{ $child['icon'] }} text-lg"></i>
+                                        </span>
+                                        <span
+                                            class="kt-menu-title kt-menu-item-active:text-primary kt-menu-link-hover:!text-primary text-sm font-medium text-foreground">
+                                            {{ $child['name'] }}
+                                        </span>
+                                    </a>
+                                </div>
+                            @endif
+                        @endforeach
+                    @else
+                        {{-- Direct link item --}}
+                        @if (empty($menu['permission']) || (auth()->check() && auth()->user()->hasPermission($menu['permission'])))
+                            <div class="kt-menu-item {{ request()->is(ltrim($menu['url'], '/') . '*') ? 'active' : '' }}"
+                                data-kt-menu-item-toggle="accordion" data-kt-menu-item-trigger="click">
+                                <a href="{{ $menu['url'] }}"
+                                    class="kt-menu-link flex grow cursor-pointer items-center gap-[10px] border border-transparent py-[6px] pe-[10px] ps-[10px]"
+                                    tabindex="0">
+                                    <span class="kt-menu-icon w-[20px] items-start text-muted-foreground">
+                                        <i class="ki-filled {{ $menu['icon'] }} text-lg"></i>
+                                    </span>
+                                    <span
+                                        class="kt-menu-title kt-menu-item-active:text-primary kt-menu-link-hover:!text-primary text-sm font-medium text-foreground">
+                                        {{ $menu['name'] }}
+                                    </span>
+                                </a>
+                            </div>
+                        @endif
+                    @endif
+                @endforeach
             </div>
             <!-- End of Sidebar Menu -->
         </div>

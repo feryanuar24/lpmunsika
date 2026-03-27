@@ -13,21 +13,17 @@
                     <i class="ki-filled ki-menu">
                     </i>
                 </button>
-                <button class="kt-btn kt-btn-icon kt-btn-ghost" data-kt-drawer-toggle="#mega_menu_wrapper">
-                    <i class="ki-filled ki-burger-menu-2">
-                    </i>
-                </button>
             </div>
         </div>
         <!-- End of Mobile Logo -->
         @include('partials.mega-menu')
         <!-- Topbar -->
         <div class="flex items-center gap-2.5">
-            @permission('dashboard-access')
+            @permission('dashboard-management')
                 @include('partials.topbar-search-modal')
-                @include('partials.topbar-notification-dropdown')
                 @include('partials.topbar-chat')
             @endpermission
+            @include('partials.topbar-notification-dropdown')
             @include('partials.topbar-user-dropdown')
         </div>
         <!-- End of Topbar -->

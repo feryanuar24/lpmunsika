@@ -16,21 +16,25 @@ class LaratrustSetupTables extends Migration
         // Create table for storing roles
         Schema::create('roles', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name')->unique();
+            $table->string('name');
             $table->string('display_name')->nullable();
             $table->string('description')->nullable();
             $table->timestamps();
             $table->softDeletes();
+
+            $table->unique(['name', 'deleted_at']);
         });
 
         // Create table for storing permissions
         Schema::create('permissions', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name')->unique();
+            $table->string('name');
             $table->string('display_name')->nullable();
             $table->string('description')->nullable();
             $table->timestamps();
-            $table->$table->softDeletes();
+            $table->softDeletes();
+
+            $table->unique(['name', 'deleted_at']);
         });
 
         // Create table for associating roles to users and teams (Many To Many Polymorphic)

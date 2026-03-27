@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\Storage;
 
 class Article extends Model
 {
@@ -20,6 +19,14 @@ class Article extends Model
         'is_active',
         'is_pinned',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'is_active' => 'boolean',
+            'is_pinned' => 'boolean',
+        ];
+    }
 
     public function user()
     {
@@ -39,30 +46,5 @@ class Article extends Model
     public function comments()
     {
         return $this->hasMany(Comment::class);
-    }
-
-    public function getThumbnailUrlAttribute()
-    {
-        if (!$this->thumbnail) {
-            return null;
-        }
-
-        $disk = config('filesystems.default');
-
-
-        if ($disk === 'public') {
-            return asset('storage/' . $this->thumbnail);
-        }
-
-        if ($disk === 'local') {
-            return route('files', ['path' => $this->thumbnail]);
-        }
-
-        $diskConfig = config("filesystems.disks.{$disk}");
-        if (isset($diskConfig['url'])) {
-            return rtrim($diskConfig['url'], '/') . '/' . $this->thumbnail;
-        }
-
-        return $this->thumbnail;
     }
 }

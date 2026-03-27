@@ -15,21 +15,27 @@
             </div>
         </div>
         <div class="kt-card-content">
-            <form action="{{ route('users.store') }}" method="POST" class="space-y-5">
+            <form id="create-user-form" action="{{ route('users.store') }}" method="POST" class="space-y-5">
                 @csrf
 
                 <div>
                     <label for="name" class="kt-label">Nama</label>
                     <span class="text-destructive">*</span>
                     <input type="text" name="name" class="kt-input w-full" value="{{ old('name') }}"
-                        placeholder="Masukkan nama" />
+                        placeholder="Masukkan nama" required/>
+                    @error('name')
+                        <p class="text-destructive mt-1 text-sm">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <div>
                     <label for="email" class="kt-label">Email</label>
                     <span class="text-destructive">*</span>
-                    <input type="email" name="email" id="email" required class="kt-input w-full"
-                        value="{{ old('email') }}" placeholder="Masukkan alamat email" />
+                    <input type="email" name="email" id="email" class="kt-input w-full"
+                        value="{{ old('email') }}" placeholder="Masukkan alamat email" required/>
+                    @error('email')
+                        <p class="text-destructive mt-1 text-sm">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <div>
@@ -42,17 +48,20 @@
                         "displaySeparator": " | "
                     }'>
                         @foreach ($data['roles'] as $role)
-                            <option value="{{ $role->name }}">{{ $role->name }}</option>
+                            <option value="{{ $role->id }}" @selected(collect(old('roles'))->contains($role->id))>{{ $role->name }}</option>
                         @endforeach
                     </select>
+                    @error('roles')
+                        <p class="text-destructive mt-1 text-sm">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <div>
                     <label class="kt-label" for="password">Kata Sandi</label>
                     <span class="text-destructive">*</span>
-                    <div class="relative max-w-72" data-kt-toggle-password="true">
+                    <div class="relative" data-kt-toggle-password="true">
                         <input type="text" name="password" class="kt-input w-full pe-10"
-                            placeholder="Masukkan kata sandi" /><button
+                            placeholder="Masukkan kata sandi" required/><button
                             class="kt-btn kt-btn-icon kt-btn-ghost size-6 absolute end-2 top-1/2 -translate-y-1/2"
                             data-kt-toggle-password-trigger="true" type="button">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -78,13 +87,16 @@
                             </svg>
                         </button>
                     </div>
+                    @error('password')
+                        <p class="text-destructive mt-1 text-sm">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <div>
                     <label class="kt-label" for="password_confirmation">Konfirmasi Kata Sandi</label>
-                    <div class="relative max-w-72" data-kt-toggle-password="true">
+                    <div class="relative" data-kt-toggle-password="true">
                         <input type="text" name="password_confirmation" class="kt-input w-full pe-10"
-                            placeholder="Masukkan konfirmasi kata sandi" /><button
+                            placeholder="Masukkan konfirmasi kata sandi" required/><button
                             class="kt-btn kt-btn-icon kt-btn-ghost size-6 absolute end-2 top-1/2 -translate-y-1/2"
                             data-kt-toggle-password-trigger="true" type="button">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -112,63 +124,44 @@
                     </div>
                 </div>
 
-                <div class="col-span-2">
-                    <label class="kt-label">Pilih Avatar</label>
-                    <div
-                        class="kt-scrollable overflow-y-auto h-40 rounded-lg border border-border grid grid-cols-4 gap-4 p-4">
-                        @for ($i = 1; $i <= 34; $i++)
-                            <div class="flex items-center justify-center">
-                                <input class="kt-checkbox me-3" type="radio" name="avatar"
-                                    value="assets/media/avatars/300-{{ $i }}.png"
-                                    {{ $i == 1 ? 'checked' : '' }}>
-                                <img src="{{ asset('assets/media/avatars/300-' . $i . '.png') }}"
-                                    alt="Avatar {{ $i }}"
-                                    class="w-16 h-16 rounded-full border-2 border-gray-200">
-                            </div>
-                        @endfor
-                    </div>
-                </div>
-
-                <button type="button" class="kt-btn kt-btn-primary mt-5"
-                    data-kt-modal-toggle="#modal-create-user">Buat</button>
-
-                <div class="kt-modal z-40" data-kt-modal="true" id="modal-create-user">
-                    <div
-                        class="kt-modal-content max-w-md w-[90%] fixed z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-6">
-                        <div class="kt-modal-header">
-                            <h3 class="kt-modal-title">Konfirmasi Tambah</h3>
-                            <button type="button" class="kt-modal-close" aria-label="Close modal"
-                                data-kt-modal-dismiss="#modal-create-user">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x"
-                                    aria-hidden="true">
-                                    <path d="M18 6 6 18"></path>
-                                    <path d="m6 6 12 12"></path>
-                                </svg>
-                            </button>
-                        </div>
-                        <div class="kt-modal-body">
-                            <div class="flex items-center gap-4">
-                                <i class="ki-filled ki-lock text-4xl text-blue-600"></i>
-                                <div>
-                                    <p class="font-medium">Anda menambah pengguna dengan data ini.</p>
-                                    <p class="text-sm text-muted">Pastikan data sudah benar sebelum
-                                        melanjutkan.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="kt-modal-footer">
-                            <div></div>
-                            <div class="flex gap-4">
-                                <button class="kt-btn kt-btn-secondary" data-kt-modal-dismiss="#modal-create-user"
-                                    type="button">Tidak, Kembali</button>
-                                <button class="kt-btn kt-btn-primary" type="submit">Ya, Tambah</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <button type="submit" class="kt-btn kt-btn-primary mt-5">Buat</button>
             </form>
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    <script>
+        document.getElementById('create-user-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            Swal.fire({
+                title: 'Konfirmasi',
+                text: 'Apakah Anda yakin ingin membuat pengguna baru?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, buat',
+                cancelButtonText: 'Tidak, batalkan',
+                confirmButtonColor: '#3b82f6', // Blue-500
+                cancelButtonColor: '#6b7280', // Gray-500
+                reverseButtons: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Memproses...',
+                        text: 'Pengguna baru sedang dibuat.',
+                        allowEscapeKey: false,
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+
+                    setTimeout(() => {
+                        this.submit();
+                    }, 300);
+                }
+            });
+        });
+    </script>
+@endpush

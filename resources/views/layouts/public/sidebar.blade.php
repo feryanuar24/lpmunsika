@@ -1,36 +1,112 @@
 <div class="kt-container-fixed space-y-5">
+    <!-- Related Articles -->
+    @if (!empty($data['related'] ?? null))
+        <div>
+            <h2
+                class="text-3xl font-semibold mb-8 text-foreground border-border border-dashed border-b-2 pb-2 w-full">
+                Lainnya</h2>
+            <div class="space-y-5">
+                @foreach ($data['related'] as $article)
+                    <article>
+                        <a href="{{ route('detail', $article->slug) }}" class="kt-card overflow-hidden">
+                            <!-- Article Image -->
+                            <div>
+                                @if ($article->thumbnail)
+                                    <img src="{{ route('files', $article->thumbnail) }}"
+                                        alt="Thumbnail artikel {{ $article->title }}" class="w-full h-48 object-cover"
+                                        loading="lazy" decoding="async">
+                                @endif
+                            </div>
+
+                            <!-- Article Content -->
+                            <div class="space-y-3 p-5">
+                                <!-- Title -->
+                                <h2 class="text-lg font-semibold text-foreground">
+                                    {{ $article->title }}
+                                </h2>
+
+                                <!-- Category -->
+                                @if ($article->category)
+                                    <span class="kt-badge kt-badge-primary kt-badge-outline rounded-full">
+                                        {{ $article->category->name }}
+                                    </span>
+                                @endif
+
+                                <!-- Tags -->
+                                @if ($article->tags->count() > 0)
+                                    <div class="flex space-x-2">
+                                        @foreach ($article->tags as $tag)
+                                            <span class="kt-badge kt-badge-secondary kt-badge-outline rounded-full">
+                                                {{ $tag->name }}
+                                            </span>
+                                        @endforeach
+                                    </div>
+                                @endif
+
+                                <!-- Content Excerpt -->
+                                <p class="text-sm text-muted-foreground">
+                                    {{ Str::limit(str_replace(['&nbsp;', '&#160;'], ' ', strip_tags($article->content)), 120, '...') }}
+                                </p>
+
+                                <!-- Article Meta -->
+                                <div
+                                    class="flex items-center justify-between text-xs text-muted-foreground border-t border-border border-dashed pt-3">
+                                    <div class="flex items-center space-x-2">
+                                        <i class="ki-filled ki-profile-circle"></i>
+                                        <span>{{ $article->user->name }}</span>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <i class="ki-filled ki-calendar"></i>
+                                        <span>{{ $article->created_at->translatedFormat('d M Y') }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </article>
+                @endforeach
+            </div>
+        </div>
+    @endif
+
+    <!-- YouTube Embed -->
     <div>
-        <h2 class="text-3xl font-semibold mb-8 text-foreground border-border border-dashed border-b-2 pb-2 w-full lg:w-80">LPM Channel</h2>
+        <h2
+            class="text-3xl font-semibold mb-8 text-foreground border-border border-dashed border-b-2 pb-2 w-full">
+            LPM Channel</h2>
         <div class="space-y-5">
             @foreach ($youtube as $embed)
                 <div class="kt-card overflow-hidden">
                     <div
-                        class="w-full [&_iframe]:w-full [&_iframe]:max-w-full [&_iframe]:h-auto [&_iframe]:aspect-video">
+                        class="w-full embed-preview">
                         {!! $embed->embed_code !!}
                     </div>
                 </div>
             @endforeach
-
         </div>
     </div>
 
+    <!-- Spotify Embed -->
     <div>
-        <h2 class="text-3xl font-semibold mb-8 text-foreground border-border border-dashed border-b-2 pb-2 w-full lg:w-80">Podcast NOL SKS</h2>
+        <h2
+            class="text-3xl font-semibold mb-8 text-foreground border-border border-dashed border-b-2 pb-2 w-full">
+            Podcast NOL SKS</h2>
         <div class="space-y-5">
             @foreach ($spotify as $embed)
                 <div class="kt-card overflow-hidden">
                     <div
-                        class="w-full [&_iframe]:w-full [&_iframe]:max-w-full [&_iframe]:h-auto [&_iframe]:aspect-video">
+                        class="w-full embed-preview">
                         {!! $embed->embed_code !!}
                     </div>
                 </div>
             @endforeach
-
         </div>
     </div>
 
+    <!-- Categories -->
     <div>
-        <h2 class="text-3xl font-semibold mb-8 text-foreground border-border border-dashed border-b-2 pb-2 w-full lg:w-80">Kategori</h2>
+        <h2
+            class="text-3xl font-semibold mb-8 text-foreground border-border border-dashed border-b-2 pb-2 w-full">
+            Kategori</h2>
         <div class="flex flex-wrap gap-2">
             @foreach ($categories as $category)
                 <a href="{{ route('category', $category->slug) }}"
@@ -39,8 +115,11 @@
         </div>
     </div>
 
+    <!-- Tags -->
     <div>
-        <h2 class="text-3xl font-semibold mb-8 text-foreground border-border border-dashed border-b-2 pb-2 w-full lg:w-80">Tag</h2>
+        <h2
+            class="text-3xl font-semibold mb-8 text-foreground border-border border-dashed border-b-2 pb-2 w-full">
+            Tag</h2>
         <div class="flex flex-wrap gap-2">
             @foreach ($tags as $tag)
                 <a href="{{ route('tag', $tag->slug) }}"
@@ -49,3 +128,20 @@
         </div>
     </div>
 </div>
+
+@push('styles')
+    <style>
+        .embed-preview {
+            max-width: 100%;
+            overflow-x: auto;
+        }
+
+        .embed-preview iframe,
+        .embed-preview video,
+        .embed-preview embed,
+        .embed-preview object {
+            max-width: 100%;
+            width: 100%;
+        }
+    </style>
+@endpush

@@ -9,11 +9,12 @@ class Category extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['name', 'slug', 'description'];
+    protected $fillable = [
+        'name',
+        'slug',
+        'description'
+    ];
 
-    /**
-     * Get the articles for the category.
-     */
     public function articles()
     {
         return $this->hasMany(Article::class);

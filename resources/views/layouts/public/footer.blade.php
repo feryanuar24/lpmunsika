@@ -10,11 +10,11 @@
                     menyalurkan bakat dan hobi dalam bidang
                     jurnalistik.
                 </p>
-                <div class="flex flex-nowrap overflow-x-auto -mx-2">
+                <div class="flex gap-2">
                     @foreach ($platforms as $platform)
-                    <a href="{{ $platform->url }}" class="kt-btn kt-btn-outline px-2">
-                        <i class="ki-filled {{ $platform->icon }} text-lg"></i>
-                    </a>
+                        <a href="{{ $platform->url }}" class="kt-btn kt-btn-outline px-2">
+                            <i class="ki-filled {{ $platform->icon }} text-lg"></i>
+                        </a>
                     @endforeach
                 </div>
             </div>

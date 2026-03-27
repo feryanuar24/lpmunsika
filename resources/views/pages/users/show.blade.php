@@ -15,16 +15,6 @@
             </div>
         </div>
         <div class="kt-card-content">
-            <div class="flex items-center justify-between gap-6">
-                <div class="flex items-center gap-4">
-                    <img src="{{ asset($data['user']->avatar) }}" alt="Avatar" class="h-20 w-20 rounded-full">
-                    <div>
-                        <h2 class="text-lg text-foreground font-semibold">{{ $data['user']->name }}</h2>
-                        <p class="text-muted-foreground font-medium">{{ $data['user']->email }}</p>
-                    </div>
-                </div>
-            </div>
-
             <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                     <div class="text-sm text-foreground font-medium">Nama</div>

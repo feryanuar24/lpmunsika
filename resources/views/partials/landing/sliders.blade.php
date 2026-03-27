@@ -3,7 +3,7 @@
         <ul class="splide__list">
             @foreach ($data['sliders'] as $slider)
                 <li class="splide__slide">
-                    <img src="{{ $slider->url }}" alt="{{ $slider->name }}" class="w-full h-auto object-cover rounded-lg" />
+                    <img src="{{ route('files', $slider->banner) }}" alt="Banner slider {{ $slider->name }}" class="w-full h-auto object-cover rounded-lg" />
                 </li>
             @endforeach
         </ul>

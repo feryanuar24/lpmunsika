@@ -24,7 +24,7 @@
                 <span class="text-muted-foreground">{{ $data['slider']->description }}</span>
             </div>
             <div class="border-b border-border border-dashed py-2">
-                <img src="{{ $data['slider']->url }}" alt="Gambar Slider" class="rounded">
+                <img src="{{ route('files', $data['slider']->banner) }}" alt="Banner slider {{ $data['slider']->name }}" class="rounded w-full">
             </div>
         </div>
     </div>

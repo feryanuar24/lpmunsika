@@ -3,7 +3,6 @@
 
 <head>
     @include('layouts.partials.head')
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body class="kt-sidebar-fixed kt-header-fixed flex h-full bg-background text-base text-foreground antialiased">

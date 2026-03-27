@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('description')->nullable();
             $table->timestamps();
             $table->softDeletes();
+
+            $table->unique(['platform_id', 'title', 'deleted_at']);
         });
     }
 

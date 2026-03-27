@@ -3,6 +3,8 @@ import Alpine from "alpinejs";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import Splide from "@splidejs/splide";
 import "@splidejs/splide/css";
+import Swal from "sweetalert2";
+import { initFCM, listenFCM } from "./firebase";
 
 // Start Alpine.js
 window.Alpine = Alpine;
@@ -13,6 +15,9 @@ window.ClassicEditor = ClassicEditor;
 
 // Make Splide available globally
 window.Splide = Splide;
+
+// Make SweetAlert2 available globally
+window.Swal = Swal;
 
 // Metronic Core JavaScript functionality
 document.addEventListener("DOMContentLoaded", function () {
@@ -27,6 +32,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Initialize modal functionality
     initModals();
+
+    // Initialize Firebase Cloud Messaging
+    initFCM();
+    listenFCM();
 });
 
 // Drawer functionality

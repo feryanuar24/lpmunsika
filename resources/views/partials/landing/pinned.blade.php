@@ -1,13 +1,13 @@
 <div>
-    <h2 class="text-3xl font-semibold mb-8 text-foreground border-b-2 border-border border-dashed pb-2 w-full lg:w-80">Sorotan</h2>
+    <h2 class="text-3xl font-semibold mb-8 text-foreground border-b-2 border-border border-dashed pb-2 w-full">Sorotan</h2>
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        @foreach ($data['pinnedArticles'] as $index => $article)
+        @foreach ($data['pinned'] as $index => $article)
             <a href="{{ route('detail', $article->slug) }}"
                 class="kt-card overflow-hidden {{ $index === 0 ? 'col-span-1 lg:col-span-2' : '' }}">
 
                 <div>
-                    @if ($article->thumbnail_url)
-                        <img src="{{ $article->thumbnail_url }}" alt="Thumbnail Artikel {{ $article->title }}"
+                    @if ($article->thumbnail)
+                        <img src="{{ route('files', $article->thumbnail) }}" alt="Thumbnail artikel {{ $article->title }}"
                             class="w-full {{ $index === 0 ? 'h-full' : 'h-48' }} object-cover" loading="lazy"
                             decoding="async" />
                     @endif

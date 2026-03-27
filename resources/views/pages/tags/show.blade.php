@@ -23,6 +23,10 @@
                 <span class="text-foreground font-medium">Slug: </span>
                 <span class="text-muted-foreground">{{ $data['tag']->slug }}</span>
             </div>
+            <div class="border-b border-border border-dashed py-2">
+                <span class="text-foreground font-medium">Deskripsi: </span>
+                <span class="text-muted-foreground">{{ $data['tag']->description ?? '-' }}</span>
+            </div>
         </div>
     </div>
 @endsection

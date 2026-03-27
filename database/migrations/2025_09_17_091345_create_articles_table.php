@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('category_id')->nullable()->constrained()->nullOnDelete();
-            $table->string('title');
-            $table->string('slug')->unique();
+            $table->string('title')->index();
+            $table->string('slug');
             $table->text('content');
             $table->string('thumbnail')->nullable();
             $table->boolean('is_active')->default(false);
@@ -25,6 +25,8 @@ return new class extends Migration
             $table->integer('likes')->default(0);
             $table->timestamps();
             $table->softDeletes();
+
+            $table->unique(['title', 'deleted_at']);
         });
     }
 

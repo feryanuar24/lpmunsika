@@ -2,14 +2,14 @@
 <div class="shrink-0" data-kt-dropdown="true" data-kt-dropdown-offset="10px, 10px" data-kt-dropdown-offset-rtl="-20px, 10px"
     data-kt-dropdown-placement="bottom-end" data-kt-dropdown-placement-rtl="bottom-start" data-kt-dropdown-trigger="click">
     <div class="shrink-0 cursor-pointer" data-kt-dropdown-toggle="true">
-        <img alt="" class="size-9 shrink-0 rounded-full border-2 border-green-500"
-            src="{{ asset(Auth::user()->avatar) }}" />
+        <img alt="Ilustrasi avatar blank" class="size-9 shrink-0 rounded-full border-2 border-green-500"
+            src="{{ asset('assets/media/avatars/blank.png') }}" />
     </div>
     <div class="kt-dropdown-menu w-[250px]" data-kt-dropdown-menu="true">
         <div class="flex flex-col gap-1.5 px-2.5 py-1.5">
             <div class="flex items-center gap-2">
-                <img alt="" class="size-9 shrink-0 rounded-full border-2 border-green-500"
-                    src="{{ asset(Auth::user()->avatar) }}" />
+                <img alt="Ilustrasi avatar blank" class="size-9 shrink-0 rounded-full border-2 border-green-500"
+                    src="{{ asset('assets/media/avatars/blank.png') }}" />
                 <div class="flex flex-col gap-1.5">
                     <span class="text-sm font-semibold leading-none text-foreground">
                         {{ Auth::user()->name }}
@@ -53,13 +53,12 @@
                 <input class="kt-switch" data-kt-theme-switch-state="dark" data-kt-theme-switch-toggle="true"
                     name="check" type="checkbox" value="1" />
             </div>
-            <form action="{{ route('logout') }}" method="POST">
+            <form id="logout-user-form" action="{{ route('logout') }}" method="POST">
                 @method('DELETE')
 
                 @csrf
 
-                <button type="button" data-kt-modal-toggle="#modal-logout"
-                    class="kt-btn kt-btn-outline w-full justify-center">
+                <button type="submit" class="kt-btn kt-btn-outline w-full justify-center">
                     Keluar
                 </button>
             </form>
@@ -67,3 +66,40 @@
     </div>
 </div>
 <!-- End of User -->
+
+@push('scripts')
+    <script>
+        document.getElementById('logout-user-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            Swal.fire({
+                title: 'Konfirmasi',
+                text: 'Apakah Anda yakin ingin keluar?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, keluar',
+                cancelButtonText: 'Tidak, tetap di sini',
+                confirmButtonColor: '#ef4444', // Red-500
+                cancelButtonColor: '#6b7280', // Gray-500
+                reverseButtons: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Memproses...',
+                        text: 'Anda sedang keluar.',
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                            this.submit();
+                        }
+                    });
+
+                    setTimeout(() => {
+                        this.submit();
+                    }, 300);
+                }
+            });
+        });
+    </script>
+@endpush

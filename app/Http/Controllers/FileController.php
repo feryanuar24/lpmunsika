@@ -2,24 +2,58 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Symfony\Component\HttpFoundation\Response;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpFoundation\StreamedResponse;
+use Throwable;
 
 class FileController extends Controller
 {
     /**
-     * Serve private file from local disk.
+     * Serve file by filesystem disk.
      */
-    public function show($path)
+    public function __invoke($path): StreamedResponse
     {
+        $path = ltrim($path, '/');
+
         if (!Storage::exists($path)) {
-            abort(404);
+            abort(404, 'File tidak ditemukan');
         }
-        $file = Storage::get($path);
-        $mime = Storage::mimeType($path);
-        return response($file, 200)->header('Content-Type', $mime);
+
+        $stream = Storage::readStream($path);
+        if ($stream === false) {
+            abort(500, 'Gagal membuka file');
+        }
+
+        $mimeType = Storage::mimeType($path) ?? 'application/octet-stream';
+        $size     = Storage::size($path);
+        $filename = basename($path);
+
+        $inlineMime = [
+            'application/pdf',
+            'image/jpeg',
+            'image/png',
+            'image/gif',
+            'image/webp',
+            'image/svg+xml',
+        ];
+
+        $disposition = in_array($mimeType, $inlineMime)
+            ? 'inline'
+            : 'attachment';
+
+        return response()->stream(
+            function () use ($stream) {
+                fpassthru($stream);
+                fclose($stream);
+            },
+            200,
+            [
+                'Content-Type'        => $mimeType,
+                'Content-Length'      => $size,
+                'Content-Disposition' => $disposition . '; filename="' . $filename . '"',
+                'Cache-Control'       => 'public, max-age=3600',
+            ]
+        );
     }
 }

@@ -21,7 +21,7 @@
             </div>
             <div class="border-b border-border border-dashed py-2">
                 <span class="text-foreground font-medium">URL: </span>
-                <a class="kt-link" href="{{ $data['platform']->url }}">{{ $data['platform']->url }}</a>
+                <a class="kt-link kt-link-primary" target="_blank"  href="{{ $data['platform']->url }}">{{ $data['platform']->url }}</a>
             </div>
             <div class="border-b border-border border-dashed py-2 flex items-center gap-2">
                 <span class="text-foreground font-medium">Ikon: </span>

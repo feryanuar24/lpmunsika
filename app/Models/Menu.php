@@ -14,12 +14,10 @@ class Menu extends Model
         'name',
         'url',
         'icon',
+        'permission',
         'description',
     ];
 
-    /**
-     * Get the parent menu item.
-     */
     public function parent()
     {
         return $this->belongsTo(Menu::class, 'parent_id');

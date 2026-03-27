@@ -3,9 +3,9 @@
         <!-- Logo -->
         <div>
             <a href="{{ route('landing') }}">
-                <img src="{{ asset('assets/media/app/default-logo.svg') }}" alt="Logo" class="h-10 dark:hidden">
-                <img src="{{ asset('assets/media/app/default-logo-dark.svg') }}" alt="Logo"
-                    class="h-10 hidden dark:block">
+                <img src="{{ asset('assets/media/app/default-logo.png') }}" alt="Logo aplikasi" class="h-8 lg:h-10 dark:hidden">
+                <img src="{{ asset('assets/media/app/default-logo-dark.png') }}" alt="Logo aplikasi"
+                    class="h-8 lg:h-10 hidden dark:block">
             </a>
         </div>
 

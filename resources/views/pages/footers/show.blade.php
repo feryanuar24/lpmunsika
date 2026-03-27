@@ -20,8 +20,8 @@
                 <span class="text-muted-foreground">{{ $data['footer']->name }}</span>
             </div>
             <div class="border-b border-border border-dashed py-2">
-                <span class="text-foreground font-medium">Slug: </span>
-                <span class="text-muted-foreground">{{ $data['footer']->slug }}</span>
+                <span class="text-foreground font-medium">URL: </span>
+                <a href="{{ $data['footer']->url }}" target="_blank" class="kt-link kt-link-primary">{{ $data['footer']->url }}</a>
             </div>
             <div class="border-b border-border border-dashed py-2">
                 <span class="text-foreground font-medium">Deskripsi: </span>

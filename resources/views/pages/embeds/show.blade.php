@@ -28,8 +28,25 @@
                 <span class="text-muted-foreground">{{ $data['embed']->description }}</span>
             </div>
             <div class="border-b border-border border-dashed py-2">
-                <div class="text-muted-foreground">{!! $data['embed']->embed_code !!}</div>
+                <div class="embed-preview text-muted-foreground">{!! $data['embed']->embed_code !!}</div>
             </div>
         </div>
     </div>
 @endsection
+
+@push('styles')
+    <style>
+        .embed-preview {
+            max-width: 100%;
+            overflow-x: auto;
+        }
+
+        .embed-preview iframe,
+        .embed-preview video,
+        .embed-preview embed,
+        .embed-preview object {
+            max-width: 100%;
+            width: 100%;
+        }
+    </style>
+@endpush
