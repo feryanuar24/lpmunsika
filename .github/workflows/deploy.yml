@@ -28,9 +28,6 @@ jobs:
           state-name: .ftp-deploy-sync-state.json
 
       # Deploy Laravel core
-      - name: Replace .env for production
-        run: cp laravel/.env.production laravel/.env
-
       - name: Deploy Core Laravel
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
