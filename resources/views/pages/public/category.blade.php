@@ -26,31 +26,40 @@
                             <!-- Article Image -->
                             <div>
                                 @if ($article->thumbnail)
-                                    <img src="{{ route('files', $article->thumbnail) }}" alt="Thumbnail artikel {{ $article->title }}"
-                                        class="w-full h-48 object-cover" loading="lazy" decoding="async">
+                                    <img src="{{ route('files', $article->thumbnail) }}"
+                                        alt="Thumbnail artikel {{ $article->title }}" class="w-full h-48 object-cover"
+                                        loading="lazy" decoding="async">
                                 @endif
                             </div>
 
-                            <!-- Article Content -->
-                            <div class="space-y-3 p-5">
-                                <!-- Title -->
-                                <h2 class="text-lg font-semibold text-foreground">
+                            <div class="p-5 flex flex-col h-full">
+
+                                <!-- Judul -->
+                                <h3 class="text-lg font-semibold text-foreground line-clamp-2 min-h-14">
                                     {{ $article->title }}
-                                </h2>
+                                </h3>
+
+                                <!-- Category -->
+                                <div class="mt-2">
+                                    <span class="kt-badge kt-badge-outline kt-badge-primary rounded-full">
+                                        {{ $article->category->name }}
+                                    </span>
+                                </div>
 
                                 <!-- Tags -->
-                                @if ($article->tags->count() > 0)
-                                    <div class="space-x-2">
-                                        @foreach ($article->tags as $tag)
-                                            <span class="kt-badge kt-badge-outline kt-badge-secondary rounded-full">
-                                                {{ $tag->name }}
-                                            </span>
-                                        @endforeach
-                                    </div>
-                                @endif
+                                <div class="flex flex-wrap gap-2 mt-2">
+                                    @foreach ($article->tags as $tag)
+                                        <span class="kt-badge kt-badge-outline kt-badge-secondary rounded-full">
+                                            {{ $tag->name ?? $tag }}
+                                        </span>
+                                    @endforeach
+                                </div>
 
-                                <!-- Excerpt -->
-                                <p class="text-sm text-muted-foreground text-justify">
+                                <!-- Spacer biar deskripsi selalu di bawah -->
+                                <div class="grow"></div>
+
+                                <!-- Deskripsi -->
+                                <p class="text-sm text-muted-foreground text-justify mt-3 line-clamp-3">
                                     {{ Str::limit(str_replace(['&nbsp;', '&#160;'], ' ', strip_tags($article->content)), 120, '...') }}
                                 </p>
 
@@ -66,6 +75,7 @@
                                         <span>{{ $article->created_at->translatedFormat('d M Y') }}</span>
                                     </div>
                                 </div>
+
                             </div>
                         </a>
                     </article>

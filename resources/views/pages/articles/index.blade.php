@@ -22,8 +22,7 @@
                             <button type="submit" hidden></button>
                         </form>
                     </div>
-                    <div id="kt_datatable_remote_source" class="kt-card-table" data-kt-datatable-page-size="5"
-                        data-kt-datatable-state-save="true">
+                    <div id="kt_datatable_remote_source" class="kt-card-table" data-kt-datatable-page-size="5">
                         <div class="kt-table-wrapper kt-scrollable">
                             <table class="kt-table" data-kt-datatable-table="true">
                                 <thead>
@@ -52,6 +51,11 @@
                                             <span class="kt-table-col"><span class="kt-table-col-label">Status
                                                     Pin</span><span class="kt-table-col-sort"></span></span>
                                         </th>
+                                        <th scope="col" class="w-24" data-kt-datatable-column="views">
+                                            <span class="kt-table-col"><span class="kt-table-col-label">
+                                                Jumlah Dilihat
+                                            </span><span class="kt-table-col-sort"></span></span>
+                                        </th>
                                         <th scope="col" class="w-24" data-kt-datatable-column="created_at">
                                             <span class="kt-table-col"><span class="kt-table-col-label">Tanggal
                                                     Dibuat</span><span class="kt-table-col-sort"></span></span>
@@ -61,8 +65,7 @@
                                                     Diperbaharui</span><span class="kt-table-col-sort"></span></span>
                                         </th>
                                         <th scope="col" class="w-20" data-kt-datatable-column="updated_at">
-                                            <span class="kt-table-col"><span class="kt-table-col-label">Aksi</span><span
-                                                    class="kt-table-col-sort"></span></span>
+                                            <span class="kt-table-col"><span class="kt-table-col-label">Aksi</span></span>
                                         </th>
                                     </tr>
                                 </thead>
@@ -231,6 +234,9 @@
                                 }
                             },
                         },
+                        views: {
+                            title: 'Jumlah Dilihat',
+                        },
                         created_at: {
                             title: 'Tanggal Dibuat',
                         },
@@ -262,7 +268,6 @@
 
                     // Core configuration
                     pageSize: 5,
-                    stateSave: true,
 
                     // Add callbacks for pagination events
                     callbacks: {

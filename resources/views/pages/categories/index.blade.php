@@ -19,12 +19,12 @@
                 <div class="kt-card">
                     <div class="kt-card-header min-h-16">
                         <form action="{{ route('categories.index') }}" method="get">
-                            <input type="text" value="{{ request('search') }}" name="search" placeholder="Cari..." class="kt-input sm:w-48" />
+                            <input type="text" value="{{ request('search') }}" name="search" placeholder="Cari..."
+                                class="kt-input sm:w-48" />
                             <button type="submit" hidden></button>
                         </form>
                     </div>
-                    <div id="kt_datatable_remote_source" class="kt-card-table" data-kt-datatable-page-size="5"
-                        data-kt-datatable-state-save="true">
+                    <div id="kt_datatable_remote_source" class="kt-card-table" data-kt-datatable-page-size="5">
                         <div class="kt-table-wrapper kt-scrollable">
                             <table class="kt-table" data-kt-datatable-table="true">
                                 <thead>
@@ -38,7 +38,7 @@
                                                     class="kt-table-col-sort"></span></span>
                                         </th>
                                         <th scope="col" class="w-20" data-kt-datatable-column="actions">
-                                            <span class="kt-table-col"><span class="kt-table-col-label">Aksi</span><span class="kt-table-col-sort"></span></span>
+                                            <span class="kt-table-col"><span class="kt-table-col-label">Aksi</span></span>
                                         </th>
                                     </tr>
                                 </thead>
@@ -198,7 +198,6 @@
 
                     // Core configuration
                     pageSize: 5,
-                    stateSave: true,
 
                     // Add callbacks for pagination events
                     callbacks: {

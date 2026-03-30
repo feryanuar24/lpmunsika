@@ -311,6 +311,7 @@ class ArticleController extends Controller
                 'tag_names' => $article->tags->pluck('name')->toArray(),
                 'is_active' => $article->is_active ? 'Aktif' : 'Tidak Aktif',
                 'is_pinned' => $article->is_pinned ? 'Disematkan' : 'Tidak Disematkan',
+                'views' => $article->views,
                 'created_at' => $article->created_at->translatedFormat('d M Y H:i'),
                 'updated_at' => $article->updated_at->translatedFormat('d M Y H:i'),
                 'actions' => [
