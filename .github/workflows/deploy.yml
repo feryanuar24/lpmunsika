@@ -24,7 +24,7 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASS }}
           local-dir: ./public/build/
-          server-dir: /home/lpmunsik/laravel/public/build/
+          server-dir: /laravel/public/build/
           state-name: .ftp-deploy-sync-state.json
 
       # Deploy Laravel core
@@ -35,7 +35,7 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASS }}
           local-dir: ./
-          server-dir: /home/lpmunsik/laravel/
+          server-dir: /laravel/
           state-name: .ftp-deploy-sync-state.json
           exclude: |
             public/**
