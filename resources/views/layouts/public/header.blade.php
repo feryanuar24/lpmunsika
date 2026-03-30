@@ -3,7 +3,8 @@
         <!-- Logo -->
         <div>
             <a href="{{ route('landing') }}">
-                <img src="{{ asset('assets/media/app/default-logo.png') }}" alt="Logo aplikasi" class="h-8 lg:h-10 dark:hidden">
+                <img src="{{ asset('assets/media/app/default-logo.png') }}" alt="Logo aplikasi"
+                    class="h-8 lg:h-10 dark:hidden">
                 <img src="{{ asset('assets/media/app/default-logo-dark.png') }}" alt="Logo aplikasi"
                     class="h-8 lg:h-10 hidden dark:block">
             </a>
@@ -33,6 +34,8 @@
                                 class="kt-link kt-link-mono text-sm">Resensi Buku</a>
                             <a href="{{ route('category', 'review-film') }}" class="kt-link kt-link-mono text-sm">Review
                                 Film</a>
+                            <a href="{{ route('category', 'review-lagu') }}" class="kt-link kt-link-mono text-sm">Review
+                                Lagu</a>
                             <a href="{{ route('category', 'opini') }}" class="kt-link kt-link-mono text-sm">Opini</a>
                             <a href="{{ route('category', 'esai') }}" class="kt-link kt-link-mono text-sm">Esai</a>
                             <a href="{{ route('category', 'artikel') }}"
@@ -105,6 +108,8 @@
                                 class="kt-link kt-link-mono text-sm">Resensi Buku</a>
                             <a href="{{ route('category', 'review-film') }}"
                                 class="kt-link kt-link-mono text-sm">Review Film</a>
+                            <a href="{{ route('category', 'review-lagu') }}"
+                                class="kt-link kt-link-mono text-sm">Review Lagu</a>
                             <a href="{{ route('category', 'opini') }}" class="kt-link kt-link-mono text-sm">Opini</a>
                             <a href="{{ route('category', 'esai') }}" class="kt-link kt-link-mono text-sm">Esai</a>
                             <a href="{{ route('category', 'artikel') }}"

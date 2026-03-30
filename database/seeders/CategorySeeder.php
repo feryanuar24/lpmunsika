@@ -49,6 +49,11 @@ class CategorySeeder extends Seeder
                 'description' => 'Berisi tulisan yang mengulas film, baik dari segi cerita, pesan, maupun aspek sinematografi.'
             ],
             [
+                'name' => 'Review Lagu',
+                'slug' => 'review-lagu',
+                'description' => 'Kategori untuk tulisan yang mengulas lagu, membahas lirik, musik, dan pesan yang disampaikan oleh lagu tersebut.'
+            ],
+            [
                 'name' => 'Opini',
                 'slug' => 'opini',
                 'description' => 'Menyajikan tulisan opini, gagasan, dan sudut pandang penulis terhadap isu-isu aktual atau fenomena tertentu.'
