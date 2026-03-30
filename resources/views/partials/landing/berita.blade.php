@@ -13,22 +13,37 @@
                     @endif
                 </div>
 
-                <div class="p-5 space-y-3">
-                    <h3 class="text-lg font-semibold text-foreground">
+                <div class="p-5 flex flex-col h-full">
+
+                    <!-- Judul -->
+                    <h3 class="text-lg font-semibold text-foreground line-clamp-2 min-h-14">
                         {{ $article->title }}
                     </h3>
 
-                    <div class="flex space-x-2">
+                    <!-- Category -->
+                    <div class="mt-2">
+                        <span class="kt-badge kt-badge-outline kt-badge-primary rounded-full">
+                            {{ $article->category->name }}
+                        </span>
+                    </div>
+
+                    <!-- Tags -->
+                    <div class="flex flex-wrap gap-2 mt-2">
                         @foreach ($article->tags as $tag)
-                            <span class="kt-badge kt-badge-secondary kt-badge-outline rounded-full">
+                            <span class="kt-badge kt-badge-outline kt-badge-secondary rounded-full">
                                 {{ $tag->name ?? $tag }}
                             </span>
                         @endforeach
                     </div>
 
-                    <p class="text-sm text-muted-foreground text-justify">
+                    <!-- Spacer biar deskripsi selalu di bawah -->
+                    <div class="grow"></div>
+
+                    <!-- Deskripsi -->
+                    <p class="text-sm text-muted-foreground text-justify mt-3 line-clamp-3">
                         {{ Str::limit(str_replace(['&nbsp;', '&#160;'], ' ', strip_tags($article->content)), 120, '...') }}
                     </p>
+
                 </div>
             </a>
         @endforeach
