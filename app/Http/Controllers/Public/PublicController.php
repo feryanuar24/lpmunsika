@@ -68,6 +68,14 @@ class PublicController extends Controller
                 ->latest()
                 ->limit(2)
                 ->get(),
+            'review_lagu' => Article::with(['user', 'category', 'tags'])
+                ->whereHas('category', function ($query) {
+                    $query->where('name', 'Review Lagu');
+                })
+                ->where('is_active', true)
+                ->latest()
+                ->limit(2)
+                ->get(),
             'opini' => Article::with(['user', 'category', 'tags'])
                 ->whereHas('category', function ($query) {
                     $query->where('name', 'Opini');

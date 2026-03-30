@@ -1,6 +1,6 @@
 <div>
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        @foreach ($data['review_film'] as $article)
+        @foreach ($data['review_lagu'] as $article)
             <a href="{{ route('detail', $article->slug) }}"
                 class="kt-card overflow-hidden">
 

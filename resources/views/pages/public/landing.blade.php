@@ -19,6 +19,7 @@
             <h2 class="text-3xl font-semibold mb-8 text-foreground border-b-2 border-border border-dashed pb-2 w-full">Karya Mahasiswa</h2>
             @include('partials.landing.resensi-buku')
             @include('partials.landing.review-film')
+            @include('partials.landing.review-lagu')
             @include('partials.landing.opini')
             @include('partials.landing.esai')
             @include('partials.landing.artikel')

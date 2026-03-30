@@ -29,8 +29,8 @@
                         @endforeach
                     </div>
 
-                    <p class="text-sm text-muted-foreground">
-                        {{ Str::limit(strip_tags($article->content), 120, '...') }}
+                    <p class="text-sm text-muted-foreground text-justify">
+                        {{ Str::limit(str_replace(['&nbsp;', '&#160;'], ' ', strip_tags($article->content)), 120, '...') }}
                     </p>
                 </div>
             </a>
