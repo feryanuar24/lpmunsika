@@ -95,7 +95,8 @@ class PermissionRoleController extends Controller
                     ->orderBy('roles.name', $sortOrder);
             }
         } else {
-            $query->orderBy('permission_name', 'asc');
+            $query->join('permissions', 'permission_role.permission_id', '=', 'permissions.id')
+                ->orderBy('permissions.name', 'asc');
         }
 
         // Get pagination parameters
