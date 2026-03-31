@@ -24,7 +24,7 @@
                             <button type="submit" hidden></button>
                         </form>
                     </div>
-                    <div id="kt_datatable_remote_source" class="kt-card-table" data-kt-datatable-page-size="5">
+                    <div id="kt_datatable_remote_source" class="kt-card-table" data-kt-datatable-page-size="5" data-kt-datatable-state-save="false">
                         <div class="kt-table-wrapper kt-scrollable">
                             <table class="kt-table" data-kt-datatable-table="true">
                                 <thead>
@@ -200,6 +200,7 @@
 
                     // Core configuration
                     pageSize: 5,
+                    stateSave: false,
 
                     // Add callbacks for pagination events
                     callbacks: {

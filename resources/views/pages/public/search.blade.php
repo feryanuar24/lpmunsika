@@ -80,7 +80,7 @@
 
                                 <!-- Article Meta -->
                                 <div
-                                    class="flex items-center justify-between text-xs text-muted-foreground border-t border-border border-dashed pt-3">
+                                    class="mt-3 flex items-center justify-between text-xs text-muted-foreground border-t border-border border-dashed pt-3">
                                     <div class="flex items-center space-x-2">
                                         <i class="ki-filled ki-profile-circle"></i>
                                         <span>{{ $article->user->name }}</span>
