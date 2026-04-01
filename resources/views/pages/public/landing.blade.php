@@ -79,13 +79,13 @@
                                                     @endif
                                                 </a>
                                                 <div class="p-4 flex flex-col justify-between h-full">
-                                                    <h4 class="font-semibold text-base line-clamp-2">
+                                                    <h4 class="font-semibold text-lg line-clamp-2">
                                                         <a href="{{ route('detail', $article->slug) }}"
                                                             class="hover:text-primary">
                                                             {{ $article->title }}
                                                         </a>
                                                     </h4>
-                                                    <p class="text-xs text-muted-foreground mt-2 line-clamp-2">
+                                                    <p class="text-sm text-muted-foreground mt-2 line-clamp-2">
                                                         {{ Str::limit(str_replace(['&nbsp;', '&#160;'], ' ', strip_tags($article->content)), 120) }}
                                                     </p>
                                                     <div

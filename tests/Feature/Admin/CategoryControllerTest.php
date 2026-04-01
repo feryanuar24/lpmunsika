@@ -30,12 +30,13 @@ class CategoryControllerTest extends TestCase
     public function test_category_crud_and_datatable_flow(): void
     {
         $store = $this->post(route('categories.store'), [
+            'parent_id' => null,
             'name' => 'Kategori Test',
             'description' => 'Deskripsi kategori',
         ]);
 
         $store->assertRedirect(route('categories.index'));
-        $this->assertDatabaseHas('categories', ['name' => 'Kategori Test', 'slug' => 'kategori-test']);
+        $this->assertDatabaseHas('categories', ['parent_id' => null, 'name' => 'Kategori Test', 'slug' => 'kategori-test']);
 
         $category = Category::where('name', 'Kategori Test')->firstOrFail();
 
