@@ -27,7 +27,13 @@ class CategoryController extends Controller
      */
     public function create(): View
     {
-        return view('pages.categories.create');
+        $parent_categories = Category::whereNull('parent_id')->get();
+
+        $data = [
+            'parent_categories' => $parent_categories,
+        ];
+
+        return view('pages.categories.create', compact('data'));
     }
 
     /**
@@ -63,8 +69,11 @@ class CategoryController extends Controller
      */
     public function edit(Category $category): View
     {
+        $parent_categories = Category::whereNull('parent_id')->where('id', '!=', $category->id)->get();
+
         $data = [
             'category' => $category,
+            'parent_categories' => $parent_categories,
         ];
 
         return view('pages.categories.edit', compact('data'));
@@ -103,13 +112,16 @@ class CategoryController extends Controller
      */
     public function datatable(Request $request): JsonResponse
     {
-        $query = Category::whereNotIn('name', ['Produk', 'Karya Mahasiswa']);
+        $query = Category::with('parent');
 
         // Handle search
         $search = $request->input('search');
         if (!empty($search)) {
             $query->where(function ($q) use ($search) {
-                $q->where('name', 'like', "%$search%")
+                $q->whereHas('parent', function ($q) use ($search) {
+                    $q->where('name', 'like', "%$search%");
+                })
+                    ->orWhere('name', 'like', "%$search%")
                     ->orWhere('slug', 'like', "%$search%");
             });
         }
@@ -118,7 +130,12 @@ class CategoryController extends Controller
         $sortField = $request->input('sortField');
         $sortOrder = $request->input('sortOrder');
         if (!empty($sortOrder) && !empty($sortField)) {
-            $query->orderBy($sortField, $sortOrder);
+            if ($sortField === 'parent_name') {
+                $query->leftJoin('categories as parent', 'categories.parent_id', '=', 'parent.id')
+                    ->orderBy('parent.name', $sortOrder);
+            } else {
+                $query->orderBy($sortField, $sortOrder);
+            }
         } else {
             $query->orderBy('name', 'asc');
         }
@@ -131,6 +148,7 @@ class CategoryController extends Controller
         // Format data for KTUI datatable
         $data = $categories->map(function ($category) {
             return [
+                'parent_name' => $category->parent ? $category->parent->name : '-',
                 'name' => $category->name,
                 'slug' => $category->slug,
                 'actions' => [

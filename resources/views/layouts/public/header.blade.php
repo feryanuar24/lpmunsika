@@ -13,40 +13,28 @@
         <!-- Desktop Navigation -->
         <nav class="hidden lg:block">
             <ul class="kt-menu gap-5">
-                <li><a href="{{ route('category', 'berita') }}" class="kt-link kt-link-mono text-sm">Berita</a></li>
-                <li class="inline-flex" data-kt-dropdown="true" data-kt-dropdown-trigger="click">
-                    <button class="kt-link kt-link-mono text-sm" data-kt-dropdown-toggle="true">Produk</button>
-                    <div class="kt-dropdown w-full max-w-56 p-3 text-sm" data-kt-dropdown-menu="true">
-                        <div class="grid grid-cols-1 gap-2">
-                            <a href="{{ route('category', 'buletin') }}"
-                                class="kt-link kt-link-mono text-sm">Buletin</a>
-                            <a href="{{ route('category', 'majalah') }}"
-                                class="kt-link kt-link-mono text-sm">Majalah</a>
-                        </div>
-                    </div>
-                </li>
-                <li class="inline-flex" data-kt-dropdown="true" data-kt-dropdown-trigger="click">
-                    <button class="kt-link kt-link-mono text-sm" data-kt-dropdown-toggle="true">Karya
-                        Mahasiswa</button>
-                    <div class="kt-dropdown w-full max-w-56 p-3 text-sm" data-kt-dropdown-menu="true">
-                        <div class="grid grid-cols-1 gap-2">
-                            <a href="{{ route('category', 'resensi-buku') }}"
-                                class="kt-link kt-link-mono text-sm">Resensi Buku</a>
-                            <a href="{{ route('category', 'review-film') }}" class="kt-link kt-link-mono text-sm">Review
-                                Film</a>
-                            <a href="{{ route('category', 'review-lagu') }}" class="kt-link kt-link-mono text-sm">Review
-                                Lagu</a>
-                            <a href="{{ route('category', 'opini') }}" class="kt-link kt-link-mono text-sm">Opini</a>
-                            <a href="{{ route('category', 'esai') }}" class="kt-link kt-link-mono text-sm">Esai</a>
-                            <a href="{{ route('category', 'artikel') }}"
-                                class="kt-link kt-link-mono text-sm">Artikel</a>
-                            <a href="{{ route('category', 'puisi') }}" class="kt-link kt-link-mono text-sm">Puisi</a>
-                            <a href="{{ route('category', 'cerpen') }}" class="kt-link kt-link-mono text-sm">Cerpen</a>
-                        </div>
-                    </div>
-                </li>
-                <li><a href="{{ route('category', 'gaya-mahasiswa') }}" class="kt-link kt-link-mono text-sm">Gaya
-                        Mahasiswa</a></li>
+                @forelse($navCategories as $category)
+                    @if($category->children->count() > 0)
+                        <li class="inline-flex" data-kt-dropdown="true" data-kt-dropdown-trigger="click">
+                            <button class="kt-link kt-link-mono text-sm" data-kt-dropdown-toggle="true">
+                                {{ $category->name }}
+                            </button>
+                            <div class="kt-dropdown w-full max-w-56 p-3 text-sm" data-kt-dropdown-menu="true">
+                                <div class="grid grid-cols-1 gap-2">
+                                    @foreach($category->children as $child)
+                                        <a href="{{ route('category', $child->slug) }}"
+                                            class="kt-link kt-link-mono text-sm">{{ $child->name }}</a>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </li>
+                    @else
+                        <li><a href="{{ route('category', $category->slug) }}"
+                                class="kt-link kt-link-mono text-sm">{{ $category->name }}</a></li>
+                    @endif
+                @empty
+                    <li><span class="text-sm text-muted-foreground">Tidak ada kategori</span></li>
+                @endforelse
             </ul>
         </nav>
 
@@ -82,48 +70,31 @@
             </button>
 
             <div class="kt-dropdown p-3 text-sm space-y-3" data-kt-dropdown-menu="true">
-                <div class="kt-dropdown-item">
-                    <a href="{{ route('category', 'berita') }}" class="kt-link kt-link-mono text-sm">Berita</a>
-                </div>
-
-                <div class="kt-dropdown-item" data-kt-dropdown="true" data-kt-dropdown-trigger="click">
-                    <button class="kt-link kt-link-mono text-sm w-full text-left"
-                        data-kt-dropdown-toggle="true">Produk</button>
-                    <div class="kt-dropdown w-full max-w-56 p-3 text-sm" data-kt-dropdown-menu="true">
-                        <div class="grid grid-cols-1 gap-2">
-                            <a href="{{ route('category', 'buletin') }}"
-                                class="kt-link kt-link-mono text-sm">Buletin</a>
-                            <a href="{{ route('category', 'majalah') }}"
-                                class="kt-link kt-link-mono text-sm">Majalah</a>
+                @forelse($navCategories as $category)
+                    @if($category->children->count() > 0)
+                        <div class="kt-dropdown-item" data-kt-dropdown="true" data-kt-dropdown-trigger="click">
+                            <button class="kt-link kt-link-mono text-sm w-full text-left"
+                                data-kt-dropdown-toggle="true">{{ $category->name }}</button>
+                            <div class="kt-dropdown w-full max-w-56 p-3 text-sm" data-kt-dropdown-menu="true">
+                                <div class="grid grid-cols-1 gap-2">
+                                    @foreach($category->children as $child)
+                                        <a href="{{ route('category', $child->slug) }}"
+                                            class="kt-link kt-link-mono text-sm">{{ $child->name }}</a>
+                                    @endforeach
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-
-                <div class="kt-dropdown-item" data-kt-dropdown="true" data-kt-dropdown-trigger="click">
-                    <button class="kt-link kt-link-mono text-sm w-full text-left" data-kt-dropdown-toggle="true">Karya
-                        Mahasiswa</button>
-                    <div class="kt-dropdown w-full max-w-56 p-3 text-sm" data-kt-dropdown-menu="true">
-                        <div class="grid grid-cols-1 gap-2">
-                            <a href="{{ route('category', 'resensi-buku') }}"
-                                class="kt-link kt-link-mono text-sm">Resensi Buku</a>
-                            <a href="{{ route('category', 'review-film') }}"
-                                class="kt-link kt-link-mono text-sm">Review Film</a>
-                            <a href="{{ route('category', 'review-lagu') }}"
-                                class="kt-link kt-link-mono text-sm">Review Lagu</a>
-                            <a href="{{ route('category', 'opini') }}" class="kt-link kt-link-mono text-sm">Opini</a>
-                            <a href="{{ route('category', 'esai') }}" class="kt-link kt-link-mono text-sm">Esai</a>
-                            <a href="{{ route('category', 'artikel') }}"
-                                class="kt-link kt-link-mono text-sm">Artikel</a>
-                            <a href="{{ route('category', 'puisi') }}" class="kt-link kt-link-mono text-sm">Puisi</a>
-                            <a href="{{ route('category', 'cerpen') }}"
-                                class="kt-link kt-link-mono text-sm">Cerpen</a>
+                    @else
+                        <div class="kt-dropdown-item">
+                            <a href="{{ route('category', $category->slug) }}"
+                                class="kt-link kt-link-mono text-sm">{{ $category->name }}</a>
                         </div>
+                    @endif
+                @empty
+                    <div class="kt-dropdown-item">
+                        <span class="text-sm text-muted-foreground">Tidak ada kategori</span>
                     </div>
-                </div>
-                <div class="kt-dropdown-item">
-                    <a href="{{ route('category', 'gaya-mahasiswa') }}" class="kt-link kt-link-mono text-sm">Gaya
-                        Mahasiswa</a>
-                </div>
+                @endforelse
                 @guest
                     <div class="kt-dropdown-item">
                         <a href="{{ route('login') }}" class="kt-btn kt-btn-mono w-full text-center">Masuk</a>

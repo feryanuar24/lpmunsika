@@ -23,6 +23,10 @@ class StoreCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'parent_id' => [
+                'nullable',
+                Rule::exists('categories', 'id')->whereNull('deleted_at')
+            ],
             'name' => [
                 'required',
                 'string',
@@ -41,6 +45,7 @@ class StoreCategoryRequest extends FormRequest
     public function messages(): array
     {
         return [
+            'parent_id.exists' => 'Kategori induk yang dipilih tidak valid.',
             'name.required' => 'Nama kategori wajib diisi.',
             'name.string' => 'Nama kategori harus berupa teks.',
             'name.max' => 'Nama kategori tidak boleh lebih dari :max karakter.',

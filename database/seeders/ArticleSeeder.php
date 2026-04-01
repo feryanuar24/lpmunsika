@@ -14,7 +14,7 @@ class ArticleSeeder extends Seeder
     public function run(): void
     {
         $articles = [];
-        $categories = [1, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13];
+        $categories = [1, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14];
         foreach ($categories as $catId) {
             for ($i = 1; $i <= 3; $i++) {
                 $articles[] = [

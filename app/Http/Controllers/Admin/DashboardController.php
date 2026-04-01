@@ -36,7 +36,7 @@ class DashboardController extends Controller
                     'draft' => Article::where('is_active', false)->count(),
                 ],
 
-                'articles_by_category' => Category::whereNotIn('name', ['Produk', 'Karya Mahasiswa'])->withCount('articles')
+                'articles_by_category' => Category::whereNotNull('parent_id')->orWhereDoesntHave('children')->withCount('articles')
                     ->orderBy('articles_count', 'desc')
                     ->get()
                     ->map(function ($category) {

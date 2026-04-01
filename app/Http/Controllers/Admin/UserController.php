@@ -193,8 +193,8 @@ class UserController extends Controller
                 $query->orderByRaw("CASE WHEN email_verified_at IS NULL THEN 0 ELSE 1 END $sortOrder")
                     ->orderBy('email_verified_at', $sortOrder);
             } elseif ($sortField === 'role_names') {
-                $query->join('role_user', 'users.id', '=', 'role_user.user_id')
-                    ->join('roles', 'role_user.role_id', '=', 'roles.id')
+                $query->leftJoin('role_user', 'users.id', '=', 'role_user.user_id')
+                    ->leftJoin('roles', 'role_user.role_id', '=', 'roles.id')
                     ->groupBy('users.id')
                     ->orderByRaw('MIN(roles.name) ' . $sortOrder)
                     ->select('users.*');

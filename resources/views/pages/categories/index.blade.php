@@ -33,6 +33,10 @@
                                             <span class="kt-table-col"><span class="kt-table-col-label">Nama</span><span
                                                     class="kt-table-col-sort"></span></span>
                                         </th>
+                                        <th scope="col" class="w-24" data-kt-datatable-column="parent_name">
+                                            <span class="kt-table-col"><span class="kt-table-col-label">Nama Induk</span><span
+                                                    class="kt-table-col-sort"></span></span>
+                                        </th>
                                         <th scope="col" class="w-20" data-kt-datatable-column="slug">
                                             <span class="kt-table-col"><span class="kt-table-col-label">Slug</span><span
                                                     class="kt-table-col-sort"></span></span>
@@ -167,6 +171,9 @@
                     columns: {
                         name: {
                             title: 'Nama',
+                        },
+                        parent_name: {
+                            title: 'Nama Induk',
                         },
                         slug: {
                             title: 'Slug',

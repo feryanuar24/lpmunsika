@@ -42,7 +42,7 @@ class MenuController extends Controller
         $sortOrder = $request->input('sortOrder');
         if (!empty($sortOrder) && !empty($sortField)) {
             if ($sortField === 'parent_name') {
-                $query->join('menus as parent', 'menus.parent_id', '=', 'parent.id')
+                $query->leftJoin('menus as parent', 'menus.parent_id', '=', 'parent.id')
                     ->orderBy('parent.name', $sortOrder)
                     ->select('menus.*');
             } else {

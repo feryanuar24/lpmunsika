@@ -20,6 +20,10 @@
                 <span class="text-muted-foreground">{{ $data['category']->name }}</span>
             </div>
             <div class="border-b border-border border-dashed py-2">
+                <span class="text-foreground font-medium">Induk Kategori: </span>
+                <span class="text-muted-foreground">{{ $data['category']->parent ? $data['category']->parent->name : '-' }}</span>
+            </div>
+            <div class="border-b border-border border-dashed py-2">
                 <span class="text-foreground font-medium">Slug: </span>
                 <span class="text-muted-foreground">{{ $data['category']->slug }}</span>
             </div>

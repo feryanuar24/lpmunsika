@@ -39,7 +39,9 @@ class ArticleController extends Controller
     public function create(): View
     {
         $tags = Tag::all();
-        $categories = Category::whereNotIn('name', ['Produk', 'Karya Mahasiswa'])->get();
+        $categories = Category::whereNotNull('parent_id')
+            ->orWhereDoesntHave('children')
+            ->get();
 
         $data = [
             'categories' => $categories,
@@ -155,7 +157,7 @@ class ArticleController extends Controller
 
         $data = [
             'article' => $articleForEdit,
-            'categories' => Category::whereNotIn('name', ['Produk', 'Karya Mahasiswa'])->get(),
+            'categories' => Category::whereNotNull('parent_id')->get(),
             'tags' => Tag::all(),
         ];
 
@@ -277,11 +279,11 @@ class ArticleController extends Controller
         $sortOrder = $request->input('sortOrder');
         if (!empty($sortOrder) && !empty($sortField)) {
             if ($sortField === 'user_name') {
-                $query->join('users', 'articles.user_id', '=', 'users.id')
+                $query->leftJoin('users', 'articles.user_id', '=', 'users.id')
                     ->orderBy('users.name', $sortOrder)
                     ->select('articles.*');
             } elseif ($sortField === 'category_name') {
-                $query->join('categories', 'articles.category_id', '=', 'categories.id')
+                $query->leftJoin('categories', 'articles.category_id', '=', 'categories.id')
                     ->orderBy('categories.name', $sortOrder)
                     ->select('articles.*');
             } elseif ($sortField === 'tag_names') {

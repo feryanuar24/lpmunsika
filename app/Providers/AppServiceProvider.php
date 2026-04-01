@@ -105,15 +105,22 @@ class AppServiceProvider extends ServiceProvider
                     ->latest()
                     ->limit(3)
                     ->get();
-                $categories = Category::whereNotIn('name', ['Produk', 'Karya Mahasiswa'])->get();
+                $navCategories = Category::whereNull('parent_id')
+                    ->with('children')
+                    ->get();
+                $categories = Category::whereNotNull('parent_id')
+                    ->orWhereDoesntHave('children')
+                    ->get();
                 $tags = Tag::all();
                 $footers = Footer::all();
                 $platforms = Platform::all();
+
 
                 $view
                     ->with('youtube', $youtube)
                     ->with('spotify', $spotify)
                     ->with('categories', $categories)
+                    ->with('navCategories', $navCategories)
                     ->with('tags', $tags)
                     ->with('footers', $footers)
                     ->with('platforms', $platforms);

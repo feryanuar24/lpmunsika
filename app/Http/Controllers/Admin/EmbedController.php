@@ -116,7 +116,7 @@ class EmbedController extends Controller
         $sortOrder = $request->input('sortOrder');
         if (!empty($sortOrder) && !empty($sortField)) {
             if ($sortField === 'platform_name') {
-                $query->join('platforms', 'embeds.platform_id', '=', 'platforms.id')
+                $query->leftJoin('platforms', 'embeds.platform_id', '=', 'platforms.id')
                     ->orderBy('platforms.name', $sortOrder)
                     ->select('embeds.*');
             } else {

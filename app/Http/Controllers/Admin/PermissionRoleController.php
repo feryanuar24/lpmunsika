@@ -88,14 +88,14 @@ class PermissionRoleController extends Controller
         $sortOrder = $request->input('sortOrder');
         if (!empty($sortOrder) && !empty($sortField)) {
             if ($sortField === 'permission_name') {
-                $query->join('permissions', 'permission_role.permission_id', '=', 'permissions.id')
+                $query->leftJoin('permissions', 'permission_role.permission_id', '=', 'permissions.id')
                     ->orderBy('permissions.name', $sortOrder);
             } elseif ($sortField === 'role_name') {
-                $query->join('roles', 'permission_role.role_id', '=', 'roles.id')
+                $query->leftJoin('roles', 'permission_role.role_id', '=', 'roles.id')
                     ->orderBy('roles.name', $sortOrder);
             }
         } else {
-            $query->join('permissions', 'permission_role.permission_id', '=', 'permissions.id')
+            $query->leftJoin('permissions', 'permission_role.permission_id', '=', 'permissions.id')
                 ->orderBy('permissions.name', 'asc');
         }
 

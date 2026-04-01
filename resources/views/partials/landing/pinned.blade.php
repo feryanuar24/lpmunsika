@@ -41,9 +41,22 @@
                     <div class="grow"></div>
 
                     <!-- Deskripsi -->
-                    <p class="text-sm text-muted-foreground text-justify mt-3 line-clamp-3">
+                    <p class="text-sm text-muted-foreground text-justify mt-3 line-clamp-2">
                         {{ Str::limit(str_replace(['&nbsp;', '&#160;'], ' ', strip_tags($article->content)), 120, '...') }}
                     </p>
+
+                    <!-- Article Meta -->
+                    <div
+                        class="mt-3 flex items-center justify-between text-xs text-muted-foreground border-t border-border border-dashed pt-3">
+                        <div class="flex items-center space-x-2">
+                            <i class="ki-filled ki-profile-circle"></i>
+                            <span>{{ $article->user->name }}</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <i class="ki-filled ki-calendar"></i>
+                            <span>{{ $article->created_at->translatedFormat('d M Y') }}</span>
+                        </div>
+                    </div>
 
                 </div>
             </a>

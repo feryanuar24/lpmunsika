@@ -21,6 +21,26 @@
                 @csrf
 
                 <div>
+                    <label for="parent_id" class="kt-label">Induk Kategori</label>
+                    <span class="text-muted text-xs">(Opsional, pilih induk kategori jika ini adalah subkategori)</span>
+                    <select name="parent_id" id="parent_id" class="kt-select" data-kt-select="true"
+                        data-kt-select-placeholder="Pilih induk kategori (opsional)"
+                        data-kt-select-config='{
+                            "optionsClass": "kt-scrollable overflow-auto max-h-[250px]"
+                        }'>
+                        <option value="" @selected(old('parent_id', $data['category']->parent_id) == null)>Tidak ada induk (kategori utama)</option>
+                        @foreach ($data['parent_categories'] as $category)
+                            <option value="{{ $category->id }}" @selected(old('parent_id', $data['category']->parent_id) == $category->id)>
+                                {{ $category->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('parent_id')
+                        <p class="text-sm text-destructive mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div>
                     <label for="name" class="kt-label">Nama</label>
                     <span class="text-destructive">*</span>
                     <input type="text" name="name" class="kt-input w-full"

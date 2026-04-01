@@ -20,110 +20,50 @@ class PublicController extends Controller
      */
     public function landing(): View
     {
+        // Get pinned articles
+        $pinned = Article::with(['user', 'category', 'tags'])
+            ->where('is_pinned', true)
+            ->where('is_active', true)
+            ->latest()
+            ->limit(3)
+            ->get();
+
+        // Get categories with their articles dynamically
+        $categories = Category::with(['children', 'articles' => function ($query) {
+            $query->where('is_active', true)->latest();
+        }])->whereNull('parent_id')->get();
+
+        // Build category data with articles for each child
+        $categoryData = [];
+        foreach ($categories as $parentCategory) {
+            if ($parentCategory->children->count() > 0) {
+                $categoryData[$parentCategory->name] = [
+                    'type' => 'parent',
+                    'children' => []
+                ];
+                foreach ($parentCategory->children as $childCategory) {
+                    $categoryData[$parentCategory->name]['children'][$childCategory->name] = $childCategory->articles()
+                        ->where('is_active', true)
+                        ->latest()
+                        ->limit(2)
+                        ->get();
+                }
+            } else {
+                $categoryData[$parentCategory->name] = [
+                    'type' => 'standalone',
+                    'articles' => $parentCategory->articles()
+                        ->where('is_active', true)
+                        ->latest()
+                        ->limit(4)
+                        ->get()
+                ];
+            }
+        }
+
         $data = [
             'sliders' => Slider::all(),
-            'pinned' => Article::with(['user', 'category', 'tags'])
-                ->where('is_pinned', true)
-                ->where('is_active', true)
-                ->latest()
-                ->limit(3)
-                ->get(),
-            'berita' => Article::with(['user', 'category', 'tags'])
-                ->whereHas('category', function ($query) {
-                    $query->where('name', 'Berita');
-                })
-                ->where('is_active', true)
-                ->latest()
-                ->limit(3)
-                ->get(),
-            'buletin' => Article::with(['user', 'category', 'tags'])
-                ->whereHas('category', function ($query) {
-                    $query->where('name', 'Buletin');
-                })
-                ->where('is_active', true)
-                ->latest()
-                ->limit(2)
-                ->get(),
-            'majalah' => Article::with(['user', 'category', 'tags'])
-                ->whereHas('category', function ($query) {
-                    $query->where('name', 'Majalah');
-                })
-                ->where('is_active', true)
-                ->latest()
-                ->limit(2)
-                ->get(),
-            'resensi_buku' => Article::with(['user', 'category', 'tags'])
-                ->whereHas('category', function ($query) {
-                    $query->where('name', 'Resensi Buku');
-                })
-                ->where('is_active', true)
-                ->latest()
-                ->limit(2)
-                ->get(),
-            'review_film' => Article::with(['user', 'category', 'tags'])
-                ->whereHas('category', function ($query) {
-                    $query->where('name', 'Review Film');
-                })
-                ->where('is_active', true)
-                ->latest()
-                ->limit(2)
-                ->get(),
-            'review_lagu' => Article::with(['user', 'category', 'tags'])
-                ->whereHas('category', function ($query) {
-                    $query->where('name', 'Review Lagu');
-                })
-                ->where('is_active', true)
-                ->latest()
-                ->limit(2)
-                ->get(),
-            'opini' => Article::with(['user', 'category', 'tags'])
-                ->whereHas('category', function ($query) {
-                    $query->where('name', 'Opini');
-                })
-                ->where('is_active', true)
-                ->latest()
-                ->limit(2)
-                ->get(),
-            'esai' => Article::with(['user', 'category', 'tags'])
-                ->whereHas('category', function ($query) {
-                    $query->where('name', 'Esai');
-                })
-                ->where('is_active', true)
-                ->latest()
-                ->limit(2)
-                ->get(),
-            'artikel' => Article::with(['user', 'category', 'tags'])
-                ->whereHas('category', function ($query) {
-                    $query->where('name', 'Artikel');
-                })
-                ->where('is_active', true)
-                ->latest()
-                ->limit(2)
-                ->get(),
-            'puisi' => Article::with(['user', 'category', 'tags'])
-                ->whereHas('category', function ($query) {
-                    $query->where('name', 'Puisi');
-                })
-                ->where('is_active', true)
-                ->latest()
-                ->limit(2)
-                ->get(),
-            'cerpen' => Article::with(['user', 'category', 'tags'])
-                ->whereHas('category', function ($query) {
-                    $query->where('name', 'Cerpen');
-                })
-                ->where('is_active', true)
-                ->latest()
-                ->limit(2)
-                ->get(),
-            'gaya_mahasiswa' => Article::with(['user', 'category', 'tags'])
-                ->whereHas('category', function ($query) {
-                    $query->where('name', 'Gaya Mahasiswa');
-                })
-                ->where('is_active', true)
-                ->latest()
-                ->limit(3)
-                ->get(),
+            'pinned' => $pinned,
+            'categories' => $categoryData,
         ];
 
         return view('pages.public.landing', compact('data'));
