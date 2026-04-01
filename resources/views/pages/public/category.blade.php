@@ -39,17 +39,13 @@
                                     {{ $article->title }}
                                 </h3>
 
-                                <!-- Category -->
-                                <div class="mt-2">
-                                    <span class="kt-badge kt-badge-outline kt-badge-primary rounded-full">
+                                <!-- Category & Tags -->
+                                <div class="mt-2 space-x-2">
+                                    <span class="kt-badge kt-badge-sm kt-badge-outline kt-badge-primary rounded-full">
                                         {{ $article->category->name }}
                                     </span>
-                                </div>
-
-                                <!-- Tags -->
-                                <div class="flex flex-wrap gap-2 mt-2">
                                     @foreach ($article->tags as $tag)
-                                        <span class="kt-badge kt-badge-outline kt-badge-secondary rounded-full">
+                                        <span class="kt-badge kt-badge-sm kt-badge-outline kt-badge-secondary rounded-full">
                                             {{ $tag->name ?? $tag }}
                                         </span>
                                     @endforeach
@@ -59,8 +55,8 @@
                                 <div class="grow"></div>
 
                                 <!-- Deskripsi -->
-                                <p class="text-sm text-muted-foreground text-justify mt-3 line-clamp-3">
-                                    {{ Str::limit(str_replace(['&nbsp;', '&#160;'], ' ', strip_tags($article->content)), 120, '...') }}
+                                <p class="text-sm text-muted-foreground text-justify mt-3 line-clamp-2">
+                                    {{ Str::limit(str_replace(['&nbsp;', '&#160;'], ' ', strip_tags($article->content)), 120) }}
                                 </p>
 
                                 <!-- Article Meta -->

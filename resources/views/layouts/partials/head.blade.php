@@ -18,7 +18,7 @@
 <meta content="summary_large_image" name="twitter:card" />
 <meta content="{{ ($data['article']->title ?? config('app.name')) . ' - lpmunsika.com' }}" name="twitter:title" />
 <meta
-    content="{{ Str::limit(strip_tags($data['article']->content ?? 'LPM Unsika merupakan unit kegiatan mahasiswa yang berperan sebagai wadah untuk menyalurkan bakat dan hobi dalam bidang jurnalistik.'), 160) }}"
+    content="{{ Str::limit(strip_tags($data['article']->content ?? 'LPM Unsika merupakan unit kegiatan mahasiswa yang berperan sebagai wadah untuk menyalurkan bakat dan hobi dalam bidang jurnalistik.'), 120) }}"
     name="twitter:description" />
 <meta
     content="{{ isset($data['article']) && $data['article']->thumbnail ? route('files', $data['article']->thumbnail) : asset('assets/media/app/og-image.jpg') }}"
@@ -31,7 +31,7 @@
 <meta content="{{ config('app.name') }}" property="og:site_name" />
 <meta content="{{ ($data['article']->title ?? config('app.name')) . ' - lpmunsika.com' }}" property="og:title" />
 <meta
-    content="{{ Str::limit(strip_tags($data['article']->content ?? 'LPM Unsika merupakan unit kegiatan mahasiswa yang berperan sebagai wadah untuk menyalurkan bakat dan hobi dalam bidang jurnalistik.'), 160) }}"
+    content="{{ Str::limit(strip_tags($data['article']->content ?? 'LPM Unsika merupakan unit kegiatan mahasiswa yang berperan sebagai wadah untuk menyalurkan bakat dan hobi dalam bidang jurnalistik.'), 120) }}"
     property="og:description" />
 <meta
     content="{{ isset($data['article']) && $data['article']->thumbnail ? route('files', $data['article']->thumbnail) : asset('assets/media/app/og-image.jpg') }}"

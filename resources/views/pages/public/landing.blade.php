@@ -30,14 +30,15 @@
                                                 <div class="w-full h-48 bg-muted"></div>
                                             @endif
                                         </a>
-                                        <div class="p-4">
+                                        <div class="p-4 flex flex-col justify-between h-full">
                                             <h3 class="font-semibold text-lg line-clamp-2">
                                                 <a href="{{ route('detail', $article->slug) }}" class="hover:text-primary">
                                                     {{ $article->title }}
                                                 </a>
                                             </h3>
                                             <p class="text-sm text-muted-foreground mt-2 line-clamp-2">
-                                                {{ Str::limit(strip_tags($article->content), 120) }}</p>
+                                                {{ Str::limit(str_replace(['&nbsp;', '&#160;'], ' ', strip_tags($article->content)), 120) }}
+                                            </p>
                                             <div
                                                 class="mt-3 flex items-center justify-between text-xs text-muted-foreground border-t border-border border-dashed pt-3">
                                                 <div class="flex items-center space-x-2">
@@ -77,7 +78,7 @@
                                                         <div class="w-full h-40 bg-muted"></div>
                                                     @endif
                                                 </a>
-                                                <div class="p-4">
+                                                <div class="p-4 flex flex-col justify-between h-full">
                                                     <h4 class="font-semibold text-base line-clamp-2">
                                                         <a href="{{ route('detail', $article->slug) }}"
                                                             class="hover:text-primary">
@@ -85,7 +86,8 @@
                                                         </a>
                                                     </h4>
                                                     <p class="text-xs text-muted-foreground mt-2 line-clamp-2">
-                                                        {{ Str::limit(strip_tags($article->content), 120) }}</p>
+                                                        {{ Str::limit(str_replace(['&nbsp;', '&#160;'], ' ', strip_tags($article->content)), 120) }}
+                                                    </p>
                                                     <div
                                                         class="mt-3 flex items-center justify-between text-xs text-muted-foreground border-t border-border border-dashed pt-3">
                                                         <div class="flex items-center space-x-2">

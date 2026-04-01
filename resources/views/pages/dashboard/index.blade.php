@@ -136,7 +136,7 @@
                             </div>
                             <div class="flex items-center justify-between">
                                 <p class="text-mono text-sm">
-                                    {{ Str::limit($comment->content, 100) }}
+                                    {{ $comment->content }}
                                 </p>
                             </div>
                             <div class="flex items-center justify-between text-mono text-xs mt-2">
@@ -201,7 +201,7 @@
                                     </a>
                                 </h4>
                                 <p class="text-mono text-sm mb-2">
-                                    {{ Str::limit($comment->content, 100) }}
+                                    {{ $comment->content }}
                                 </p>
                                 <div class="flex items-center justify-between text-mono text-xs">
                                     <span
