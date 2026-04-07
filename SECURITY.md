@@ -2,20 +2,21 @@
 
 ## Supported Versions
 
-Use this section to tell people about which versions of your project are
-currently being supported with security updates.
-
 | Version | Supported          |
 | ------- | ------------------ |
-| 5.1.x   | :white_check_mark: |
-| 5.0.x   | :x:                |
-| 4.0.x   | :white_check_mark: |
-| < 4.0   | :x:                |
+| 2.0     | :white_check_mark: |
+| 1.0     | :x:                |
+
+Version 1 is no longer being developed and does not receive security releases.
+Please upgrade to the latest version (2.0).
 
 ## Reporting a Vulnerability
 
-Use this section to tell people how to report a vulnerability.
+If you discover a security vulnerability in this app, please **do not immediately create a public issue**.
 
-Tell them where to go, how often they can expect to get an update on a
-reported vulnerability, what to expect if the vulnerability is accepted or
-declined, etc.
+Please report it via:
+
+- Email: feryanuar24@gmail.com
+- Or via private message
+
+We will respond to your report within **1–3 business days**.
