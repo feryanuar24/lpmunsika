@@ -1,24 +1,24 @@
 <?php
 
-use App\Http\Controllers\Admin\ChatController;
-use App\Http\Controllers\Admin\MenuController;
-use App\Http\Controllers\Admin\CategoryController;
-use App\Http\Controllers\Admin\TagController;
-use App\Http\Controllers\Admin\ArticleController;
-use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\ChatController;
+use App\Http\Controllers\MenuController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\TagController;
+use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Public\PublicController;
-use App\Http\Controllers\Admin\ProfileController;
-use App\Http\Controllers\Admin\EmbedController;
-use App\Http\Controllers\Admin\PermissionController;
-use App\Http\Controllers\Admin\PermissionRoleController;
-use App\Http\Controllers\Admin\RoleController;
-use App\Http\Controllers\Admin\PlatformController;
+use App\Http\Controllers\PublicController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\EmbedController;
+use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\PermissionRoleController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\PlatformController;
 use App\Http\Controllers\FileController;
-use App\Http\Controllers\Admin\FooterController;
-use App\Http\Controllers\Admin\SliderController;
-use App\Http\Controllers\Public\SitemapController;
-use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\FooterController;
+use App\Http\Controllers\SliderController;
+use App\Http\Controllers\SitemapController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------

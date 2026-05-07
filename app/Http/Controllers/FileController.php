@@ -3,16 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Storage;
-use App\Http\Controllers\Controller;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-use Throwable;
 
 class FileController extends Controller
 {
     /**
      * Serve file by filesystem disk.
      */
-    public function __invoke($path): StreamedResponse
+    public function __invoke(string $path): StreamedResponse
     {
         $path = ltrim($path, '/');
 

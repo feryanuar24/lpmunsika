@@ -7,10 +7,8 @@ use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Throwable;
 
 class RegisteredUserController extends Controller
 {
@@ -29,28 +27,20 @@ class RegisteredUserController extends Controller
     {
         $validated = $request->validated();
 
-        try {
-            DB::beginTransaction();
-
+        DB::transaction(function () use ($validated) {
             $user = User::create([
-                'name'     => $validated['name'],
-                'email'    => $validated['email'],
+                'name' => $validated['name'],
+                'email' => $validated['email'],
                 'password' => Hash::make($validated['password']),
             ]);
 
             $user->addRole('visitor');
+        });
 
-            DB::commit();
-
-            return redirect(route('login', absolute: false))
-                ->with('success', 'Akun berhasil dibuat. Silahkan masuk dan verifikasi email Anda.');
-        } catch (Throwable $th) {
-            DB::rollBack();
-            Log::error('Error during user registration: ' . $th->getMessage());
-
-            return back()
-                ->onlyInput(['name', 'email'])
-                ->with('error', 'Terjadi kesalahan saat mendaftar');
-        }
+        return redirect(route('login', absolute: false))
+            ->with(
+                'success',
+                'Akun berhasil dibuat. Silahkan masuk dan verifikasi email Anda.'
+            );
     }
 }
