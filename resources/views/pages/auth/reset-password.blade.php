@@ -31,7 +31,7 @@
                 <div>
                     <label class="kt-label" for="password">Kata Sandi Baru</label>
                     <div class="relative" data-kt-toggle-password="true">
-                        <input type="text" name="password" class="kt-input w-full pe-10"
+                        <input type="password" name="password" class="kt-input w-full pe-10"
                             placeholder="Masukkan kata sandi baru" required/><button
                             class="kt-btn kt-btn-icon kt-btn-ghost size-6 absolute end-2 top-1/2 -translate-y-1/2"
                             data-kt-toggle-password-trigger="true" type="button">
@@ -67,7 +67,7 @@
                 <div>
                     <label class="kt-label" for="password_confirmation">Konfirmasi Kata Sandi Baru</label>
                     <div class="relative" data-kt-toggle-password="true">
-                        <input type="text" name="password_confirmation" class="kt-input w-full pe-10"
+                        <input type="password" name="password_confirmation" class="kt-input w-full pe-10"
                             placeholder="Masukkan konfirmasi kata sandi baru" required/><button
                             class="kt-btn kt-btn-icon kt-btn-ghost size-6 absolute end-2 top-1/2 -translate-y-1/2"
                             data-kt-toggle-password-trigger="true" type="button">
