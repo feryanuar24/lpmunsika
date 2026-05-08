@@ -23,6 +23,7 @@ class PublicControllerTest extends TestCase
         ]);
 
         $user = User::factory()->create();
+
         $berita = Category::create([
             'name' => 'Berita',
             'slug' => 'berita',
@@ -46,8 +47,7 @@ class PublicControllerTest extends TestCase
         $response->assertViewHas('data', function (array $data): bool {
             return isset($data['sliders'])
                 && isset($data['pinned'])
-                && isset($data['berita'])
-                && isset($data['gaya_mahasiswa']);
+                && isset($data['categories']);
         });
     }
 

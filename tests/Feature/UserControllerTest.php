@@ -16,23 +16,10 @@ class UserControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->withoutMiddleware();
-        $role = Role::create([
-            'name' => 'role-user-test',
-            'display_name' => 'Role User Test',
-            'description' => 'Role for user test',
-        ]);
-        $user = User::factory()->create();
-        $user->addRole($role);
-        $this->actingAs($user);
-    }
-
     public function test_user_crud_datatable_and_notification_actions(): void
     {
+        $this->withoutMiddleware();
+
         $role = Role::create([
             'name' => 'admin-test',
             'display_name' => 'Admin Test',

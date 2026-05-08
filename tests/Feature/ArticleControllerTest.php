@@ -18,17 +18,12 @@ class ArticleControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->withoutMiddleware();
-    }
-
     public function test_article_flow_including_store_update_datatable_upload_and_delete_comment(): void
     {
+        $this->withoutMiddleware();
+
         Notification::fake();
-        Storage::fake(config('filesystems.default'));
+        Storage::fake();
 
         $role = Role::create([
             'name' => 'role-article-test',

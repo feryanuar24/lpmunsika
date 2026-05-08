@@ -11,11 +11,11 @@ use App\Models\Tag;
 use App\Models\Menu;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Str;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\ViewErrorBag;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -32,6 +32,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        View::composer('*', function ($view) {
+            if (!$view->offsetExists('errors')) {
+                $view->offsetSet('errors', session()->get('errors') ?? new ViewErrorBag());
+            }
+        });
+
         View::composer('*', function ($view) {
             $user = User::find(Auth::id());
 
@@ -65,7 +71,9 @@ class AppServiceProvider extends ServiceProvider
             if ($matched) {
                 $chats = Chat::latest()->take(10)->get()->sortBy('created_at')->values();
                 $menus = Menu::all();
-                $notifications = $user->notifications()->latest()->take(5)->get();
+                $notifications = $user
+                    ? $user->notifications()->latest()->take(5)->get()
+                    : collect();
                 $menu_tree = $this->buildMenuTree($menus);
 
                 $view->with('chats', $chats)

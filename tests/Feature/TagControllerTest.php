@@ -12,23 +12,10 @@ class TagControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->withoutMiddleware();
-        $role = Role::create([
-            'name' => 'role-tag-test',
-            'display_name' => 'Role Tag Test',
-            'description' => 'Role for tag test',
-        ]);
-        $user = User::factory()->create();
-        $user->addRole($role);
-        $this->actingAs($user);
-    }
-
     public function test_tag_crud_and_datatable_flow(): void
     {
+        $this->withoutMiddleware();
+
         $store = $this->post(route('tags.store'), [
             'name' => 'Tag Test',
             'description' => 'Deskripsi tag',

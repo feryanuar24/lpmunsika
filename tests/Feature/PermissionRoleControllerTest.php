@@ -12,23 +12,10 @@ class PermissionRoleControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->withoutMiddleware();
-        $role = Role::create([
-            'name' => 'role-permission-role-test',
-            'display_name' => 'Role Permission Role Test',
-            'description' => 'Role for permission-role test',
-        ]);
-        $user = User::factory()->create();
-        $user->addRole($role);
-        $this->actingAs($user);
-    }
-
     public function test_permission_role_create_store_datatable_and_destroy(): void
     {
+        $this->withoutMiddleware();
+        
         $permission = Permission::create([
             'name' => 'article-management',
             'display_name' => 'Article Management',

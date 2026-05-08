@@ -13,23 +13,10 @@ class EmbedControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->withoutMiddleware();
-        $role = Role::create([
-            'name' => 'role-embed-test',
-            'display_name' => 'Role Embed Test',
-            'description' => 'Role for embed test',
-        ]);
-        $user = User::factory()->create();
-        $user->addRole($role);
-        $this->actingAs($user);
-    }
-
     public function test_embed_crud_and_datatable_flow(): void
     {
+        $this->withoutMiddleware();
+
         $platform = Platform::create([
             'name' => 'YouTube',
             'url' => 'https://youtube.com',

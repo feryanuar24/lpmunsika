@@ -18,6 +18,11 @@ class DashboardController extends Controller
      */
     public function __invoke(): View
     {
+        $driverName = DB::connection()->getDriverName();
+        $monthExpression = $driverName === 'sqlite'
+            ? "strftime('%Y-%m', created_at)"
+            : 'DATE_FORMAT(created_at, "%Y-%m")';
+
         $user = User::find(Auth::id());
 
         if ($user->hasPermission('dashboard-management')) {
@@ -44,7 +49,7 @@ class DashboardController extends Controller
                     }),
 
                 'user_registration_trend' => User::select(
-                    DB::raw('DATE_FORMAT(created_at, "%Y-%m") as month'),
+                    DB::raw($monthExpression . ' as month'),
                     DB::raw('COUNT(*) as count')
                 )
                     ->where('created_at', '>=', Carbon::now()->subMonths(12))
@@ -60,7 +65,7 @@ class DashboardController extends Controller
                     }),
 
                 'article_publishing_trend' => Article::select(
-                    DB::raw('DATE_FORMAT(created_at, "%Y-%m") as month'),
+                    DB::raw($monthExpression . ' as month'),
                     DB::raw('COUNT(*) as count')
                 )
                     ->where('created_at', '>=', Carbon::now()->subMonths(12))
@@ -108,7 +113,7 @@ class DashboardController extends Controller
                     ->limit(5)
                     ->get(),
                 'comments_per_month' => Comment::select(
-                    DB::raw('DATE_FORMAT(created_at, "%Y-%m") as month'),
+                    DB::raw($monthExpression . ' as month'),
                     DB::raw('COUNT(*) as count')
                 )
                     ->where('user_id', $user->id)

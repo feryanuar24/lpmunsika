@@ -12,23 +12,10 @@ class CategoryControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->withoutMiddleware();
-        $role = Role::create([
-            'name' => 'role-category-test',
-            'display_name' => 'Role Category Test',
-            'description' => 'Role for category test',
-        ]);
-        $user = User::factory()->create();
-        $user->addRole($role);
-        $this->actingAs($user);
-    }
-
     public function test_category_crud_and_datatable_flow(): void
     {
+        $this->withoutMiddleware();
+        
         $store = $this->post(route('categories.store'), [
             'parent_id' => null,
             'name' => 'Kategori Test',

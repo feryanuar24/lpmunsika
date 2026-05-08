@@ -12,23 +12,10 @@ class MenuControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->withoutMiddleware();
-        $role = Role::create([
-            'name' => 'role-menu-test',
-            'display_name' => 'Role Menu Test',
-            'description' => 'Role for menu test',
-        ]);
-        $user = User::factory()->create();
-        $user->addRole($role);
-        $this->actingAs($user);
-    }
-
     public function test_menu_index_and_datatable(): void
     {
+        $this->withoutMiddleware();
+
         $parent = Menu::create([
             'name' => 'Parent Menu',
             'url' => '/parent',

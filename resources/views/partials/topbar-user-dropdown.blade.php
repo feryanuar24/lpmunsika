@@ -1,4 +1,5 @@
 <!-- User -->
+@auth
 <div class="shrink-0" data-kt-dropdown="true" data-kt-dropdown-offset="10px, 10px" data-kt-dropdown-offset-rtl="-20px, 10px"
     data-kt-dropdown-placement="bottom-end" data-kt-dropdown-placement-rtl="bottom-start" data-kt-dropdown-trigger="click">
     <div class="shrink-0 cursor-pointer" data-kt-dropdown-toggle="true">
@@ -103,3 +104,4 @@
         });
     </script>
 @endpush
+@endauth

@@ -12,23 +12,10 @@ class PlatformControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->withoutMiddleware();
-        $role = Role::create([
-            'name' => 'role-platform-test',
-            'display_name' => 'Role Platform Test',
-            'description' => 'Role for platform test',
-        ]);
-        $user = User::factory()->create();
-        $user->addRole($role);
-        $this->actingAs($user);
-    }
-
     public function test_platform_crud_and_datatable_flow(): void
     {
+        $this->withoutMiddleware();
+        
         $store = $this->post(route('platforms.store'), [
             'name' => 'YouTube Test',
             'url' => 'https://youtube.com',

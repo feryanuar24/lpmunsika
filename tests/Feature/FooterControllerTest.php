@@ -12,23 +12,10 @@ class FooterControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->withoutMiddleware();
-        $role = Role::create([
-            'name' => 'role-footer-test',
-            'display_name' => 'Role Footer Test',
-            'description' => 'Role for footer test',
-        ]);
-        $user = User::factory()->create();
-        $user->addRole($role);
-        $this->actingAs($user);
-    }
-
     public function test_footer_crud_and_datatable_flow(): void
     {
+        $this->withoutMiddleware();
+
         $store = $this->post(route('footers.store'), [
             'name' => 'Footer Test',
             'url' => 'https://example.com/footer',

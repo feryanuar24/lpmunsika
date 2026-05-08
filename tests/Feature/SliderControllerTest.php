@@ -14,23 +14,10 @@ class SliderControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->withoutMiddleware();
-        $role = Role::create([
-            'name' => 'role-slider-test',
-            'display_name' => 'Role Slider Test',
-            'description' => 'Role for slider test',
-        ]);
-        $user = User::factory()->create();
-        $user->addRole($role);
-        $this->actingAs($user);
-    }
-
     public function test_slider_crud_and_datatable_flow(): void
     {
+        $this->withoutMiddleware();
+
         Storage::fake(config('filesystems.default'));
 
         $store = $this->post(route('sliders.store'), [

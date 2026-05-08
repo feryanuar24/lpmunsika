@@ -11,23 +11,10 @@ class RoleControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->withoutMiddleware();
-        $role = Role::create([
-            'name' => 'role-role-test',
-            'display_name' => 'Role Role Test',
-            'description' => 'Role for role test',
-        ]);
-        $user = User::factory()->create();
-        $user->addRole($role);
-        $this->actingAs($user);
-    }
-
     public function test_role_crud_and_datatable_flow(): void
     {
+        $this->withoutMiddleware();
+
         $store = $this->post(route('roles.store'), [
             'name' => 'role-test',
             'display_name' => 'Role Test',
