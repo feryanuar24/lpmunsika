@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Public;
+namespace Tests\Feature;
 
 use App\Models\Article;
 use App\Models\Category;
