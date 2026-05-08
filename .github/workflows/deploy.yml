@@ -12,11 +12,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Deploy build to Laravel core
       - name: Deploy Build to Laravel Core
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
@@ -27,8 +25,7 @@ jobs:
           server-dir: /laravel/public/build/
           state-name: .ftp-deploy-sync-state.json
 
-      # Deploy Laravel core
-      - name: Deploy Core Laravel
+      - name: Deploy Laravel Core
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
@@ -46,7 +43,6 @@ jobs:
             storage/logs/**
             .env
 
-      # Deploy public
       - name: Replace index.php for production
         run: cp public/index.production.php public/index.php
 
