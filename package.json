@@ -13,7 +13,7 @@
         "axios": "^1.15.2",
         "blade-formatter": "^1.42.2",
         "laravel-vite-plugin": "^3.1.0",
-        "postcss": "^8.4.32",
+        "postcss": "^8.5.14",
         "vite": "^8.0"
     },
     "dependencies": {
