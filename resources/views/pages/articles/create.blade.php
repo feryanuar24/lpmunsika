@@ -301,7 +301,8 @@
                             'mergeTableCells'
                         ]
                     },
-                    extraPlugins: [MyCustomUploadAdapterPlugin]
+                    extraPlugins: [MyCustomUploadAdapterPlugin],
+                    licenseKey: 'GPL'
                 })
                 .catch(error => {
                     console.error(error);
