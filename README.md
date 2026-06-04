@@ -1,8 +1,8 @@
 # LPM RESONAN NEWS PORTAL
 
 [![Laravel](https://img.shields.io/badge/Laravel-12.x-FF2D20?style=flat-square&logo=laravel)](https://laravel.com)
-[![PHP](https://img.shields.io/badge/PHP-8.3+-777BB4?style=flat-square&logo=php)](https://php.net)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-3.x-38B2AC?style=flat-square&logo=tailwind-css)](https://tailwindcss.com)
+[![PHP](https://img.shields.io/badge/PHP-8.2+-777BB4?style=flat-square&logo=php)](https://php.net)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-4s.x-38B2AC?style=flat-square&logo=tailwind-css)](https://tailwindcss.com)
 
 ## About
 
@@ -57,7 +57,7 @@
 
 ## System Requirements
 
-- PHP >= 8.3
+- PHP >= 8.2
 - Composer
 - Node.js & NPM
 - MySQL
@@ -68,7 +68,7 @@
 ### 1. Clone Repository
 
 ```bash
-git clone https://github.com/feryanuar24/lpmunsika-2.git
+git clone https://github.com/feryanuar24/lpmunsika.git
 cd lpmunsika
 ```
 
@@ -140,14 +140,3 @@ Contributions are welcome for all members of LPM RESONAN UNSIKA!
 ## License
 
 This project is licensed under [MIT License](LICENSE).
-
-## Acknowledgments
-
-**LPM RESONAN UNSIKA Development Team**
-
-## Contact & Support
-
-- **Website**: [LPM RESONAN UNSIKA Official](https://resonan.lpmunsika.com)
-- **Email**: lpmunsika@gmail.com
-- **Instagram**: [@lpmresonan](https://instagram.com/@lpmresonan)
-- **Issues**: [GitHub Issues](https://github.com/feryanuar24/lpmresonan/issues)
