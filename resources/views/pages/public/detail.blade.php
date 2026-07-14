@@ -57,7 +57,7 @@
 
             <!-- Article Content -->
             <div class="kt-card-content py-10">
-                <div class="text-foreground leading-relaxed text-justify">
+                <div class="text-foreground leading-relaxed">
                     {!! $data['article']->content !!}
                 </div>
             </div>
@@ -69,7 +69,8 @@
                     <form action="{{ route('like') }}" method="post">
                         @csrf
                         <input type="text" name="slug" value="{{ $data['article']->slug }}" hidden />
-                        <button title="Sukai dan dukung tulisan ini" type="submit" class="kt-btn kt-btn-destructive kt-btn-sm">
+                        <button title="Sukai dan dukung tulisan ini" type="submit"
+                            class="kt-btn kt-btn-destructive kt-btn-sm">
                             <i class="ki-filled ki-heart text-sm mr-2"></i>
                             {{ $data['article']->likes }} Suka
                         </button>
@@ -117,8 +118,7 @@
                             @csrf
                             <div class="flex items-center gap-2">
                                 <input type="text" name="slug" value="{{ $data['article']->slug }}" hidden />
-                                <textarea type="text" name="content" placeholder="Tulis komentar..." class="kt-textarea" cols="4"
-                                    required>{{ old('content') }}</textarea>
+                                <textarea type="text" name="content" placeholder="Tulis komentar..." class="kt-textarea" cols="4" required>{{ old('content') }}</textarea>
                                 <button title="Kirim komentar" type="submit" class="kt-btn kt-btn-sm kt-btn-mono">
                                     <i class="ki-filled ki-paper-plane text-sm"></i>
                                 </button>
