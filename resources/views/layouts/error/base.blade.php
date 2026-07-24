@@ -14,7 +14,8 @@
         <!-- Wrapper -->
         <div class="kt-wrapper flex grow flex-col">
             <!-- Content -->
-            <main class="grow pt-5" id="content" role="content">
+            <main class="w-full max-w-2xl mx-auto flex-1 flex flex-col justify-center px-4 py-8" id="content"
+                role="content">
                 @yield('content')
             </main>
             <!-- End of Content -->

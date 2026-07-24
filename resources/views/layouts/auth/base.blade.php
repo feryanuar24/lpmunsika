@@ -10,7 +10,7 @@
 
     <!-- Page -->
     <!-- Main -->
-    <div class="grid lg:grid-cols-5 grid-cols-1 min-h-screen">
+    <div class="kt-container-fixed grid lg:grid-cols-5 grid-cols-1 min-h-screen">
         <div class="lg:col-span-2">
             @include('layouts.auth.sidebar')
         </div>

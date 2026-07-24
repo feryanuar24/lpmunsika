@@ -16,7 +16,7 @@
             @include('layouts.public.header')
 
             <!-- Content -->
-            <main class="py-5 grid grid-cols-1 lg:grid-cols-3" id="content" role="content">
+            <main class="kt-container-fixed py-5 grid grid-cols-1 lg:grid-cols-3" id="content" role="content">
                 <div class="col-span-1 lg:col-span-2">
                     @yield('content')
                 </div>
