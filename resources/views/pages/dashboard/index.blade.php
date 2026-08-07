@@ -2,7 +2,7 @@
 
 @section('content')
     <!-- Head Container -->
-    <div class="kt-container-fixed">
+    <div class="mx-7.5">
         <div class="flex flex-wrap items-center justify-between gap-5 pb-7.5 lg:items-end">
             <div class="flex flex-col justify-center gap-2">
                 <h1 class="text-xl font-medium leading-none text-mono">
@@ -15,7 +15,7 @@
     <!-- End of Head Container -->
 
     <!-- Body Container -->
-    <div class="kt-container-fixed">
+    <div class="mx-7.5">
         @permission('dashboard-management')
             <!-- Statistics Cards -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-7.5">

@@ -1,7 +1,7 @@
 @extends('layouts.public.base')
 
 @section('content')
-    <div class="kt-container-fixed space-y-5">
+    <div class="space-y-5">
         <div class="space-y-5">
             @if ($data['sliders']->isNotEmpty())
                 @include('partials.landing.sliders')

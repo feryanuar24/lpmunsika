@@ -1,9 +1,8 @@
-<div class="kt-container-fixed space-y-5">
+<div class="flex flex-col justify-center items-end space-y-5">
     <!-- Related Articles -->
     @if (!empty($data['related'] ?? null))
-        <div>
-            <h2
-                class="text-3xl font-semibold mb-8 text-foreground border-border border-dashed border-b-2 pb-2 w-full">
+        <div class="w-full">
+            <h2 class="text-3xl font-semibold mb-8 text-foreground border-border border-dashed border-b-2 pb-2 w-full">
                 Lainnya</h2>
             <div class="space-y-5">
                 @foreach ($data['related'] as $article)
@@ -31,7 +30,8 @@
                                         {{ $article->category->name }}
                                     </span>
                                     @foreach ($article->tags as $tag)
-                                        <span class="kt-badge kt-badge-sm kt-badge-outline kt-badge-secondary rounded-full">
+                                        <span
+                                            class="kt-badge kt-badge-sm kt-badge-outline kt-badge-secondary rounded-full">
                                             {{ $tag->name ?? $tag }}
                                         </span>
                                     @endforeach
@@ -67,15 +67,13 @@
     @endif
 
     <!-- YouTube Embed -->
-    <div>
-        <h2
-            class="text-3xl font-semibold mb-8 text-foreground border-border border-dashed border-b-2 pb-2 w-full">
+    <div class="w-full">
+        <h2 class="text-3xl font-semibold mb-8 text-foreground border-border border-dashed border-b-2 pb-2 w-full">
             LPM Channel</h2>
         <div class="space-y-5">
             @foreach ($youtube as $embed)
                 <div class="kt-card overflow-hidden">
-                    <div
-                        class="w-full embed-preview">
+                    <div class="w-full embed-preview">
                         {!! $embed->embed_code !!}
                     </div>
                 </div>
@@ -84,15 +82,13 @@
     </div>
 
     <!-- Spotify Embed -->
-    <div>
-        <h2
-            class="text-3xl font-semibold mb-8 text-foreground border-border border-dashed border-b-2 pb-2 w-full">
+    <div class="w-full">
+        <h2 class="text-3xl font-semibold mb-8 text-foreground border-border border-dashed border-b-2 pb-2 w-full">
             Podcast NOL SKS</h2>
         <div class="space-y-5">
             @foreach ($spotify as $embed)
                 <div class="kt-card overflow-hidden">
-                    <div
-                        class="w-full embed-preview">
+                    <div class="w-full embed-preview">
                         {!! $embed->embed_code !!}
                     </div>
                 </div>
@@ -101,9 +97,8 @@
     </div>
 
     <!-- Categories -->
-    <div>
-        <h2
-            class="text-3xl font-semibold mb-8 text-foreground border-border border-dashed border-b-2 pb-2 w-full">
+    <div class="w-full">
+        <h2 class="text-3xl font-semibold mb-8 text-foreground border-border border-dashed border-b-2 pb-2 w-full">
             Kategori</h2>
         <div class="flex flex-wrap gap-2">
             @foreach ($categories as $category)
@@ -114,9 +109,8 @@
     </div>
 
     <!-- Tags -->
-    <div>
-        <h2
-            class="text-3xl font-semibold mb-8 text-foreground border-border border-dashed border-b-2 pb-2 w-full">
+    <div class="w-full">
+        <h2 class="text-3xl font-semibold mb-8 text-foreground border-border border-dashed border-b-2 pb-2 w-full">
             Tag</h2>
         <div class="flex flex-wrap gap-2">
             @foreach ($tags as $tag)

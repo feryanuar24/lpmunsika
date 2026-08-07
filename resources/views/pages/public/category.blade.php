@@ -1,7 +1,7 @@
 @extends('layouts.public.base')
 
 @section('content')
-    <div class="kt-container-fixed py-8">
+    <div class="py-8">
         <!-- Page Header -->
         <div class="mb-8 space-y-3">
             <h1 class="text-3xl font-semibold text-foreground border-b-2 border-border border-dashed pb-2">

@@ -1,7 +1,7 @@
 @extends('layouts.public.base')
 
 @section('content')
-    <div class="kt-container-fixed space-y-5">
+    <div class="space-y-5">
         <div class="kt-card px-1 lg:px-5">
             <!-- Article Header -->
             <div class="kt-card-header w-full flex-col flex items-start space-y-5 py-10">

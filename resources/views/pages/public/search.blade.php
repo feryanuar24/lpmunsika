@@ -1,7 +1,7 @@
 @extends('layouts.public.base')
 
 @section('content')
-    <div class="kt-container-fixed py-8">
+    <div class="py-8">
         <!-- Page Header -->
         <div class="mb-8 space-y-3">
             <h1 class="text-3xl font-semibold text-foreground border-b-2 border-border border-dashed pb-2">
@@ -24,8 +24,8 @@
         <div class="mb-8">
             <form action="{{ route('search') }}" method="GET" class="flex gap-3">
                 <div class="flex-1">
-                    <input type="text" name="query" value="{{ $data['query'] }}"
-                        placeholder="Cari Artikel..." class="kt-input w-full">
+                    <input type="text" name="query" value="{{ $data['query'] }}" placeholder="Cari Artikel..."
+                        class="kt-input w-full">
                 </div>
                 <button type="submit" class="kt-btn kt-btn-mono">
                     <i class="ki-filled ki-magnifier mr-2"></i>
@@ -42,8 +42,9 @@
                             <!-- Article Image -->
                             <div>
                                 @if ($article->thumbnail)
-                                    <img src="{{ route('files', $article->thumbnail) }}" alt="Thumbnail artikel {{ $article->title }}"
-                                        class="w-full h-48 object-cover" loading="lazy" decoding="async">
+                                    <img src="{{ route('files', $article->thumbnail) }}"
+                                        alt="Thumbnail artikel {{ $article->title }}" class="w-full h-48 object-cover"
+                                        loading="lazy" decoding="async">
                                 @endif
                             </div>
 
