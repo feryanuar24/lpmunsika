@@ -13,10 +13,18 @@
             </div>
         </div>
         <div class="kt-card-content space-y-5">
+            <div class="flex flex-wrap gap-4 mt-4 justify-end">
+                <span class="kt-badge {{ $data['article']->is_active ? 'kt-badge-success' : 'kt-badge-destructive' }}">
+                    {{ $data['article']->is_active ? 'Dipublikasikan' : 'Diarsipkan' }}
+                </span>
+                <span class="kt-badge {{ $data['article']->is_pinned ? 'kt-badge-success' : 'kt-badge-destructive' }}">
+                    {{ $data['article']->is_pinned ? 'Disematkan' : 'Tidak Disematkan' }}
+                </span>
+            </div>
             @if ($data['article']->thumbnail)
                 <img src="{{ route('files', $data['article']->thumbnail) }}"
                     alt="Thumbnail artikel {{ $data['article']->title }}"
-                    class="rounded-lg shadow-lg max-h-80 object-cover w-full max-w-xl" />
+                    class="rounded-lg shadow-lg max-h-80 object-cover w-full max-w-xl mx-auto block" />
             @endif
             <div class="flex flex-wrap gap-4 text-gray-500 text-sm justify-center">
                 <div class="flex items-center gap-1"><i class="ki-filled ki-user"></i>
@@ -36,20 +44,17 @@
                 </div>
             </div>
             <div class="text-3xl font-semibold text-center">{{ $data['article']->title }}</div>
-            <div class="flex flex-wrap gap-2 justify-center mb-2">
+            <div class="flex flex-wrap gap-2 justify-center items-center mb-4">
                 @foreach ($data['article']->tags as $tag)
-                    <span class="kt-badge kt-badge-secondary">{{ $tag->name ?? $tag }}</span>
+                    <span
+                        class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 border border-gray-200 text-gray-700 text-xs font-medium rounded-full hover:bg-gray-200 transition-colors duration-200">
+                        <i class="ki-filled ki-tag text-gray-500 text-sm"></i>
+                        {{ $tag->name ?? $tag }}
+                    </span>
                 @endforeach
             </div>
-            <div class="text-justify leading-relaxed text-foreground">{!! $data['article']->content !!}</div>
-            <div class="flex flex-wrap gap-4 mt-4 justify-center">
-                <span class="kt-badge {{ $data['article']->is_active ? 'kt-badge-success' : 'kt-badge-destructive' }}">
-                    {{ $data['article']->is_active ? 'Dipublikasikan' : 'Diarsipkan' }}
-                </span>
-                <span class="kt-badge {{ $data['article']->is_pinned ? 'kt-badge-success' : 'kt-badge-destructive' }}">
-                    {{ $data['article']->is_pinned ? 'Disematkan' : 'Tidak Disematkan' }}
-                </span>
-            </div>
+            <div class="text-justify leading-relaxed text-foreground kt-container-fixed">{!! $data['article']->content !!}</div>
+
             @if ($data['article']->comments->count() > 0)
                 <div class="space-y-3">
                     @foreach ($data['article']->comments as $comment)
@@ -68,8 +73,8 @@
                                     </div>
                                     <p class="text-foreground">{{ $comment->content }}</p>
                                 </div>
-                                <form class="delete-comment-form" action="{{ route('articles.delete-comment', $comment->id) }}"
-                                    method="post">
+                                <form class="delete-comment-form"
+                                    action="{{ route('articles.delete-comment', $comment->id) }}" method="post">
                                     @csrf
                                     @method('DELETE')
                                     <button type="SUBMIT" class="kt-btn kt-btn-sm kt-btn-destructive">
