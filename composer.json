@@ -10,6 +10,7 @@
         "kreait/laravel-firebase": "^7.0",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",
+        "league/commonmark": "^2.9",
         "santigarcor/laratrust": "^8.5",
         "spatie/laravel-sitemap": "^7.3"
     },
