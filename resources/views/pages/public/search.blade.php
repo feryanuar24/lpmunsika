@@ -71,7 +71,7 @@
                                 <div class="grow"></div>
 
                                 <!-- Deskripsi -->
-                                <p class="text-sm text-muted-foreground text-justify mt-3 line-clamp-2">
+                                <p class="text-sm text-muted-foreground text-left mt-3 line-clamp-3">
                                     {{ Str::limit(str_replace(['&nbsp;', '&#160;'], ' ', strip_tags($article->content)), 120) }}
                                 </p>
 

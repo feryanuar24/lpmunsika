@@ -36,7 +36,7 @@
                                                     {{ $article->title }}
                                                 </a>
                                             </h3>
-                                            <p class="text-sm text-muted-foreground mt-2 line-clamp-2">
+                                            <p class="text-sm text-muted-foreground mt-2 line-clamp-3 text-left">
                                                 {{ Str::limit(str_replace(['&nbsp;', '&#160;'], ' ', strip_tags($article->content)), 120) }}
                                             </p>
                                             <div
@@ -85,7 +85,7 @@
                                                             {{ $article->title }}
                                                         </a>
                                                     </h4>
-                                                    <p class="text-sm text-muted-foreground mt-2 line-clamp-2">
+                                                    <p class="text-sm text-muted-foreground mt-2 line-clamp-3 text-left">
                                                         {{ Str::limit(str_replace(['&nbsp;', '&#160;'], ' ', strip_tags($article->content)), 120) }}
                                                     </p>
                                                     <div
