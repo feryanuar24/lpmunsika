@@ -21,8 +21,8 @@
                 <!-- Input Email -->
                 <div>
                     <label class="kt-label" for="email">Email</label>
-                    <input type="email" name="email" id="email" class="kt-input w-full"
-                        value="{{ old('email') }}" placeholder="Masukkan alamat email" required>
+                    <input type="email" name="email" id="email" class="kt-input w-full" value="{{ old('email') }}"
+                        placeholder="Masukkan alamat email" required>
                     @error('email')
                         <span class="text-destructive mt-1 text-sm">{{ $message }}</span>
                     @enderror
@@ -47,14 +47,6 @@
     </script>
 
     <script>
-        grecaptcha.ready(function() {
-            grecaptcha.execute('{{ config('services.recaptcha.site_key', env('RECAPTCHA_SITE_KEY')) }}', {
-                action: 'forgot_password'
-            }).then(function(token) {
-                document.getElementById('g-recaptcha-response').value = token;
-            });
-        });
-
         document.getElementById('forgot-password-form').addEventListener('submit', function(e) {
             e.preventDefault();
 
@@ -81,9 +73,29 @@
                             }
                         });
 
-                        setTimeout(() => {
-                            this.submit();
-                        }, 300);
+                        const form = this;
+                        const siteKey =
+                            '{{ config('services.recaptcha.site_key', env('RECAPTCHA_SITE_KEY')) }}';
+
+                        const submitForm = () => {
+                            if (typeof grecaptcha !== 'undefined' && siteKey) {
+                                grecaptcha.ready(function() {
+                                    grecaptcha.execute(siteKey, {
+                                        action: 'forgot_password'
+                                    }).then(function(token) {
+                                        document.getElementById('g-recaptcha-response')
+                                            .value = token;
+                                        form.submit();
+                                    }).catch(function() {
+                                        form.submit();
+                                    });
+                                });
+                            } else {
+                                form.submit();
+                            }
+                        };
+
+                        setTimeout(submitForm, 300);
                     }
                 });
         });

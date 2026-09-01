@@ -19,8 +19,8 @@
                     <label class="kt-label" for="password">Kata Sandi Saat Ini</label>
                     <div class="relative" data-kt-toggle-password="true">
                         <input type="password" name="password" id="password" class="kt-input w-full pe-10"
-                            placeholder="Masukkan kata sandi" required/><button
-                            class="kt-btn kt-btn-icon kt-btn-ghost size-6 absolute end-2 top-1/2 -translate-y-1/2"
+                            placeholder="Masukkan kata sandi" required /><button
+                            class="kt-btn kt-btn-icon kt-btn-ghost size-6 absolute inset-e-2 top-1/2 -translate-y-1/2"
                             data-kt-toggle-password-trigger="true" type="button">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -69,14 +69,6 @@
     </script>
 
     <script>
-        grecaptcha.ready(function() {
-            grecaptcha.execute('{{ config('services.recaptcha.site_key', env('RECAPTCHA_SITE_KEY')) }}', {
-                action: 'confirm_password'
-            }).then(function(token) {
-                document.getElementById('g-recaptcha-response').value = token;
-            });
-        });
-
         document.getElementById('confirm-password-form').addEventListener('submit', function(e) {
             e.preventDefault();
 
@@ -103,9 +95,29 @@
                             }
                         });
 
-                        setTimeout(() => {
-                            this.submit();
-                        }, 300);
+                        const form = this;
+                        const siteKey =
+                            '{{ config('services.recaptcha.site_key', env('RECAPTCHA_SITE_KEY')) }}';
+
+                        const submitForm = () => {
+                            if (typeof grecaptcha !== 'undefined' && siteKey) {
+                                grecaptcha.ready(function() {
+                                    grecaptcha.execute(siteKey, {
+                                        action: 'confirm_password'
+                                    }).then(function(token) {
+                                        document.getElementById('g-recaptcha-response')
+                                            .value = token;
+                                        form.submit();
+                                    }).catch(function() {
+                                        form.submit();
+                                    });
+                                });
+                            } else {
+                                form.submit();
+                            }
+                        };
+
+                        setTimeout(submitForm, 300);
                     }
                 });
         });

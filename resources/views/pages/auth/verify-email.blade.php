@@ -14,7 +14,8 @@
             <form id="verify-email-form" action="{{ route('verification.send') }}" method="POST" class="space-y-5">
                 @csrf
 
-                <p class="font-normal text-foreground text-sm text-justify">Terima kasih telah mendaftar! Sebelum memulai, dapatkah Anda memverifikasi alamat email Anda dengan
+                <p class="font-normal text-foreground text-sm text-justify">Terima kasih telah mendaftar! Sebelum memulai,
+                    dapatkah Anda memverifikasi alamat email Anda dengan
                     mengklik tautan yang baru saja kami kirimkan ke email Anda? Jika Anda tidak menerima email tersebut,
                     kami dengan senang hati akan mengirimkan email lain untuk Anda.</p>
 
@@ -34,14 +35,6 @@
     </script>
 
     <script>
-        grecaptcha.ready(function() {
-            grecaptcha.execute('{{ config('services.recaptcha.site_key', env('RECAPTCHA_SITE_KEY')) }}', {
-                action: 'verify_email'
-            }).then(function(token) {
-                document.getElementById('g-recaptcha-response').value = token;
-            });
-        });
-
         document.getElementById('verify-email-form').addEventListener('submit', function(e) {
             e.preventDefault();
 
@@ -68,12 +61,31 @@
                             }
                         });
 
-                        setTimeout(() => {
-                            this.submit();
-                        }, 300);
+                        const form = this;
+                        const siteKey =
+                            '{{ config('services.recaptcha.site_key', env('RECAPTCHA_SITE_KEY')) }}';
+
+                        const submitForm = () => {
+                            if (typeof grecaptcha !== 'undefined' && siteKey) {
+                                grecaptcha.ready(function() {
+                                    grecaptcha.execute(siteKey, {
+                                        action: 'verify_email'
+                                    }).then(function(token) {
+                                        document.getElementById('g-recaptcha-response')
+                                            .value = token;
+                                        form.submit();
+                                    }).catch(function() {
+                                        form.submit();
+                                    });
+                                });
+                            } else {
+                                form.submit();
+                            }
+                        };
+
+                        setTimeout(submitForm, 300);
                     }
                 });
         });
-
     </script>
 @endpush
