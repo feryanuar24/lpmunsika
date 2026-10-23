@@ -1,5 +1,44 @@
-.env
-.env.production
+# Git and IDE files
+.git
+.github
+.idea
+.vscode
+.fleet
+.zed
+.editorconfig
+*.log
 
-node_modules
-vendor
+# Test cache
+.phpunit.result.cache
+.phpunit.cache
+
+# Dependencies
+/node_modules
+/vendor
+
+# Laravel generated files & uploads
+/public/storage
+/public/build
+/public/hot
+/storage/*.key
+/storage/pail
+/storage/logs/*
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Docker configuration files
+Dockerfile
+docker-compose*.yml
+.dockerignore
+/nginx.conf
+
+# Documentation & tests
+README.md
+/tests
+
