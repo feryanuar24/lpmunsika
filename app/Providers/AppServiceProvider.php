@@ -10,7 +10,11 @@ use App\Models\Platform;
 use App\Models\Tag;
 use App\Models\Menu;
 use App\Models\User;
+use App\Models\Article;
+use App\Models\Slider;
+use App\Observers\ContentCacheObserver;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Str;
@@ -32,6 +36,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        foreach ([Article::class, Category::class, Embed::class, Footer::class, Menu::class, Platform::class, Slider::class, Tag::class] as $model) {
+            $model::observe(ContentCacheObserver::class);
+        }
+
         View::composer('*', function ($view) {
             if (!$view->offsetExists('errors')) {
                 $view->offsetSet('errors', session()->get('errors') ?? new ViewErrorBag());
@@ -70,7 +78,7 @@ class AppServiceProvider extends ServiceProvider
 
             if ($matched) {
                 $chats = Chat::latest()->take(10)->get()->sortBy('created_at')->values();
-                $menus = Menu::all();
+                $menus = Cache::remember('shared:menu-tree', now()->addMinutes(10), fn () => Menu::all());
                 $notifications = $user
                     ? $user->notifications()->latest()->take(5)->get()
                     : collect();
@@ -101,37 +109,32 @@ class AppServiceProvider extends ServiceProvider
             }
 
             if ($matched) {
-                $youtube = Embed::whereHas('platform', function ($query) {
-                    $query->where('name', 'YouTube');
-                })
-                    ->latest()
-                    ->limit(3)
-                    ->get();
-                $spotify = Embed::whereHas('platform', function ($query) {
-                    $query->where('name', 'Spotify');
-                })
-                    ->latest()
-                    ->limit(3)
-                    ->get();
-                $navCategories = Category::whereNull('parent_id')
-                    ->with('children')
-                    ->get();
-                $categories = Category::whereNotNull('parent_id')
-                    ->orWhereDoesntHave('children')
-                    ->get();
-                $tags = Tag::all();
-                $footers = Footer::all();
-                $platforms = Platform::all();
+                $navigation = Cache::remember('public:navigation', now()->addMinutes(10), function () {
+                    return [
+                        'youtube' => Embed::whereHas('platform', function ($query) {
+                            $query->where('name', 'YouTube');
+                        })->latest()->limit(3)->get(),
+                        'spotify' => Embed::whereHas('platform', function ($query) {
+                            $query->where('name', 'Spotify');
+                        })->latest()->limit(3)->get(),
+                        'navCategories' => Category::whereNull('parent_id')->with('children')->get(),
+                        'categories' => Category::whereNotNull('parent_id')
+                            ->orWhereDoesntHave('children')->get(),
+                        'tags' => Tag::all(),
+                        'footers' => Footer::all(),
+                        'platforms' => Platform::all(),
+                    ];
+                });
 
 
                 $view
-                    ->with('youtube', $youtube)
-                    ->with('spotify', $spotify)
-                    ->with('categories', $categories)
-                    ->with('navCategories', $navCategories)
-                    ->with('tags', $tags)
-                    ->with('footers', $footers)
-                    ->with('platforms', $platforms);
+                    ->with('youtube', $navigation['youtube'])
+                    ->with('spotify', $navigation['spotify'])
+                    ->with('categories', $navigation['categories'])
+                    ->with('navCategories', $navigation['navCategories'])
+                    ->with('tags', $navigation['tags'])
+                    ->with('footers', $navigation['footers'])
+                    ->with('platforms', $navigation['platforms']);
             }
         });
     }

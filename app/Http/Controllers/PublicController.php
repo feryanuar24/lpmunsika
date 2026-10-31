@@ -9,6 +9,7 @@ use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
@@ -20,17 +21,13 @@ class PublicController extends Controller
     public function landing(): View
     {
         // Get pinned articles
-        $pinned = Article::with(['user', 'category', 'tags'])
-            ->where('is_pinned', true)
-            ->where('is_active', true)
-            ->latest()
-            ->limit(3)
-            ->get();
+        $pinned = Cache::remember('public:landing:pinned', now()->addMinutes(5), fn () => Article::with(['user', 'category', 'tags'])
+            ->where('is_pinned', true)->where('is_active', true)->latest()->limit(3)->get());
 
         // Get categories with their articles dynamically
-        $categories = Category::with(['children', 'articles' => function ($query) {
+        $categories = Cache::remember('public:landing:categories', now()->addMinutes(5), fn () => Category::with(['children', 'articles' => function ($query) {
             $query->where('is_active', true)->latest();
-        }])->whereNull('parent_id')->get();
+        }])->whereNull('parent_id')->get());
 
         // Build category data with articles for each child
         $categoryData = [];
@@ -60,7 +57,7 @@ class PublicController extends Controller
         }
 
         $data = [
-            'sliders' => Slider::all(),
+            'sliders' => Cache::remember('public:landing:sliders', now()->addMinutes(5), fn () => Slider::all()),
             'pinned' => $pinned,
             'categories' => $categoryData,
         ];

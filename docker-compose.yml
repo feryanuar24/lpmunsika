@@ -15,9 +15,13 @@ services:
             - lpmunsika-network
         environment:
             DB_HOST: mysql
+            CACHE_STORE: redis
+            REDIS_HOST: redis
         depends_on:
             mysql:
                 condition: service_healthy
+            redis:
+                condition: service_started
 
     nginx:
         image: nginx:alpine
@@ -64,6 +68,16 @@ services:
             retries: 10
             start_period: 15s
 
+    redis:
+        image: redis:7-alpine
+        container_name: lpmunsika-redis
+        restart: unless-stopped
+        command: redis-server --appendonly yes
+        volumes:
+            - lpmunsika-redis-data:/data
+        networks:
+            - lpmunsika-network
+
     node:
         image: node:22-alpine
         container_name: lpmunsika-node
@@ -85,4 +99,6 @@ networks:
 
 volumes:
     lpmunsika-mysql-data:
+        driver: local
+    lpmunsika-redis-data:
         driver: local

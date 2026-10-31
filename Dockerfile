@@ -14,6 +14,7 @@ RUN apk add --no-cache \
     exif \
     pcntl \
     bcmath \
+    redis \
     gd \
     intl \
     zip \
