@@ -1,5 +1,5 @@
 # Base PHP Image
-FROM php:8.3-fpm-alpine AS base
+FROM php:8.5-fpm-alpine AS base
 
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 
@@ -14,7 +14,6 @@ RUN apk add --no-cache \
     exif \
     pcntl \
     bcmath \
-    redis \
     gd \
     intl \
     zip \
