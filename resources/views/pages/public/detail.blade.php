@@ -6,7 +6,7 @@
             <!-- Article Header -->
             <div class="kt-card-header w-full flex-col flex items-start space-y-5 py-10">
                 <!-- Title -->
-                <h1 class="text-lg lg:text-2xl font-semibold text-foreground">
+                <h1 class="text-lg lg:text-2xl font-semibold text-gray-900 leading-tight">
                     {{ $data['article']->title }}
                 </h1>
 
