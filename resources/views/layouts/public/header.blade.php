@@ -1,27 +1,27 @@
-<header class="bg-gray-100 dark:bg-background/70 py-5">
+<header class="public-header sticky top-0 z-30 py-4">
     <div class="kt-container-fixed flex items-center justify-between">
         <!-- Logo -->
-        <div>
+        <div class="flex items-center gap-3">
             <a href="{{ route('landing') }}">
                 <img src="{{ asset('assets/media/app/default-logo.png') }}" alt="Logo aplikasi"
-                    class="h-8 lg:h-10 dark:hidden">
+                    class="h-9 lg:h-11 dark:hidden">
                 <img src="{{ asset('assets/media/app/default-logo-dark.png') }}" alt="Logo aplikasi"
-                    class="h-8 lg:h-10 hidden dark:block">
+                    class="h-9 lg:h-11 hidden dark:block">
             </a>
         </div>
 
         <!-- Desktop Navigation -->
         <nav class="hidden lg:block">
-            <ul class="kt-menu gap-5">
+            <ul class="kt-menu gap-6">
                 @forelse($navCategories as $category)
-                    @if($category->children->count() > 0)
+                    @if ($category->children->count() > 0)
                         <li class="inline-flex" data-kt-dropdown="true" data-kt-dropdown-trigger="click">
                             <button class="kt-link kt-link-mono text-sm" data-kt-dropdown-toggle="true">
                                 {{ $category->name }}
                             </button>
                             <div class="kt-dropdown w-full max-w-56 p-3 text-sm" data-kt-dropdown-menu="true">
                                 <div class="grid grid-cols-1 gap-2">
-                                    @foreach($category->children as $child)
+                                    @foreach ($category->children as $child)
                                         <a href="{{ route('category', $child->slug) }}"
                                             class="kt-link kt-link-mono text-sm">{{ $child->name }}</a>
                                     @endforeach
@@ -42,8 +42,8 @@
         <div class="flex gap-x-4">
             @guest
                 <div class="space-x-2 hidden lg:block">
-                    <a href="{{ route('login') }}" class="kt-btn kt-btn-mono">Masuk</a>
-                    <a href="{{ route('register') }}" class="kt-btn kt-btn-outline">Daftar</a>
+                    <a href="{{ route('login') }}" class="kt-btn kt-btn-ghost">Masuk</a>
+                    <a href="{{ route('register') }}" class="kt-btn kt-btn-mono">Daftar</a>
                 </div>
             @endguest
 
@@ -71,13 +71,13 @@
 
             <div class="kt-dropdown p-3 text-sm space-y-3" data-kt-dropdown-menu="true">
                 @forelse($navCategories as $category)
-                    @if($category->children->count() > 0)
+                    @if ($category->children->count() > 0)
                         <div class="kt-dropdown-item" data-kt-dropdown="true" data-kt-dropdown-trigger="click">
                             <button class="kt-link kt-link-mono text-sm w-full text-left"
                                 data-kt-dropdown-toggle="true">{{ $category->name }}</button>
                             <div class="kt-dropdown w-full max-w-56 p-3 text-sm" data-kt-dropdown-menu="true">
                                 <div class="grid grid-cols-1 gap-2">
-                                    @foreach($category->children as $child)
+                                    @foreach ($category->children as $child)
                                         <a href="{{ route('category', $child->slug) }}"
                                             class="kt-link kt-link-mono text-sm">{{ $child->name }}</a>
                                     @endforeach

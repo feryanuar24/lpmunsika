@@ -5,7 +5,7 @@
     @include('layouts.partials.head')
 </head>
 
-<body class="kt-sidebar-fixed kt-header-fixed flex h-full bg-background text-base text-foreground antialiased">
+<body class="public-site kt-sidebar-fixed kt-header-fixed flex min-h-full bg-background text-base text-foreground antialiased">
     @include('partials.theme-toggle')
 
     <!-- Page -->
@@ -16,8 +16,8 @@
             @include('layouts.public.header')
 
             <!-- Content -->
-            <main class="kt-container-fixed py-5 grid grid-cols-1 lg:grid-cols-3 gap-8" id="content" role="content">
-                <div class="col-span-1 lg:col-span-2">
+            <main class="public-main kt-container-fixed py-8 lg:py-12 grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12" id="content" role="content">
+                <div class="col-span-1 lg:col-span-2 min-w-0">
                     @yield('content')
                 </div>
                 <div class="mt-7 lg:mt-0 col-span-1">

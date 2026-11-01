@@ -1,120 +1,77 @@
 @extends('layouts.public.base')
 
 @section('content')
-    <div class="space-y-5">
+    <div class="space-y-10 lg:space-y-12">
+        <!-- Hero: Slider & Pencarian -->
         <div class="space-y-5">
             @if ($data['sliders']->isNotEmpty())
                 @include('partials.landing.sliders')
             @endif
             @include('partials.landing.search')
-            @include('partials.landing.pinned')
+        </div>
 
-            <!-- Dynamically render categories -->
-            @forelse($data['categories'] as $categoryName => $categoryInfo)
-                @if ($categoryInfo['type'] === 'standalone')
-                    <!-- Standalone category (no children) -->
-                    <div class="space-y-3">
-                        <h2
-                            class="text-3xl font-semibold mb-8 text-foreground border-b-2 border-border border-dashed pb-2 w-full">
-                            {{ $categoryName }}
-                        </h2>
-                        @if ($categoryInfo['articles']->isNotEmpty())
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                @foreach ($categoryInfo['articles'] as $article)
-                                    <div class="kt-card overflow-hidden">
-                                        <a href="{{ route('detail', $article->slug) }}" class="block">
-                                            @if ($article->thumbnail)
-                                                <img src="{{ route('files', $article->thumbnail) }}"
-                                                    alt="{{ $article->title }}" class="w-full h-48 object-cover">
-                                            @else
-                                                <div class="w-full h-48 bg-muted"></div>
-                                            @endif
+        <!-- Sorotan -->
+        @if ($data['pinned']->isNotEmpty())
+            @include('partials.landing.pinned')
+        @endif
+
+        <!-- Dynamically render categories -->
+        @forelse($data['categories'] as $categoryName => $categoryInfo)
+            @if ($categoryInfo['type'] === 'standalone')
+                <!-- Standalone category (no children) -->
+                @if ($categoryInfo['articles']->isNotEmpty())
+                    <section aria-labelledby="category-{{ $categoryInfo['slug'] }}">
+                        @include('partials.landing.section-header', [
+                            'id' => 'category-' . $categoryInfo['slug'],
+                            'title' => $categoryName,
+                            'url' => route('category', $categoryInfo['slug']),
+                        ])
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            @foreach ($categoryInfo['articles'] as $article)
+                                @include('partials.landing.article-card', ['article' => $article])
+                            @endforeach
+                        </div>
+                    </section>
+                @endif
+            @else
+                <!-- Parent category with children -->
+                @php
+                    $filledChildren = collect($categoryInfo['children'])->filter(
+                        fn($child) => $child['articles']->isNotEmpty(),
+                    );
+                @endphp
+                @if ($filledChildren->isNotEmpty())
+                    <section aria-labelledby="category-{{ $categoryInfo['slug'] }}">
+                        @include('partials.landing.section-header', [
+                            'id' => 'category-' . $categoryInfo['slug'],
+                            'title' => $categoryName,
+                        ])
+                        <div class="space-y-8">
+                            @foreach ($filledChildren as $childName => $child)
+                                <div>
+                                    <div class="flex items-center justify-between gap-4 mb-4">
+                                        <h3 class="public-subheading">{{ $childName }}</h3>
+                                        <a href="{{ route('category', $child['slug']) }}" class="public-see-all shrink-0">
+                                            Lihat semua
+                                            <i class="ki-filled ki-arrow-right text-xs"></i>
                                         </a>
-                                        <div class="p-4 flex flex-col justify-between h-full">
-                                            <h3 class="font-semibold text-lg line-clamp-2">
-                                                <a href="{{ route('detail', $article->slug) }}" class="hover:text-primary">
-                                                    {{ $article->title }}
-                                                </a>
-                                            </h3>
-                                            <p class="text-sm text-muted-foreground mt-2 line-clamp-3 text-left">
-                                                {{ Str::limit(str_replace(['&nbsp;', '&#160;'], ' ', strip_tags($article->content)), 120) }}
-                                            </p>
-                                            <div
-                                                class="mt-3 flex items-center justify-between text-xs text-muted-foreground border-t border-border border-dashed pt-3">
-                                                <div class="flex items-center space-x-2">
-                                                    <i class="ki-filled ki-profile-circle"></i>
-                                                    <span>{{ $article->user->name }}</span>
-                                                </div>
-                                                <div class="flex items-center space-x-2">
-                                                    <i class="ki-filled ki-calendar"></i>
-                                                    <span>{{ $article->created_at->translatedFormat('d M Y') }}</span>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
-                                @endforeach
-                            </div>
-                        @endif
-                    </div>
-                @else
-                    <!-- Parent category with children -->
-                    <div class="space-y-5">
-                        <h2
-                            class="text-3xl font-semibold mb-8 text-foreground border-b-2 border-border border-dashed pb-2 w-full">
-                            {{ $categoryName }}
-                        </h2>
-                        @forelse($categoryInfo['children'] as $childName => $articles)
-                            <div class="space-y-3">
-                                <h3 class="text-xl font-semibold text-foreground">{{ $childName }}</h3>
-                                @if ($articles->isNotEmpty())
-                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        @foreach ($articles as $article)
-                                            <div class="kt-card overflow-hidden">
-                                                <a href="{{ route('detail', $article->slug) }}" class="block">
-                                                    @if ($article->thumbnail)
-                                                        <img src="{{ route('files', $article->thumbnail) }}"
-                                                            alt="{{ $article->title }}" class="w-full h-40 object-cover">
-                                                    @else
-                                                        <div class="w-full h-40 bg-muted"></div>
-                                                    @endif
-                                                </a>
-                                                <div class="p-4 flex flex-col justify-between h-full">
-                                                    <h4 class="font-semibold text-lg line-clamp-2">
-                                                        <a href="{{ route('detail', $article->slug) }}"
-                                                            class="hover:text-primary">
-                                                            {{ $article->title }}
-                                                        </a>
-                                                    </h4>
-                                                    <p class="text-sm text-muted-foreground mt-2 line-clamp-3 text-left">
-                                                        {{ Str::limit(str_replace(['&nbsp;', '&#160;'], ' ', strip_tags($article->content)), 120) }}
-                                                    </p>
-                                                    <div
-                                                        class="mt-3 flex items-center justify-between text-xs text-muted-foreground border-t border-border border-dashed pt-3">
-                                                        <div class="flex items-center space-x-2">
-                                                            <i class="ki-filled ki-profile-circle"></i>
-                                                            <span>{{ $article->user->name }}</span>
-                                                        </div>
-                                                        <div class="flex items-center space-x-2">
-                                                            <i class="ki-filled ki-calendar"></i>
-                                                            <span>{{ $article->created_at->translatedFormat('d M Y') }}</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        @foreach ($child['articles'] as $article)
+                                            @include('partials.landing.article-card', ['article' => $article])
                                         @endforeach
                                     </div>
-                                @else
-                                    <p class="text-sm text-muted-foreground">Belum ada artikel</p>
-                                @endif
-                            </div>
-                        @empty
-                            <p class="text-sm text-muted-foreground">Belum ada sub-kategori</p>
-                        @endforelse
-                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </section>
                 @endif
-            @empty
-                <p class="text-center py-8 text-muted-foreground">Belum ada kategori</p>
-            @endforelse
-        </div>
+            @endif
+        @empty
+            <div class="public-panel text-center py-10">
+                <i class="ki-filled ki-document text-4xl text-muted-foreground"></i>
+                <p class="mt-3 text-muted-foreground">Belum ada kategori berita yang tersedia.</p>
+            </div>
+        @endforelse
     </div>
 @endsection

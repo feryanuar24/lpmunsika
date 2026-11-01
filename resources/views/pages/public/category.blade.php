@@ -19,7 +19,7 @@
 
         <!-- Articles Grid -->
         @if ($data['articles']->count() > 0)
-            <div class="grid grid-col-1 lg:grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 @foreach ($data['articles'] as $article)
                     <article>
                         <a href="{{ route('detail', $article->slug) }}" class="kt-card overflow-hidden">

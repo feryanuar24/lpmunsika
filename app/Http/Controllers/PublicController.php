@@ -35,19 +35,26 @@ class PublicController extends Controller
             if ($parentCategory->children->count() > 0) {
                 $categoryData[$parentCategory->name] = [
                     'type' => 'parent',
+                    'slug' => $parentCategory->slug,
                     'children' => []
                 ];
                 foreach ($parentCategory->children as $childCategory) {
-                    $categoryData[$parentCategory->name]['children'][$childCategory->name] = $childCategory->articles()
-                        ->where('is_active', true)
-                        ->latest()
-                        ->limit(2)
-                        ->get();
+                    $categoryData[$parentCategory->name]['children'][$childCategory->name] = [
+                        'slug' => $childCategory->slug,
+                        'articles' => $childCategory->articles()
+                            ->with(['user', 'category', 'tags'])
+                            ->where('is_active', true)
+                            ->latest()
+                            ->limit(2)
+                            ->get(),
+                    ];
                 }
             } else {
                 $categoryData[$parentCategory->name] = [
                     'type' => 'standalone',
+                    'slug' => $parentCategory->slug,
                     'articles' => $parentCategory->articles()
+                        ->with(['user', 'category', 'tags'])
                         ->where('is_active', true)
                         ->latest()
                         ->limit(4)

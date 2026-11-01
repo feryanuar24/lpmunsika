@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="space-y-5">
-        <div class="kt-card px-1 lg:px-5">
+        <div class="kt-card overflow-hidden">
             <!-- Article Header -->
             <div class="kt-card-header w-full flex-col flex items-start space-y-5 py-10">
                 <!-- Title -->
@@ -57,7 +57,7 @@
 
             <!-- Article Content -->
             <div class="kt-card-content py-10">
-                <div class="text-foreground leading-relaxed">
+                <div class="public-article-content text-foreground leading-relaxed">
                     {!! $data['article']->content !!}
                 </div>
             </div>
@@ -86,9 +86,9 @@
                     @if ($data['article']->comments->count() > 0)
                         <div class="space-y-3">
                             @foreach ($data['article']->comments as $comment)
-                                <div class="kt-card kt-card-bordered px-5 py-3">
+                                <div class="kt-card overflow-hidden">
                                     <div class="kt-card-body">
-                                        <div class="flex flex-col items-start gap-2">
+                                        <div class="flex flex-col items-start gap-2 px-5 py-3">
                                             <!-- User Avatar -->
                                             <div class="flex items-center gap-2">
                                                 <i class="ki-filled ki-profile-circle text-muted-foreground text-xl"></i>
