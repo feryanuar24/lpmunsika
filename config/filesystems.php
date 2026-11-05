@@ -1,5 +1,7 @@
 <?php
 
+use League\Flysystem\GoogleCloudStorage\UniformBucketLevelAccessVisibility;
+
 return [
 
     /*
@@ -41,7 +43,7 @@ return [
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
-            'url' => env('APP_URL').'/storage',
+            'url' => env('APP_URL') . '/storage',
             'visibility' => 'public',
             'throw' => false,
             'report' => false,
@@ -60,6 +62,16 @@ return [
             'report' => false,
         ],
 
+        'gcs' => [
+            'driver' => 'gcs',
+            'key_file_path' => base_path(env('GCP_CREDENTIALS', null)),
+            'project_id' => env('GOOGLE_CLOUD_PROJECT_ID'),
+            'bucket' => env('GOOGLE_CLOUD_STORAGE_BUCKET'),
+            'visibility' => 'public',
+            'visibility_handler' => UniformBucketLevelAccessVisibility::class,
+            'throw' => false,
+            'report' => false,
+        ],
     ],
 
     /*
