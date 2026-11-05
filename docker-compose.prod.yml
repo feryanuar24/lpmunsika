@@ -1,8 +1,6 @@
 services:
   app:
-    build:
-      context: .
-      target: production
+    image: ghcr.io/username-github-anda/lpmunsika-app:latest
     container_name: lpmunsika-app
     restart: unless-stopped
     working_dir: /var/www/html
