@@ -16,8 +16,6 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-      alarik:
-        condition: service_started
 
   nginx:
     image: nginx:alpine
@@ -78,39 +76,6 @@ services:
       timeout: 3s
       retries: 5
 
-  alarik:
-    image: ghcr.io/achtungsoftware/alarik:latest
-    container_name: lpmunsika-alarik
-    restart: unless-stopped
-    ports:
-      - "127.0.0.1:8080:8080"
-    environment:
-      API_BASE_URL: ${ALARIK_API_URL:-http://localhost:8080}
-      CONSOLE_BASE_URL: ${ALARIK_CONSOLE_URL:-http://localhost:3000}
-      ADMIN_USERNAME: ${ALARIK_ADMIN_USERNAME:-alarik}
-      ADMIN_PASSWORD: ${ALARIK_ADMIN_PASSWORD:-alarik}
-      JWT: ${ALARIK_JWT_SECRET:-change_this_to_a_secure_random_string}
-      ALLOW_ACCOUNT_CREATION: ${ALARIK_ALLOW_ACCOUNT_CREATION:-false}
-    volumes:
-      - lpmunsika-alarik-data:/app/Storage
-    networks:
-      - lpmunsika-network
-
-  alarik-console:
-    image: ghcr.io/achtungsoftware/alarik-console:latest
-    container_name: lpmunsika-alarik-console
-    restart: unless-stopped
-    ports:
-      - "127.0.0.1:3000:3000"
-    environment:
-      NUXT_PUBLIC_API_BASE_URL: ${ALARIK_API_URL:-http://localhost:8080}
-      NUXT_PUBLIC_CONSOLE_BASE_URL: ${ALARIK_CONSOLE_URL:-http://localhost:3000}
-      NUXT_PUBLIC_ALLOW_ACCOUNT_CREATION: ${ALARIK_ALLOW_ACCOUNT_CREATION:-false}
-    depends_on:
-      - alarik
-    networks:
-      - lpmunsika-network
-
 networks:
   lpmunsika-network:
     driver: bridge
@@ -119,6 +84,4 @@ volumes:
   lpmunsika-mysql-data:
     driver: local
   lpmunsika-redis-data:
-    driver: local
-  lpmunsika-alarik-data:
     driver: local
