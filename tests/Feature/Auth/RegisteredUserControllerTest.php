@@ -4,7 +4,9 @@ namespace Tests\Feature\Auth;
 
 use App\Models\Role;
 use App\Models\User;
+use App\Notifications\CustomVerifyEmailNotification;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
 class RegisteredUserControllerTest extends TestCase
@@ -21,6 +23,8 @@ class RegisteredUserControllerTest extends TestCase
 
     public function test_new_user_can_register_and_get_visitor_role(): void
     {
+        Notification::fake();
+
         Role::create([
             'name' => 'visitor',
             'display_name' => 'Pengunjung',
@@ -43,6 +47,7 @@ class RegisteredUserControllerTest extends TestCase
 
         $user = User::where('email', 'john@example.com')->firstOrFail();
         $this->assertTrue($user->hasRole('visitor'));
+        Notification::assertSentTo($user, CustomVerifyEmailNotification::class);
     }
 
     public function test_registration_fails_with_duplicate_email(): void

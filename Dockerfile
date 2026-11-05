@@ -1,4 +1,4 @@
-# Base PHP Image
+# Base: PHP Image
 FROM php:8.5-fpm-alpine AS base
 
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
@@ -14,6 +14,7 @@ RUN apk add --no-cache \
     exif \
     pcntl \
     bcmath \
+    redis \
     gd \
     intl \
     zip \
@@ -24,26 +25,12 @@ WORKDIR /var/www/html
 # Development Stage
 FROM base AS development
 
-ARG UID=1000
-ARG GID=1000
-
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-RUN { \
-    echo 'upload_max_filesize = 25M'; \
-    echo 'post_max_size = 32M'; \
-    echo 'memory_limit = 256M'; \
-    echo 'max_execution_time = 300'; \
-    echo 'display_errors = On'; \
-    echo 'display_startup_errors = On'; \
-    echo 'error_reporting = E_ALL'; \
-    echo 'opcache.enable = 1'; \
-    echo 'opcache.validate_timestamps = 1'; \
-    echo 'opcache.revalidate_freq = 0'; \
-    } > /usr/local/etc/php/conf.d/custom.ini
+COPY docker/php/development.ini /usr/local/etc/php/conf.d/custom.ini
 
-RUN groupmod -o -g ${GID} www-data \
-    && usermod -o -u ${UID} -g www-data www-data
+RUN groupmod -o -g 1000 www-data \
+    && usermod -o -u 1000 -g www-data www-data
 
 USER www-data
 
@@ -51,13 +38,12 @@ EXPOSE 9000
 
 CMD ["php-fpm"]
 
-# Builder: Composer Dependencies (Production)
+# Vendor: Composer Dependencies
 FROM composer:latest AS vendor
 
 WORKDIR /var/www/html
 
 COPY composer.json composer.lock ./
-
 RUN composer install \
     --no-dev \
     --prefer-dist \
@@ -66,7 +52,7 @@ RUN composer install \
     --no-interaction \
     --optimize-autoloader
 
-# Builder: Frontend Assets (Production)
+# Frontend: Node.js Build
 FROM node:22-alpine AS frontend
 
 WORKDIR /var/www/html
@@ -83,25 +69,10 @@ RUN npm run build
 # Production Stage
 FROM base AS production
 
-ARG UID=1000
-ARG GID=1000
+COPY docker/php/production.ini /usr/local/etc/php/conf.d/custom.ini
 
-RUN { \
-    echo 'upload_max_filesize = 25M'; \
-    echo 'post_max_size = 32M'; \
-    echo 'memory_limit = 256M'; \
-    echo 'max_execution_time = 60'; \
-    echo 'display_errors = Off'; \
-    echo 'log_errors = On'; \
-    echo 'opcache.enable = 1'; \
-    echo 'opcache.validate_timestamps = 0'; \
-    echo 'opcache.max_accelerated_files = 10000'; \
-    echo 'opcache.memory_consumption = 128'; \
-    echo 'opcache.interned_strings_buffer = 16'; \
-    } > /usr/local/etc/php/conf.d/custom.ini
-
-RUN groupmod -o -g ${GID} www-data \
-    && usermod -o -u ${UID} -g www-data www-data
+RUN groupmod -o -g 1000 www-data \
+    && usermod -o -u 1000 -g www-data www-data
 
 COPY --chown=www-data:www-data . .
 

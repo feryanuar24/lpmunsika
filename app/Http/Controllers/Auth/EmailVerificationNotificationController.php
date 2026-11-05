@@ -4,9 +4,6 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\VerifyEmailRequest;
-use App\Notifications\CustomVerifyEmailNotification;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\URL;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class EmailVerificationNotificationController extends Controller
@@ -24,16 +21,7 @@ class EmailVerificationNotificationController extends Controller
                 ->with('success', 'Alamat email Anda sudah terverifikasi.');
         }
 
-        $url = URL::temporarySignedRoute(
-            'verification.verify',
-            Carbon::now()->addMinutes(60),
-            [
-                'id' => $user->getKey(),
-                'hash' => sha1($user->getEmailForVerification()),
-            ]
-        );
-
-        $user->notify(new CustomVerifyEmailNotification($url));
+        $user->sendEmailVerificationNotification();
 
         return back()
             ->with('success', 'Tautan verifikasi baru telah dikirim ke alamat email Anda.');

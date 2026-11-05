@@ -64,9 +64,9 @@ return [
 
         'gcs' => [
             'driver' => 'gcs',
-            'key_file_path' => base_path(env('GCP_CREDENTIALS', null)),
-            'project_id' => env('GOOGLE_CLOUD_PROJECT_ID'),
-            'bucket' => env('GOOGLE_CLOUD_STORAGE_BUCKET'),
+            'key_file_path' => base_path(env('GCS_CREDENTIALS', null)),
+            'project_id' => env('GCS_PROJECT_ID'),
+            'bucket' => env('GCS_BUCKET'),
             'visibility' => 'public',
             'visibility_handler' => UniformBucketLevelAccessVisibility::class,
             'throw' => false,

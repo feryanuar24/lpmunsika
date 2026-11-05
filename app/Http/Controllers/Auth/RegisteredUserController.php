@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
@@ -27,7 +28,7 @@ class RegisteredUserController extends Controller
     {
         $validated = $request->validated();
 
-        DB::transaction(function () use ($validated) {
+        $user = DB::transaction(function () use ($validated) {
             $user = User::create([
                 'name' => $validated['name'],
                 'email' => $validated['email'],
@@ -35,7 +36,11 @@ class RegisteredUserController extends Controller
             ]);
 
             $user->addRole('visitor');
+
+            return $user;
         });
+
+        event(new Registered($user));
 
         return redirect(route('login', absolute: false))
             ->with(
