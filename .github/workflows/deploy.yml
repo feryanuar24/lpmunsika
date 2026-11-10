@@ -3,6 +3,7 @@ name: Deploy Laravel to cPanel and GCP VPS
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -78,7 +79,38 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Check for project file changes
+        uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            project:
+              - '**'
+              - '!.github/**'
+              - '!README.md'
+              - '!SECURITY.md'
+              - '!tests/**'
+              - '!phpunit.xml'
+              - '!.editorconfig'
+              - '!.gitignore'
+              - '!.env.example'
+
+      - name: Report change status
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "Workflow triggered manually. Running Docker build and deployment."
+          elif [ "${{ steps.filter.outputs.project }}" = "true" ]; then
+            echo "Project files changed. Proceeding with Docker build and deployment."
+          else
+            echo "No project changes detected. Skipping Docker build and deployment."
+          fi
+
+      - name: Set up Docker Buildx
+        if: github.event_name == 'workflow_dispatch' || steps.filter.outputs.project == 'true'
+        uses: docker/setup-buildx-action@v3
+
       - name: Log in to GitHub Container Registry
+        if: github.event_name == 'workflow_dispatch' || steps.filter.outputs.project == 'true'
         uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
@@ -86,6 +118,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Extract metadata for Docker
+        if: github.event_name == 'workflow_dispatch' || steps.filter.outputs.project == 'true'
         id: meta
         uses: docker/metadata-action@v5
         with:
@@ -93,14 +126,18 @@ jobs:
           tags: type=raw,value=latest
 
       - name: Build and push Docker image
+        if: github.event_name == 'workflow_dispatch' || steps.filter.outputs.project == 'true'
         uses: docker/build-push-action@v5
         with:
           context: .
           target: production
           push: true
           tags: ${{ steps.meta.outputs.tags }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
       - name: Deploy to VPS
+        if: github.event_name == 'workflow_dispatch' || steps.filter.outputs.project == 'true'
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.VPS_HOST }}
