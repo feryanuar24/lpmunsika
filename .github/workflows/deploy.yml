@@ -24,7 +24,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Deploy Build to Laravel Core
-        uses: SamKirkland/FTP-Deploy-Action@v4
+        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
@@ -34,7 +34,7 @@ jobs:
           state-name: .ftp-deploy-sync-state.json
 
       - name: Deploy Laravel Core
-        uses: SamKirkland/FTP-Deploy-Action@v4
+        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
@@ -55,7 +55,7 @@ jobs:
         run: cp public/index.production.php public/index.php
 
       - name: Deploy Public Folder
-        uses: SamKirkland/FTP-Deploy-Action@v4
+        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
